@@ -1,6 +1,8 @@
 package snowball049.roguelikemc.command;
 
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.ClickEvent;
@@ -9,8 +11,11 @@ import net.minecraft.text.Text;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class RoguelikeMCCommands {
+    private static final String[] LEVEL = {"common", "rare", "epic", "legendary", "fate"};
+
     public static int executeCommandUpgrade(CommandContext<ServerCommandSource> context) {
         String tier = context.getArgument("tier", String.class);
         ArrayList<String> commonUpgrades = new ArrayList<>();
@@ -41,5 +46,12 @@ public class RoguelikeMCCommands {
                 context.getSource().sendFeedback(()->Text.literal("Invalid Tier:" + tier), false);
         }
         return 1;
+    }
+
+    public static CompletableFuture<Suggestions> suggestUpgrades(CommandContext<ServerCommandSource> serverCommandSourceCommandContext, SuggestionsBuilder suggestionsBuilder) {
+        for(String level: LEVEL) {
+            suggestionsBuilder.suggest(level);
+        }
+        return suggestionsBuilder.buildFuture();
     }
 }

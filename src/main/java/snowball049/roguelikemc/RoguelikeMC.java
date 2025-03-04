@@ -13,6 +13,7 @@ public class RoguelikeMC implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			dispatcher.register(CommandManager.literal("upgrade")
 					.then(CommandManager.argument("tier", StringArgumentType.string())
+							.suggests(RoguelikeMCCommands::suggestUpgrades)
 							.executes(RoguelikeMCCommands::executeCommandUpgrade)
 					)
 			);
