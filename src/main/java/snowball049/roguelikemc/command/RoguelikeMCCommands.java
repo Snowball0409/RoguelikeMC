@@ -3,7 +3,6 @@ package snowball049.roguelikemc.command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.command.ServerCommandSource;
@@ -120,22 +119,22 @@ public class RoguelikeMCCommands {
         }
 
         // 生成 modifier ID
-        String modifierId = MOD_ID + ":" + attributeId.getPath();
+        String modifierId = MOD_ID + ":tmp_" + UUID.randomUUID();
 
         // 檢查現有 modifier
-        Set<EntityAttributeModifier> modifiers = Objects.requireNonNull(player.getAttributeInstance(attribute)).getModifiers();
-        boolean hasExistingModifier = modifiers.stream()
-                .anyMatch(modifier -> modifier.id().toString().equals(modifierId));
+//        Set<EntityAttributeModifier> modifiers = Objects.requireNonNull(player.getAttributeInstance(attribute)).getModifiers();
+//        boolean hasExistingModifier = modifiers.stream()
+//                .anyMatch(modifier -> modifier.id().toString().equals(modifierId));
 
         List<String> commandList = new ArrayList<>();
-        if (hasExistingModifier) {
-            commandList.add(String.format(
-                    "/attribute %s %s modifier remove %s",
-                    player.getName().getString(),
-                    attributeId,
-                    modifierId
-            ));
-        }
+//        if (hasExistingModifier) {
+//            commandList.add(String.format(
+//                    "/attribute %s %s modifier remove %s",
+//                    player.getName().getString(),
+//                    attributeId,
+//                    modifierId
+//            ));
+//        }
 
         commandList.add(String.format(
                 "/attribute %s %s modifier add %s %.2f %s",
