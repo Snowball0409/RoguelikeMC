@@ -51,30 +51,26 @@ public class RoguelikeMCScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        // 計算動態縮放比例
-        double scaleFactor = MinecraftClient.getInstance().getWindow().getScaleFactor();
-        scaleFactor = 1.0;
 
         // 繪製自適應背景
-        int guiLeft = (int)((width - GUI_WIDTH * scaleFactor) / 2);
-        int guiTop = (int)((height - GUI_HEIGHT * scaleFactor) / 2);
+        int guiLeft = (int)((width - GUI_WIDTH ) / 2);
+        int guiTop = (int)((height - GUI_HEIGHT) / 2);
 
         context.getMatrices().push();
-        context.getMatrices().scale((float)scaleFactor, (float)scaleFactor, 1.0f);
 
         // 繪製高清背景
         context.drawTexture(
                 BACKGROUND_TEXTURE,
-                (int)(guiLeft / scaleFactor),
-                (int)(guiTop / scaleFactor),
+                guiLeft,
+                guiTop,
                 0, 0, GUI_WIDTH, GUI_HEIGHT,
                 GUI_WIDTH, GUI_HEIGHT
         );
 
         // 渲染內容區域
         renderContent(context,
-                (int)(guiLeft / scaleFactor) + CONTENT_PADDING,
-                (int)(guiTop / scaleFactor) + CONTENT_PADDING,
+                guiLeft + CONTENT_PADDING,
+                guiTop + CONTENT_PADDING,
                 mouseX, mouseY);
 
         context.getMatrices().pop();
