@@ -3,32 +3,43 @@ package snowball049.roguelikemc.gui;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import snowball049.roguelikemc.network.RoguelikeMCNetworkHandler;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import snowball049.roguelikemc.network.RoguelikeMCNetworkHandler;
 
 public class RoguelikeMCScreen extends Screen {
     // 模擬靜態數據
-    private static final List<UpgradeEffect> TEMPORARY_EFFECTS = Arrays.asList(
-            new UpgradeEffect("+10% Speed", "暫時提升移動速度", 0x00FF00),
-            new UpgradeEffect("Attack Boost", "暫時增加攻擊力", 0xFF0000),
-            new UpgradeEffect("Jump Boost", "暫時增加跳躍高度", 0xFFFF00)
+    private static final List<UpgradeEffect> UPGRADE_POOL = Arrays.asList(
+            new UpgradeEffect("+10% Speed", "暫時提升移動速度", 0x00FF00, false),
+            new UpgradeEffect("Attack Boost", "暫時增加攻擊力", 0xFF0000, false),
+            new UpgradeEffect("Health Up", "永久增加最大生命值", 0xFFA500, true),
+            new UpgradeEffect("Armor Reinforce", "永久提升護甲值", 0x0000FF, true),
+            new UpgradeEffect("Luck", "永久提升幸運值", 0x800080, true)
     );
-
-    private static final List<UpgradeEffect> PERMANENT_EFFECTS = Arrays.asList(
-            new UpgradeEffect("Health Up", "永久增加最大生命值", 0xFFA500),
-            new UpgradeEffect("Armor Reinforce", "永久提升護甲值", 0x0000FF),
-            new UpgradeEffect("Luck", "永久提升幸運值", 0x800080)
-    );
+    private final List<UpgradeEffect> TEMPORARY_EFFECTS = new ArrayList<>();
+    private final List<UpgradeEffect> PERMANENT_EFFECTS = new ArrayList<>();
+    private final List<UpgradeEffect> currentOptions = new ArrayList<>(3);
 
     // 自定義 GUI 背景圖
     private static final Identifier BACKGROUND_TEXTURE = Identifier.tryParse("roguelikemc", "textures/gui/upgrade_bg.png");
 
+    // GUI 元素
+    private final ButtonWidget[] optionButtons = new ButtonWidget[3];
+
     // GUI 尺寸
     private static final int GUI_WIDTH = 360;
-    private static final int GUI_HEIGHT = 240;
+    private static final int GUI_HEIGHT = 200;
+    private static final int BUTTON_WIDTH = 100;
+    private static final int BUTTON_HEIGHT = 32;
 
     // 內容區域邊距
     private static final int CONTENT_PADDING = 20;
@@ -41,7 +52,42 @@ public class RoguelikeMCScreen extends Screen {
     @Override
     protected void init() {
         super.init();
-        // 初始化按鈕等元件（未來擴展用）
+        // 初始化右側按鈕
+        int baseX = (width + GUI_WIDTH)/2 - 120;
+        int baseY = height/2 - 50;
+        RoguelikeMCNetworkHandler networkHandler = new RoguelikeMCNetworkHandler();
+        for(int i=0; i<3; i++) {
+            final int index = i;
+            optionButtons[i] = ButtonWidget.builder(Text.empty(), button -> {
+                        if (currentOptions.size() > index) {
+                            UpgradeEffect selected = currentOptions.get(index);
+                            // 發送數據包到服務器
+                            boolean correct = networkHandler.sendUpgradeToServer(selected);
+                            // 清空選項
+                            currentOptions.clear();
+                            refreshOptionsDisplay();
+                            if (correct) {
+                                refreshUpgradeDisplay(selected);
+                            }
+                        }
+                    })
+                    .dimensions(baseX, baseY + i * 40, BUTTON_WIDTH, BUTTON_HEIGHT)
+                    .build();
+            this.addDrawableChild(optionButtons[i]);
+        }
+        // 隨機刷新按鈕
+        ButtonWidget refreshButton = ButtonWidget.builder(Text.literal("抽取升級"), button -> {
+                    currentOptions.clear();
+                    List<UpgradeEffect> pool = new ArrayList<>(UPGRADE_POOL);
+                    Collections.shuffle(pool);
+                    for (int i = 0; i < 3 && i < pool.size(); i++) {
+                        currentOptions.add(pool.get(i));
+                    }
+                    refreshOptionsDisplay();
+                })
+                .dimensions(width / 2 - 50, height - 40, 100, 20)
+                .build();
+        this.addDrawableChild(refreshButton);
     }
 
     @Override
@@ -76,6 +122,25 @@ public class RoguelikeMCScreen extends Screen {
         context.getMatrices().pop();
     }
 
+    private void refreshOptionsDisplay(){
+        for(int i=0; i<3; i++){
+            if(i < currentOptions.size()){
+                UpgradeEffect effect = currentOptions.get(i);
+                optionButtons[i].setMessage(Text.literal(effect.name));
+            }else{
+                optionButtons[i].setMessage(Text.empty());
+            }
+        }
+    }
+
+    private void refreshUpgradeDisplay(UpgradeEffect effect){
+        if(effect.isPermanent){
+            PERMANENT_EFFECTS.add(effect);
+        }else{
+            TEMPORARY_EFFECTS.add(effect);
+        }
+    }
+
     private void renderContent(DrawContext context, int x, int y, int mouseX, int mouseY) {
         // 三欄式佈局
         int sectionWidth = (GUI_WIDTH - 2 * CONTENT_PADDING - 2 * SECTION_SPACING) / 3;
@@ -87,7 +152,7 @@ public class RoguelikeMCScreen extends Screen {
         renderEffectsSection(context, x + sectionWidth + SECTION_SPACING, y, sectionWidth, "Permanent Effects", PERMANENT_EFFECTS, mouseX, mouseY);
 
         // 右側功能區域
-        renderUtilitySection(context, x + 2 * (sectionWidth + SECTION_SPACING), y, sectionWidth);
+        renderUtilitySection(context, x + 2 * (sectionWidth + SECTION_SPACING), y, sectionWidth, mouseX, mouseY);
     }
 
     private void renderEffectsSection(DrawContext context, int x, int y, int width, String title, List<UpgradeEffect> effects, int mouseX, int mouseY) {
@@ -116,10 +181,31 @@ public class RoguelikeMCScreen extends Screen {
         }
     }
 
-    private void renderUtilitySection(DrawContext context, int x, int y, int width) {
+    private void renderUtilitySection(DrawContext context, int x, int y, int width, int mouseX, int mouseY) {
         // 繪製右側功能區域
         context.fill(x, y, x + width, y + GUI_HEIGHT - 2 * CONTENT_PADDING, 0x80000000);
-        context.drawTextWithShadow(textRenderer, "Special Abilities", x + 10, y + 10, 0xFFFFFF);
+        context.drawTextWithShadow(textRenderer, "Upgrade Pool", x + 10, y + 10, 0xFFFFFF);
+
+        // 渲染右側按鈕內容
+        int buttonX = x+1;
+        int buttonY = y+1;
+        for(int i=0; i<currentOptions.size(); i++){
+            UpgradeEffect effect = currentOptions.get(i);
+            // 繪製顏色區塊
+            context.fill(buttonX, buttonY + i*40,
+                    buttonX + 20, buttonY + i*40 + BUTTON_HEIGHT,
+                    effect.color | 0xFF000000);
+            // 繪製懸停提示
+            if(optionButtons[i].isMouseOver(mouseX, mouseY)){
+                context.drawTooltip(textRenderer,
+                        List.of(
+                                Text.literal(effect.name).formatted(Formatting.GREEN),
+                                Text.literal(effect.description).formatted(Formatting.GRAY)
+                        ),
+                        mouseX, mouseY
+                );
+            }
+        }
     }
 
     private boolean isMouseOver(int mouseX, int mouseY, int x, int y, int width, int height) {
@@ -135,15 +221,17 @@ public class RoguelikeMCScreen extends Screen {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-    private static class UpgradeEffect {
+    public static class UpgradeEffect {
         String name;
         String description;
         int color;
+        boolean isPermanent;
 
-        UpgradeEffect(String name, String description, int color) {
+        UpgradeEffect(String name, String description, int color, boolean isPermanent) {
             this.name = name;
             this.description = description;
             this.color = color;
+            this.isPermanent = false;
         }
     }
 }
