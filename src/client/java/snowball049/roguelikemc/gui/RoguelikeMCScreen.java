@@ -259,20 +259,20 @@ public class RoguelikeMCScreen extends Screen {
 
     private void renderRefreshButton(DrawContext context, int x, int y, int sectionWidth, int mouseX, int mouseY) {
         // 刷新按鈕渲染修正
+        context.fill(
+                refreshButton.getX() + 1,
+                refreshButton.getY() + 1,
+                refreshButton.getX() + refreshButton.getWidth() - 1,
+                refreshButton.getY() + refreshButton.getHeight() - 1,
+                0xFF606060
+        );
         context.drawText(
                 textRenderer,
-                "抽取升級",
-                refreshButton.getX() + 20, // 文字居中
+                "Draw Upgrades",
+                refreshButton.getX() + CONTENT_PADDING / 2, // 文字居中
                 refreshButton.getY() + 5,
                 0xFFFFFF,
                 false
-        );
-        context.drawBorder(
-                refreshButton.getX(),
-                refreshButton.getY(),
-                refreshButton.getWidth(),
-                refreshButton.getHeight(),
-                0xFF606060
         );
     }
 
