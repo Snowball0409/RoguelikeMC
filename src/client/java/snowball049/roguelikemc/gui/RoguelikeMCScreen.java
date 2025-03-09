@@ -189,20 +189,23 @@ public class RoguelikeMCScreen extends Screen {
 
     private void renderEffectsSection(DrawContext context, int x, int y, String title, List<UpgradeEffect> effects, int mouseX, int mouseY) {
         // 標題文字
-        context.drawTextWithShadow(textRenderer, title, x, y, 0xFFFFFF);
+        context.drawCenteredTextWithShadow(textRenderer, title, x+SECTION_WIDTH/2, y, 0xFFFFFF);
 
         // 效果列表
         int itemHeight = 20;
         int itemWidth = 20; // 方塊寬度
+        int itemPadding = 2;
+
         for (int i = 0; i < effects.size(); i++) {
-            int itemY = y + 15 + i * itemHeight;
+            int itemY = y + CONTENT_PADDING + itemPadding + Math.floorMod(i,6) * (itemHeight+itemPadding);
+            int itemX = x + Math.divideExact(i, 6)*(itemWidth+itemPadding);
 
             // 繪製顏色方塊
             UpgradeEffect effect = effects.get(i);
-            context.fill(x, itemY, x + itemWidth, itemY + itemHeight, effect.color | 0xFF000000); // 設置透明度
+            context.fill(itemX, itemY, itemX + itemWidth, itemY + itemHeight, effect.color | 0xFF000000); // 設置透明度
 
             // 檢查滑鼠懸停
-            if (isMouseOver(mouseX, mouseY, x, itemY, itemWidth, itemHeight)) {
+            if (isMouseOver(mouseX, mouseY, itemX, itemY, itemWidth, itemHeight)) {
                 // 繪製懸停提示
                 List<Text> tooltip = Arrays.asList(
                         Text.literal(effect.name).formatted(Formatting.GREEN),
@@ -267,19 +270,18 @@ public class RoguelikeMCScreen extends Screen {
     private void renderRefreshButton(DrawContext context, int x, int y, int mouseX, int mouseY) {
         // 刷新按鈕渲染修正
         context.fill(
-                refreshButton.getX() + 1,
-                refreshButton.getY() + 1,
-                refreshButton.getX() + refreshButton.getWidth() - 1,
-                refreshButton.getY() + refreshButton.getHeight() - 1,
+                refreshButton.getX(),
+                refreshButton.getY(),
+                refreshButton.getX() + refreshButton.getWidth(),
+                refreshButton.getY() + refreshButton.getHeight(),
                 0xFF606060
         );
-        context.drawText(
+        context.drawCenteredTextWithShadow(
                 textRenderer,
                 "Draw Upgrades",
-                refreshButton.getX() + CONTENT_PADDING / 2, // 文字居中
-                refreshButton.getY() + 5,
-                0xFFFFFF,
-                false
+                refreshButton.getX() + BUTTON_WIDTH/2, // 文字居中
+                refreshButton.getY() + BUTTON_PADDING,
+                0xFFFFFF
         );
     }
 
