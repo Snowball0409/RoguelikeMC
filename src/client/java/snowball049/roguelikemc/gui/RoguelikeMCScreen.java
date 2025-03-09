@@ -7,6 +7,8 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import snowball049.roguelikemc.network.RoguelikeMCNetworkHandler;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.List;
 import snowball049.roguelikemc.network.RoguelikeMCNetworkHandler;
 
 public class RoguelikeMCScreen extends Screen {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoguelikeMCScreen.class);
     // 模擬靜態數據
     private static final List<UpgradeEffect> UPGRADE_POOL = Arrays.asList(
             new UpgradeEffect("+10% Speed", "暫時提升移動速度", 0x00FF00, false),
@@ -34,6 +37,7 @@ public class RoguelikeMCScreen extends Screen {
 
     // GUI 元素
     private final ButtonWidget[] optionButtons = new ButtonWidget[3];
+    private ButtonWidget refreshButton;
 
     // GUI 尺寸
     private static final int GUI_WIDTH = 360;
@@ -52,10 +56,17 @@ public class RoguelikeMCScreen extends Screen {
     @Override
     protected void init() {
         super.init();
-        // 初始化右側按鈕
-        int baseX = (width + GUI_WIDTH)/2 - 120;
-        int baseY = height/2 - 50;
+        // 計算GUI在屏幕中的實際位置
+        int guiLeft = (width - GUI_WIDTH)/2;
+        int guiTop = (height - GUI_HEIGHT)/2;
+
+        // 右側按鈕起始位置（基於GUI右側區域）
+        int rightPanelX = guiLeft + GUI_WIDTH - 120; // 右側欄位內偏移
+        int rightPanelY = guiTop + 40; // 從GUI頂部向下偏移
+
+        // NetworkHandler
         RoguelikeMCNetworkHandler networkHandler = new RoguelikeMCNetworkHandler();
+
         for(int i=0; i<3; i++) {
             final int index = i;
             optionButtons[i] = ButtonWidget.builder(Text.empty(), button -> {
@@ -71,12 +82,20 @@ public class RoguelikeMCScreen extends Screen {
                             }
                         }
                     })
-                    .dimensions(baseX, baseY + i * 40, BUTTON_WIDTH, BUTTON_HEIGHT)
+                    // 調整按鈕位置計算
+                    .dimensions(
+                            rightPanelX,
+                            rightPanelY + i * 40,
+                            BUTTON_WIDTH,  // 按鈕寬度配合右側區域
+                            BUTTON_HEIGHT    // 按鈕高度
+                    )
                     .build();
             this.addDrawableChild(optionButtons[i]);
         }
         // 隨機刷新按鈕
-        ButtonWidget refreshButton = ButtonWidget.builder(Text.literal("抽取升級"), button -> {
+        // GUI水平居中
+        // GUI底部向上30像素
+        refreshButton = ButtonWidget.builder(Text.literal("抽取升級"), button -> {
                     currentOptions.clear();
                     List<UpgradeEffect> pool = new ArrayList<>(UPGRADE_POOL);
                     Collections.shuffle(pool);
@@ -85,7 +104,12 @@ public class RoguelikeMCScreen extends Screen {
                     }
                     refreshOptionsDisplay();
                 })
-                .dimensions(width / 2 - 50, height - 40, 100, 20)
+                .dimensions(
+                        guiLeft + GUI_WIDTH / 2 - 50, // GUI水平居中
+                        guiTop + GUI_HEIGHT - 30,   // GUI底部向上30像素
+                        100,
+                        20
+                )
                 .build();
         this.addDrawableChild(refreshButton);
     }
@@ -153,6 +177,9 @@ public class RoguelikeMCScreen extends Screen {
 
         // 右側功能區域
         renderUtilitySection(context, x + 2 * (sectionWidth + SECTION_SPACING), y, sectionWidth, mouseX, mouseY);
+
+        // 刷新按鈕渲染
+        renderRefreshButton(context, x, y, sectionWidth, mouseX, mouseY);
     }
 
     private void renderEffectsSection(DrawContext context, int x, int y, int width, String title, List<UpgradeEffect> effects, int mouseX, int mouseY) {
@@ -182,30 +209,71 @@ public class RoguelikeMCScreen extends Screen {
     }
 
     private void renderUtilitySection(DrawContext context, int x, int y, int width, int mouseX, int mouseY) {
-        // 繪製右側功能區域
-        context.fill(x, y, x + width, y + GUI_HEIGHT - 2 * CONTENT_PADDING, 0x80000000);
-        context.drawTextWithShadow(textRenderer, "Upgrade Pool", x + 10, y + 10, 0xFFFFFF);
+        // 區域背景
+        context.fill(x, y, x + width, y + GUI_HEIGHT - 2*CONTENT_PADDING, 0x80303030);
 
-        // 渲染右側按鈕內容
-        int buttonX = x+1;
-        int buttonY = y+1;
-        for(int i=0; i<currentOptions.size(); i++){
-            UpgradeEffect effect = currentOptions.get(i);
-            // 繪製顏色區塊
-            context.fill(buttonX, buttonY + i*40,
-                    buttonX + 20, buttonY + i*40 + BUTTON_HEIGHT,
-                    effect.color | 0xFF000000);
-            // 繪製懸停提示
-            if(optionButtons[i].isMouseOver(mouseX, mouseY)){
-                context.drawTooltip(textRenderer,
-                        List.of(
-                                Text.literal(effect.name).formatted(Formatting.GREEN),
-                                Text.literal(effect.description).formatted(Formatting.GRAY)
-                        ),
-                        mouseX, mouseY
+        // 繪製三個按鈕的視覺元素
+        int buttonX = x + 5;
+        int buttonY = y + 20;
+        for(int i=0; i<3; i++){
+            // 按鈕背景
+            context.fill(
+                    buttonX, buttonY + i*40,
+                    buttonX + BUTTON_WIDTH, buttonY + i*40 + 30,
+                    0xFF404040 // 深灰色背景
+            );
+
+            if(i < currentOptions.size()) {
+                UpgradeEffect effect = currentOptions.get(i);
+                // 顏色方塊
+                context.fill(
+                        buttonX + 5,
+                        buttonY + i * 40 + 5,
+                        buttonX + 25,
+                        buttonY + i * 40 + 25,
+                        effect.color | 0xFF000000
                 );
+
+                // 文字渲染
+                context.drawText(
+                        textRenderer,
+                        effect.name,
+                        buttonX + 30, // 顏色方塊右側
+                        buttonY + i * 40 + 8, // 垂直居中
+                        0xFFFFFF,
+                        false
+                );
+                // 繪製懸停提示
+                if (optionButtons[i].isMouseOver(mouseX, mouseY)) {
+                    context.drawTooltip(textRenderer,
+                            List.of(
+                                    Text.literal(effect.name).formatted(Formatting.GREEN),
+                                    Text.literal(effect.description).formatted(Formatting.GRAY)
+                            ),
+                            mouseX, mouseY
+                    );
+                }
             }
         }
+    }
+
+    private void renderRefreshButton(DrawContext context, int x, int y, int sectionWidth, int mouseX, int mouseY) {
+        // 刷新按鈕渲染修正
+        context.drawText(
+                textRenderer,
+                "抽取升級",
+                refreshButton.getX() + 20, // 文字居中
+                refreshButton.getY() + 5,
+                0xFFFFFF,
+                false
+        );
+        context.drawBorder(
+                refreshButton.getX(),
+                refreshButton.getY(),
+                refreshButton.getWidth(),
+                refreshButton.getHeight(),
+                0xFF606060
+        );
     }
 
     private boolean isMouseOver(int mouseX, int mouseY, int x, int y, int width, int height) {
@@ -231,7 +299,7 @@ public class RoguelikeMCScreen extends Screen {
             this.name = name;
             this.description = description;
             this.color = color;
-            this.isPermanent = false;
+            this.isPermanent = isPermanent;
         }
     }
 }
