@@ -1,7 +1,9 @@
 package snowball049.roguelikemc.config;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import com.moandjiezana.toml.Toml;
 
 import java.io.File;
@@ -9,152 +11,148 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.file.Path;
 
 import net.fabricmc.loader.api.FabricLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import snowball049.roguelikemc.RoguelikeMC;
 
 public class RoguelikeMCConfig {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RoguelikeMCConfig.class);
+    // Config file path
+    public static final Path UPGRADE_CONFIG_PATH = FabricLoader.getInstance()
+            .getConfigDir().resolve(RoguelikeMC.MOD_ID+"/"+RoguelikeMC.MOD_ID+"-upgrade.json");
+    public static RoguelikeMCConfig INSTANCE = new RoguelikeMCConfig();
 
-    public static class UpgradeAction {
-        public String type;
-        public List<String> value;
+
+    // Upgrade Config Model
+    public RogueLikeMCUpgradesConfig upgradesConfig = new RogueLikeMCUpgradesConfig();
+
+    public static class RogueLikeMCUpgradesConfig {
+        public List<RogueLikeMCUpgradeConfig> upgrades = new ArrayList<>();
     }
 
-    public static class UpgradeOption {
-        public String name;
-        public String description;
-        public List<UpgradeAction> action;
+    public record RogueLikeMCUpgradeConfig(
+        String id,
+        String name,
+        String description,
+        boolean is_permanent,
+        String icon,
+        String tier,
+        List<UpgradeAction> action) {
+    }
+    public record UpgradeAction(String type, List<String> value) {
     }
 
-    public static class UpgradeConfig {
-        public List<UpgradeOption> commonUpgrade;
-        public List<UpgradeOption> rareUpgrade;
-        public List<UpgradeOption> legendaryUpgrade;
-    }
-
-    private static final String CONFIG_PATH = FabricLoader.getInstance()
-            .getConfigDir().resolve("roguelikemc/roguelikemc-common.toml").toString();
-
-    public static UpgradeConfig loadConfig() {
-        File configFile = new File(CONFIG_PATH);
-        if (!configFile.exists()) {
-            LOGGER.warn("Config file not found: {}. Generating default config...", CONFIG_PATH);
-            generateDefaultConfig();
-        }
-
-        Toml toml = new Toml();
-        try (FileReader reader = new FileReader(configFile)) {
-            toml.read(reader);
-            UpgradeConfig config = new UpgradeConfig();
-            config.commonUpgrade = parseUpgradeOptions(toml.getList("roguelikemc_upgrade.commonUpgrade", new ArrayList<>()));
-            config.rareUpgrade = parseUpgradeOptions(toml.getList("roguelikemc_upgrade.rareUpgrade", new ArrayList<>()));
-            config.legendaryUpgrade = parseUpgradeOptions(toml.getList("roguelikemc_upgrade.legendaryUpgrade", new ArrayList<>()));
-            return config;
-        } catch (IOException e) {
-            LOGGER.error("Failed to load config: ", e);
-            return null;
-        }
-    }
-
-    public static void generateDefaultConfig() {
-        String defaultConfig = """
-                [roguelikemc_upgrade]
-                   # Upgrade options for different tier
-                   # You can add more options by adding more JSON strings like below format
-                   # Type has three options: "attribute", "effect", "command", "event"
-                   # More detail can be found in the README
-                  \s
-                   commonUpgrade = [
-                       '''
-                       {
-                           "name": "+1 Health",
-                           "description": "Add 1 Health",
-                           "action": [
-                               {
-                                   "type": "attribute",
-                                   "value": ["minecraft:generic.max_health", "1", "add_value"]
-                               }
-                           ]
-                       }
-                       ''',
-                       '''
-                       {
-                           "name": "+1 Attack",
-                           "description": "Add 1 Attack",
-                           "action": [
-                               {
-                                   "type": "attribute",
-                                   "value": ["minecraft:generic.attack_damage", "1", "add_value"]
-                               }
-                           ]
-                       }
-                       ''',
-                       '''
-                       {
-                           "name": "+10% Speed",
-                           "description": "Add 10% Speed",
-                           "action": [
-                               {
-                                   "type": "attribute",
-                                   "value": ["minecraft:generic.movement_speed", "0.1", "add_multiplied_total"]
-                               }
-                           ]
-                       }
-                       '''
-                   ]
-                  \s
-                   rareUpgrade = [
-                       '''
-                       {
-                           "name": "Dragon Skin",
-                           "description": "Get resistant I but minus 1 Heart",
-                           "action": [
-                               {
-                                   "type": "attribute",
-                                   "value": ["minecraft:generic.max_health", "-2", "add_value"]
-                               },
-                               {
-                                   "type": "effect",
-                                   "value": ["minecraft:resistance", "999999", "0"]
-                               }
-                           ]
-                       }
-                       '''
-                   ]
-                  \s
-                   legendaryUpgrade = []
-            """;
-
-        try {
-            Files.createDirectories(Paths.get("config/roguelikemc"));
-            try (FileWriter writer = new FileWriter(CONFIG_PATH)) {
-                writer.write(defaultConfig);
-                LOGGER.info("Default config generated at: {}", CONFIG_PATH);
+    public static void loadConfig() {
+        Gson gson = new GsonBuilder().setLenient().setPrettyPrinting().create();
+        File file = UPGRADE_CONFIG_PATH.toFile();
+        if (file.exists()) {
+            try(FileReader fileReader = new FileReader(file)) {
+                try(JsonReader reader = new JsonReader(fileReader)){
+                    INSTANCE = gson.fromJson(reader, RoguelikeMCConfig.class);
+                    writeConfig(gson, file, INSTANCE);
+                }
+            }catch(IOException e){
+                RoguelikeMC.LOGGER.error("Failed to load config: ", e);
             }
-        } catch (IOException e) {
-            LOGGER.error("Failed to generate default config: ", e);
+        }else{
+            writeConfig(gson, file, INSTANCE);
         }
     }
 
-    public static List<UpgradeOption> parseUpgradeOptions(List<String> jsonStrings) {
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<UpgradeOption>>() {}.getType();
-        List<UpgradeOption> upgrades = new ArrayList<>();
-        for (String json : jsonStrings) {
-            try {
-                UpgradeOption option = gson.fromJson(json, UpgradeOption.class);
-                upgrades.add(option);
-            } catch (Exception e) {
-                LOGGER.warn("Failed to parse upgrade option: {}", json, e);
-            }
+    public static void writeConfig(Gson gson, File file, RoguelikeMCConfig config){
+        try(FileWriter writer = new FileWriter(file)) {
+            final RogueLikeMCUpgradeConfig health_1 = new RogueLikeMCUpgradeConfig(
+                    "health_1",
+                    "+1 Health",
+                    "Add 1 Health",
+                    true,
+                    "minecraft:apple",
+                    "common",
+                    List.of(
+                            new UpgradeAction("attribute", List.of("minecraft:generic.max_health", "1", "add_value"))
+                    )
+            );
+            final RogueLikeMCUpgradeConfig attack_1 = new RogueLikeMCUpgradeConfig(
+                    "attack_1",
+                    "+1 Attack",
+                    "Add 1 Attack",
+                    true,
+                    "minecraft:sword",
+                    "common",
+                    List.of(
+                            new UpgradeAction("attribute", List.of("minecraft:generic.attack_damage", "1", "add_value"))
+                    )
+            );
+            final RogueLikeMCUpgradeConfig speed_10 = new RogueLikeMCUpgradeConfig(
+                    "speed_10",
+                    "+10% Speed",
+                    "Add 10% Speed",
+                    true,
+                    "minecraft:feather",
+                    "common",
+                    List.of(
+                            new UpgradeAction("attribute", List.of("minecraft:generic.movement_speed", "0.1", "add_multiplied_total"))
+                    )
+            );
+            final RogueLikeMCUpgradeConfig dragon_skin = new RogueLikeMCUpgradeConfig(
+                    "dragon_skin",
+                    "Dragon Skin",
+                    "Get resistant I but minus 1 Heart",
+                    true,
+                    "minecraft:dragon_head",
+                    "rare",
+                    List.of(
+                            new UpgradeAction("attribute", List.of("minecraft:generic.max_health", "-2", "add_value")),
+                            new UpgradeAction("effect", List.of("minecraft:resistance", "999999", "0"))
+                    )
+            );
+            final RogueLikeMCUpgradeConfig health_2 = new RogueLikeMCUpgradeConfig(
+                    "health_2",
+                    "+2 Health",
+                    "Add 2 Health",
+                    true,
+                    "minecraft:golden_apple",
+                    "rare",
+                    List.of(
+                            new UpgradeAction("attribute", List.of("minecraft:generic.max_health", "2", "add_value"))
+                    )
+            );
+            final RogueLikeMCUpgradeConfig attack_2 = new RogueLikeMCUpgradeConfig(
+                    "attack_2",
+                    "+2 Attack",
+                    "Add 2 Attack",
+                    true,
+                    "minecraft:diamond_sword",
+                    "rare",
+                    List.of(
+                            new UpgradeAction("attribute", List.of("minecraft:generic.attack_damage", "2", "add_value"))
+                    )
+            );
+            final RogueLikeMCUpgradeConfig speed_20 = new RogueLikeMCUpgradeConfig(
+                    "speed_20",
+                    "+20% Speed",
+                    "Add 20% Speed",
+                    true,
+                    "minecraft:elytra",
+                    "rare",
+                    List.of(
+                            new UpgradeAction("attribute", List.of("minecraft:generic.movement_speed", "0.2", "add_multiplied_total"))
+                    )
+            );
+            config.upgradesConfig.upgrades.add(health_1);
+            config.upgradesConfig.upgrades.add(attack_1);
+            config.upgradesConfig.upgrades.add(speed_10);
+            config.upgradesConfig.upgrades.add(dragon_skin);
+            config.upgradesConfig.upgrades.add(health_2);
+            config.upgradesConfig.upgrades.add(attack_2);
+            config.upgradesConfig.upgrades.add(speed_20);
+
+            gson.toJson(config, writer);
+        } catch (IOException e) {
+            RoguelikeMC.LOGGER.error("Failed to write config: ", e);
         }
-        return upgrades;
     }
 }

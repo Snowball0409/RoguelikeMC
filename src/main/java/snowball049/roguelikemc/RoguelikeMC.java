@@ -17,16 +17,19 @@ public class RoguelikeMC implements ModInitializer {
 	public void onInitialize() {
 		// Init Config Support
 		RoguelikeMCConfig.loadConfig();
+		RoguelikeMCConfig config = RoguelikeMCConfig.INSTANCE;
+
+		// Init Network Handler
 
 		// Command Handler
-		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-			dispatcher.register(CommandManager.literal("upgrade")
-					.then(CommandManager.argument("tier", StringArgumentType.string())
-							.suggests(RoguelikeMCCommands::suggestUpgrades)
-							.executes(RoguelikeMCCommands::executeCommandUpgrade)
-					)
-			);
-		});
+//		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+//			dispatcher.register(CommandManager.literal("upgrade")
+//					.then(CommandManager.argument("tier", StringArgumentType.string())
+//							.suggests(RoguelikeMCCommands::suggestUpgrades)
+//							.executes(RoguelikeMCCommands::executeCommandUpgrade)
+//					)
+//			);
+//		});
 
 		LOGGER.info("RoguelikeMC Initialized");
 	}

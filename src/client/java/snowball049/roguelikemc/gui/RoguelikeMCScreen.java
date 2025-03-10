@@ -13,7 +13,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import snowball049.roguelikemc.network.RoguelikeMCNetworkHandler;
+import snowball049.roguelikemc.network.RoguelikeMCUpgradePacket;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,10 +71,7 @@ public class RoguelikeMCScreen extends Screen {
 
         // 右側按鈕起始位置（基於GUI右側區域）
         int rightPanelX = guiLeft + 2 * SECTION_WIDTH + 3 * SECTION_SPACING + BUTTON_PADDING; // 右側欄位內偏移
-        int rightPanelY = guiTop + CONTENT_PADDING + BUTTON_PADDING; // 從GUI頂部向下偏移
-
-        // NetworkHandler
-        RoguelikeMCNetworkHandler networkHandler = new RoguelikeMCNetworkHandler();
+        int rightPanelY = guiTop + CONTENT_PADDING*2; // 從GUI頂部向下偏移
 
         for(int i=0; i<3; i++) {
             final int index = i;
@@ -82,7 +79,7 @@ public class RoguelikeMCScreen extends Screen {
                         if (currentOptions.size() > index) {
                             UpgradeEffect selected = currentOptions.get(index);
                             // 發送數據包到服務器
-                            boolean correct = networkHandler.sendUpgradeToServer(selected);
+                            boolean correct = RoguelikeMCUpgradePacket.sendUpgradeToServer(selected);
                             // 清空選項
                             currentOptions.clear();
                             refreshOptionsDisplay();
@@ -109,7 +106,7 @@ public class RoguelikeMCScreen extends Screen {
                     for (int i = 0; i < 3 && i < pool.size(); i++) {
                         currentOptions.add(pool.get(i));
                     }
-                    refreshOptionsDisplay();
+                    //refreshOptionsDisplay();
                 })
                 .dimensions(
                         guiLeft + GUI_WIDTH / 2 - 50, // GUI水平居中
@@ -128,6 +125,7 @@ public class RoguelikeMCScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
 
         // 繪製自適應背景
         int guiLeft = (int)((width - GUI_WIDTH ) / 2);
@@ -276,13 +274,13 @@ public class RoguelikeMCScreen extends Screen {
                 refreshButton.getY() + refreshButton.getHeight(),
                 0xFF606060
         );
-        context.drawCenteredTextWithShadow(
-                textRenderer,
-                "Draw Upgrades",
-                refreshButton.getX() + BUTTON_WIDTH/2, // 文字居中
-                refreshButton.getY() + BUTTON_PADDING,
-                0xFFFFFF
-        );
+//        context.drawCenteredTextWithShadow(
+//                textRenderer,
+//                "Draw Upgrades",
+//                refreshButton.getX() + BUTTON_WIDTH/2, // 文字居中
+//                refreshButton.getY() + BUTTON_PADDING,
+//                0xFFFFFF
+//        );
     }
 
     private boolean isMouseOver(int mouseX, int mouseY, int x, int y, int width, int height) {
