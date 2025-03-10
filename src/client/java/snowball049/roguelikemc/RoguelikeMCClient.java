@@ -3,17 +3,19 @@ package snowball049.roguelikemc;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import snowball049.roguelikemc.config.RoguelikeMCConfig;
 import snowball049.roguelikemc.gui.RoguelikeMCScreen;
+import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
+import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
 
 public class RoguelikeMCClient implements ClientModInitializer {
 	private static KeyBinding openGuiKey;
-	public static final String MOD_ID = "roguelikemc";
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	private static final RoguelikeMCScreen currentScreen = new RoguelikeMCScreen();
 
 	@Override
 	public void onInitializeClient() {
@@ -27,8 +29,14 @@ public class RoguelikeMCClient implements ClientModInitializer {
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (openGuiKey.wasPressed()) {
-				client.setScreen(new RoguelikeMCScreen());
+				client.setScreen(currentScreen);
 			}
+		});
+
+		// Netowrk Packet
+		ClientPlayNetworking.registerGlobalReceiver(UpgradeOptionS2CPayload.ID, (payload, context) -> {
+			RoguelikeMCConfig.RogueLikeMCUpgradeConfig upgrade = payload.upgrades();
+			currentScreen.currentOptions.add(upgrade);
 		});
 	}
 }
