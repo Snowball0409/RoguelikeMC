@@ -107,7 +107,7 @@ public class RoguelikeMCConfig {
                 "attack_1",
                 "+1 Attack",
                 "Add 1 Attack",
-                true,
+                false,
                 "minecraft:textures/mob_effect/strength.png",
                 "common",
                 List.of(
@@ -129,7 +129,7 @@ public class RoguelikeMCConfig {
                 "dragon_skin",
                 "Dragon Skin",
                 "Get resistant I but minus 1 Heart",
-                true,
+                false,
                 "minecraft:textures/item/dragon_breath.png",
                 "rare",
                 List.of(

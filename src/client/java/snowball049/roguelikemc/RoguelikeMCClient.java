@@ -11,6 +11,7 @@ import org.lwjgl.glfw.GLFW;
 import snowball049.roguelikemc.config.RoguelikeMCConfig;
 import snowball049.roguelikemc.gui.RoguelikeMCScreen;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
+import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
 
 public class RoguelikeMCClient implements ClientModInitializer {
@@ -34,8 +35,9 @@ public class RoguelikeMCClient implements ClientModInitializer {
 		});
 
 		// Netowrk Packet
+		// Refresh Upgrade Options
 		ClientPlayNetworking.registerGlobalReceiver(UpgradeOptionS2CPayload.ID, (payload, context) -> {
-			RoguelikeMCConfig.RogueLikeMCUpgradeConfig upgrade = payload.upgrades();
+			RoguelikeMCConfig.RogueLikeMCUpgradeConfig upgrade = payload.upgrade();
 			currentScreen.currentOptions.add(upgrade);
 		});
 	}

@@ -15,6 +15,7 @@ import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.config.RoguelikeMCConfig;
 import snowball049.roguelikemc.network.SendPacketToServer;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
+import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
 
 import java.util.ArrayList;
@@ -80,8 +81,7 @@ public class RoguelikeMCScreen extends Screen {
                         if (currentOptions.size() > index) {
                             RoguelikeMCConfig.RogueLikeMCUpgradeConfig selected = currentOptions.get(index);
                             // 發送數據包到服務器
-                            // boolean correct = RoguelikeMCUpgradePacket.sendUpgradeToServer(selected);
-                            // 清空選項
+                            SendPacketToServer.send(new SelectUpgradeOptionC2SPayload(selected));
                             currentOptions.clear();
                             refreshOptionsDisplay();
                             refreshUpgradeDisplay(selected);
@@ -99,13 +99,6 @@ public class RoguelikeMCScreen extends Screen {
         }
 
         refreshButton = ButtonWidget.builder(Text.literal("Draw Upgrades"), button -> {
-//                    currentOptions.clear();
-//                    List<RoguelikeMCConfig.RogueLikeMCUpgradeConfig> pool = new ArrayList<>(UPGRADE_POOL);
-//                    Collections.shuffle(pool);
-//                    for (int i = 0; i < 3 && i < pool.size(); i++) {
-//                        currentOptions.add(pool.get(i));
-//                    }
-//                    refreshOptionsDisplay();
                     currentOptions.clear();
                     SendPacketToServer.send(new RefreshUpgradeOptionC2SPayload());
                     refreshOptionsDisplay();
