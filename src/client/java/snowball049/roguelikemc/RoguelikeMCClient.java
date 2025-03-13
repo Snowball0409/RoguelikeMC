@@ -4,14 +4,14 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
+import snowball049.roguelikemc.accessor.PlayerEntityAccessor;
 import snowball049.roguelikemc.config.RoguelikeMCConfig;
 import snowball049.roguelikemc.gui.RoguelikeMCScreen;
-import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
-import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
+import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
 
 public class RoguelikeMCClient implements ClientModInitializer {
@@ -39,6 +39,19 @@ public class RoguelikeMCClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(UpgradeOptionS2CPayload.ID, (payload, context) -> {
 			RoguelikeMCConfig.RogueLikeMCUpgradeConfig upgrade = payload.upgrade();
 			currentScreen.currentOptions.add(upgrade);
+		});
+		// Refresh Current Upgrades
+		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentUpgradeS2CPayload.ID, (payload, context) -> {
+			if(MinecraftClient.getInstance().player instanceof PlayerEntityAccessor accessor) {
+				if(payload.upgrades().isEmpty() || !payload.upgrades().getFirst().is_permanent()){
+					RoguelikeMC.LOGGER.info("Temporary Upgrades: " + payload.upgrades());
+					accessor.setTemporaryUpgrades(payload.upgrades());
+				}else{
+					RoguelikeMC.LOGGER.info("Permanent Upgrades: " + payload.upgrades());
+					accessor.setPermanentUpgrades(payload.upgrades());
+				}
+				currentScreen.refreshUpgradeDisplay();
+			}
 		});
 	}
 }

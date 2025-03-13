@@ -12,6 +12,8 @@ import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import snowball049.roguelikemc.RoguelikeMC;
+import snowball049.roguelikemc.accessor.PlayerEntityAccessor;
 import snowball049.roguelikemc.config.RoguelikeMCConfig;
 import snowball049.roguelikemc.network.SendPacketToServer;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
@@ -25,16 +27,8 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class RoguelikeMCScreen extends Screen {
 
-    // 模擬靜態數據
-//    private static final List<UpgradeEffect> UPGRADE_POOL = Arrays.asList(
-//            new UpgradeEffect("+10% Speed", "暫時提升移動速度", 0x00FF00, false),
-//            new UpgradeEffect("Attack Boost", "暫時增加攻擊力", 0xFF0000, false),
-//            new UpgradeEffect("Health Up", "永久增加最大生命值", 0xFFA500, true),
-//            new UpgradeEffect("Armor Reinforce", "永久提升護甲值", 0x0000FF, true),
-//            new UpgradeEffect("Luck", "永久提升幸運值", 0x800080, true)
-//    );
-    private final List<RoguelikeMCConfig.RogueLikeMCUpgradeConfig> TEMPORARY_EFFECTS = new ArrayList<>();
-    private final List<RoguelikeMCConfig.RogueLikeMCUpgradeConfig> PERMANENT_EFFECTS = new ArrayList<>();
+    private List<RoguelikeMCConfig.RogueLikeMCUpgradeConfig> TEMPORARY_EFFECTS = new ArrayList<>();
+    private List<RoguelikeMCConfig.RogueLikeMCUpgradeConfig> PERMANENT_EFFECTS = new ArrayList<>();
     public final List<RoguelikeMCConfig.RogueLikeMCUpgradeConfig> currentOptions = new ArrayList<>(3);
 
     // 自定義 GUI 背景圖
@@ -80,11 +74,10 @@ public class RoguelikeMCScreen extends Screen {
             optionButtons[i] = ButtonWidget.builder(Text.empty(), button -> {
                         if (currentOptions.size() > index) {
                             RoguelikeMCConfig.RogueLikeMCUpgradeConfig selected = currentOptions.get(index);
-                            // 發送數據包到服務器
                             SendPacketToServer.send(new SelectUpgradeOptionC2SPayload(selected));
                             currentOptions.clear();
                             refreshOptionsDisplay();
-                            refreshUpgradeDisplay(selected);
+                            refreshUpgradeDisplay();
                         }
                     })
                     // 調整按鈕位置計算
@@ -157,11 +150,12 @@ public class RoguelikeMCScreen extends Screen {
         }
     }
 
-    private void refreshUpgradeDisplay(RoguelikeMCConfig.RogueLikeMCUpgradeConfig effect){
-        if(effect.is_permanent()){
-            PERMANENT_EFFECTS.add(effect);
-        }else{
-            TEMPORARY_EFFECTS.add(effect);
+    public void refreshUpgradeDisplay(){
+        if(this.client != null){
+            if(this.client.player instanceof PlayerEntityAccessor accessor){
+                PERMANENT_EFFECTS = accessor.getPermanentUpgrades();
+                TEMPORARY_EFFECTS = accessor.getTemporaryUpgrades();
+            }
         }
     }
 

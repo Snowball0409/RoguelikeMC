@@ -2,8 +2,10 @@ package snowball049.roguelikemc.network.handler;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import snowball049.roguelikemc.accessor.PlayerEntityAccessor;
 import snowball049.roguelikemc.config.RoguelikeMCConfig;
+import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
 import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
 
 public class SelectUpgradeOptionHandler {
@@ -21,6 +23,9 @@ public class SelectUpgradeOptionHandler {
             }else{
                 accessor.addTemporaryUpgrades(selected);
             }
+
+            ServerPlayNetworking.send((ServerPlayerEntity) player, new RefreshCurrentUpgradeS2CPayload(accessor.getPermanentUpgrades()));
+            ServerPlayNetworking.send((ServerPlayerEntity) player, new RefreshCurrentUpgradeS2CPayload(accessor.getTemporaryUpgrades()));
         }
     }
 }

@@ -20,13 +20,13 @@ public class RoguelikeMCUpgradeUtil {
     public static void applyUpgrade(ServerPlayerEntity player, RoguelikeMCConfig.RogueLikeMCUpgradeConfig upgrades) {
         upgrades.action().forEach(action -> {
             if (action.type().equals("attribute")) {
-                RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, action.value());
+                RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, action.value(), upgrades.is_permanent());
             } else if (action.type().equals("effect")) {
-                RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value());
+                RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), upgrades.is_permanent());
             }
         });
     }
-    public static void addUpgradeAttribute(ServerPlayerEntity player, List<String> value) {
+    public static void addUpgradeAttribute(ServerPlayerEntity player, List<String> value, boolean isPermanent) {
         RoguelikeMC.LOGGER.info("value: "+value);
         Identifier attributeIdentifier = Identifier.tryParse(value.getFirst());
         RegistryEntry.Reference<EntityAttribute> attributeEntry = Registries.ATTRIBUTE.getEntry(attributeIdentifier)
@@ -38,7 +38,12 @@ public class RoguelikeMCUpgradeUtil {
             case "add_multiplied_total" -> EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
             default -> throw new IllegalStateException("Unexpected value: " + value.get(2));
         };
-        EntityAttributeModifier attributeModifier = new EntityAttributeModifier(Identifier.of(RoguelikeMC.MOD_ID + ":tmp/" + UUID.randomUUID()), amount, operation);
+        EntityAttributeModifier attributeModifier;
+        if (isPermanent) {
+            attributeModifier = new EntityAttributeModifier(Identifier.of(RoguelikeMC.MOD_ID + ":tmp/" + UUID.randomUUID()), amount, operation);
+        }else{
+            attributeModifier = new EntityAttributeModifier(Identifier.of(RoguelikeMC.MOD_ID + ":" + UUID.randomUUID()), amount, operation);
+        }
 
         Multimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier> modifiers = HashMultimap.create();
         modifiers.put(attributeEntry, attributeModifier);
@@ -56,7 +61,7 @@ public class RoguelikeMCUpgradeUtil {
             }
         }
     }
-    public static void applyUpgradeEffect(ServerPlayerEntity player, List<String> value) {
+    public static void applyUpgradeEffect(ServerPlayerEntity player, List<String> value, boolean isPermanent) {
         Identifier effectIdentifier = Identifier.tryParse(value.getFirst());
         RegistryEntry.Reference<StatusEffect> effectEntry = Registries.STATUS_EFFECT.getEntry(effectIdentifier)
                 .orElseThrow(()->new IllegalStateException("Effect not found: "+effectIdentifier));

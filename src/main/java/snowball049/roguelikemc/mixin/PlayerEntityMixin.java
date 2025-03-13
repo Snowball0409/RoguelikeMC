@@ -1,5 +1,6 @@
 package snowball049.roguelikemc.mixin;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -10,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import snowball049.roguelikemc.config.RoguelikeMCConfig;
+import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
 import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 import snowball049.roguelikemc.accessor.PlayerEntityAccessor;
 
@@ -52,18 +54,30 @@ public abstract class PlayerEntityMixin implements PlayerEntityAccessor {
         return this.permanentUpgrades;
     }
 
-    @Inject(method = "onDeath", at = @At("HEAD"))
-    private void onDeathInjectHead(DamageSource damageSource, CallbackInfo ci) {
-        if(((PlayerEntity) (Object) this) instanceof ServerPlayerEntity player) {
-            this.temporaryUpgrades.forEach(upgrade -> {
-                upgrade.action().forEach(action -> {
-                    if (action.type().equals("attribute")) {
-                        RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player , action.value());
-                    }
-                });
-            });
-        }
-
+    @Unique
+    public void setTemporaryUpgrades(List<RoguelikeMCConfig.RogueLikeMCUpgradeConfig> upgrades) {
         this.temporaryUpgrades.clear();
+        this.temporaryUpgrades.addAll(upgrades);
     }
+
+    @Unique
+    public void setPermanentUpgrades(List<RoguelikeMCConfig.RogueLikeMCUpgradeConfig> upgrades) {
+        this.permanentUpgrades.clear();
+        this.permanentUpgrades.addAll(upgrades);
+    }
+
+//    @Inject(method = "onDeath", at = @At("HEAD"))
+//    private void onDeathInjectHead(DamageSource damageSource, CallbackInfo ci) {
+//        if(((PlayerEntity) (Object) this) instanceof ServerPlayerEntity player) {
+//            this.temporaryUpgrades.forEach(upgrade -> {
+//                upgrade.action().forEach(action -> {
+//                    if (action.type().equals("attribute")) {
+//                        RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player , action.value());
+//                    }
+//                });
+//            });
+//        }
+//
+//        this.temporaryUpgrades.clear();
+//    }
 }
