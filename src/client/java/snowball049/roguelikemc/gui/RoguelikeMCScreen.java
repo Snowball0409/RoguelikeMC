@@ -77,7 +77,6 @@ public class RoguelikeMCScreen extends Screen {
                             SendPacketToServer.send(new SelectUpgradeOptionC2SPayload(selected));
                             currentOptions.clear();
                             refreshOptionsDisplay();
-                            refreshUpgradeDisplay();
                         }
                     })
                     // 調整按鈕位置計算
@@ -150,11 +149,17 @@ public class RoguelikeMCScreen extends Screen {
         }
     }
 
-    public void refreshUpgradeDisplay(){
+    public void refreshUpgradeDisplay(List<RoguelikeMCConfig.RogueLikeMCUpgradeConfig> upgrades){
         if(this.client != null){
-            if(this.client.player instanceof PlayerEntityAccessor accessor){
-                PERMANENT_EFFECTS = accessor.getPermanentUpgrades();
-                TEMPORARY_EFFECTS = accessor.getTemporaryUpgrades();
+//            if(this.client.player instanceof PlayerEntityAccessor accessor){
+//                PERMANENT_EFFECTS = accessor.getPermanentUpgrades();
+//                TEMPORARY_EFFECTS = accessor.getTemporaryUpgrades();
+//            }
+            if(upgrades.isEmpty() || !upgrades.getFirst().is_permanent()){
+                TEMPORARY_EFFECTS = upgrades;
+            }
+            else{
+                PERMANENT_EFFECTS = upgrades;
             }
         }
     }

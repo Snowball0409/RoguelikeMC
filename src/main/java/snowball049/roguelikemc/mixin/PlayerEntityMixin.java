@@ -3,6 +3,8 @@ package snowball049.roguelikemc.mixin;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
@@ -66,18 +68,4 @@ public abstract class PlayerEntityMixin implements PlayerEntityAccessor {
         this.permanentUpgrades.addAll(upgrades);
     }
 
-//    @Inject(method = "onDeath", at = @At("HEAD"))
-//    private void onDeathInjectHead(DamageSource damageSource, CallbackInfo ci) {
-//        if(((PlayerEntity) (Object) this) instanceof ServerPlayerEntity player) {
-//            this.temporaryUpgrades.forEach(upgrade -> {
-//                upgrade.action().forEach(action -> {
-//                    if (action.type().equals("attribute")) {
-//                        RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player , action.value());
-//                    }
-//                });
-//            });
-//        }
-//
-//        this.temporaryUpgrades.clear();
-//    }
 }

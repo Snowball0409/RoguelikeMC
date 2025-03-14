@@ -1,12 +1,17 @@
 package snowball049.roguelikemc;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import snowball049.roguelikemc.config.RoguelikeMCConfig;
+import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.network.handler.RefreshUpgradeOptionHandler;
 import snowball049.roguelikemc.network.handler.SelectUpgradeOptionHandler;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
@@ -49,6 +54,30 @@ public class RoguelikeMC implements ModInitializer {
 //				server.getPlayerManager().getPlayerList().forEach(RoguelikeMCUpgradeUtil::applyUpgrade);
 //			}
 //		});
+		ServerPlayConnectionEvents.JOIN.register((serverPlayNetworkHandler, packetSender, minecraftServer) ->{
+			ServerPlayerEntity player = serverPlayNetworkHandler.getPlayer();
+			RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+			LOGGER.info("Player data loaded: {}", playerData);
+			ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(playerData.permanentUpgrades));
+			ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(playerData.temporaryUpgrades));
+			playerData.permanentUpgrades.forEach(upgrade -> {
+				RoguelikeMCUpgradeUtil.applyUpgrade(player, upgrade);
+			});
+			playerData.temporaryUpgrades.forEach(upgrade -> {
+				RoguelikeMCUpgradeUtil.applyUpgrade(player, upgrade);
+			});
+		});
+
+		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
+			RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(oldPlayer);
+
+			playerData.temporaryUpgrades.clear();
+			playerData.permanentUpgrades.forEach(upgrade -> {
+				RoguelikeMCUpgradeUtil.applyUpgrade(newPlayer, upgrade);
+			});
+			ServerPlayNetworking.send(newPlayer, new RefreshCurrentUpgradeS2CPayload(playerData.permanentUpgrades));
+			ServerPlayNetworking.send(newPlayer, new RefreshCurrentUpgradeS2CPayload(playerData.temporaryUpgrades));
+		});
 
 		// Command Handler
 //		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {

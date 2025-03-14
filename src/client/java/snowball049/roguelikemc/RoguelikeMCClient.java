@@ -42,16 +42,17 @@ public class RoguelikeMCClient implements ClientModInitializer {
 		});
 		// Refresh Current Upgrades
 		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentUpgradeS2CPayload.ID, (payload, context) -> {
-			if(MinecraftClient.getInstance().player instanceof PlayerEntityAccessor accessor) {
-				if(payload.upgrades().isEmpty() || !payload.upgrades().getFirst().is_permanent()){
-					RoguelikeMC.LOGGER.info("Temporary Upgrades: " + payload.upgrades());
-					accessor.setTemporaryUpgrades(payload.upgrades());
-				}else{
-					RoguelikeMC.LOGGER.info("Permanent Upgrades: " + payload.upgrades());
-					accessor.setPermanentUpgrades(payload.upgrades());
-				}
-				currentScreen.refreshUpgradeDisplay();
-			}
+//			if(MinecraftClient.getInstance().player instanceof PlayerEntityAccessor accessor) {
+//				if(payload.upgrades().isEmpty() || !payload.upgrades().getFirst().is_permanent()){
+//					RoguelikeMC.LOGGER.info("Temporary Upgrades: " + payload.upgrades());
+//					accessor.setTemporaryUpgrades(payload.upgrades());
+//				}else{
+//					RoguelikeMC.LOGGER.info("Permanent Upgrades: " + payload.upgrades());
+//					accessor.setPermanentUpgrades(payload.upgrades());
+//				}
+//				currentScreen.refreshUpgradeDisplay();
+//			}
+			currentScreen.refreshUpgradeDisplay(payload.upgrades());
 		});
 	}
 }
