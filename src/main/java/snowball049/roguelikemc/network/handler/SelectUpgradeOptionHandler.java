@@ -1,11 +1,9 @@
 package snowball049.roguelikemc.network.handler;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
-import snowball049.roguelikemc.accessor.PlayerEntityAccessor;
-import snowball049.roguelikemc.config.RoguelikeMCConfig;
+import snowball049.roguelikemc.config.RoguelikeMCUpgradesConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
 import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
@@ -17,7 +15,7 @@ public class SelectUpgradeOptionHandler {
             return;
         }
 
-        RoguelikeMCConfig.RogueLikeMCUpgradeConfig selected = packet.option();
+        RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig selected = packet.option();
         ServerPlayerEntity player = context.player();
         RoguelikeMCPlayerData serverState = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
 

@@ -2,15 +2,13 @@ package snowball049.roguelikemc;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import snowball049.roguelikemc.config.RoguelikeMCConfig;
+import snowball049.roguelikemc.config.RoguelikeMCUpgradesConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.network.handler.RefreshUpgradeOptionHandler;
 import snowball049.roguelikemc.network.handler.SelectUpgradeOptionHandler;
@@ -20,12 +18,6 @@ import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
 import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import static snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil.*;
-
 public class RoguelikeMC implements ModInitializer {
 	public static final String MOD_ID = "roguelikemc";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
@@ -33,8 +25,8 @@ public class RoguelikeMC implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		// Init Config Support
-		RoguelikeMCConfig.loadConfig();
-		RoguelikeMCConfig config = RoguelikeMCConfig.INSTANCE;
+		RoguelikeMCUpgradesConfig.loadConfig();
+		RoguelikeMCUpgradesConfig config = RoguelikeMCUpgradesConfig.INSTANCE;
 
 		// Handle Network Packet
 		PayloadTypeRegistry.playC2S().register(RefreshUpgradeOptionC2SPayload.ID, RefreshUpgradeOptionC2SPayload.CODEC);

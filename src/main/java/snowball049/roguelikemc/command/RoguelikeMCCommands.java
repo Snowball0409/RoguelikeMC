@@ -1,23 +1,5 @@
 package snowball049.roguelikemc.command;
 
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import snowball049.roguelikemc.config.RoguelikeMCConfig;
-
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-
-import static snowball049.roguelikemc.RoguelikeMC.MOD_ID;
-import static snowball049.roguelikemc.RoguelikeMC.LOGGER;
-
 public class RoguelikeMCCommands {
 //    private static final String[] LEVEL = {"common", "rare", "epic", "legendary", "fate"};
 //

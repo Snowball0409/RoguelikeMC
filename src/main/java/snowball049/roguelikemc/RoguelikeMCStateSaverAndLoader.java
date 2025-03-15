@@ -10,7 +10,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
-import snowball049.roguelikemc.config.RoguelikeMCConfig;
+import snowball049.roguelikemc.config.RoguelikeMCUpgradesConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 
 import java.util.*;
@@ -30,8 +30,8 @@ public class RoguelikeMCStateSaverAndLoader extends PersistentState {
         NbtCompound playersNbt = new NbtCompound();
         players.forEach((uuid, playerData) -> {
             NbtCompound playerNbt = new NbtCompound();
-            playerNbt.put("temporaryUpgrades", RoguelikeMCConfig.RogueLikeMCUpgradeConfig.CODEC.listOf().encodeStart(NbtOps.INSTANCE, playerData.temporaryUpgrades).getOrThrow());
-            playerNbt.put("permanentUpgrades", RoguelikeMCConfig.RogueLikeMCUpgradeConfig.CODEC.listOf().encodeStart(NbtOps.INSTANCE, playerData.permanentUpgrades).getOrThrow());
+            playerNbt.put("temporaryUpgrades", RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig.CODEC.listOf().encodeStart(NbtOps.INSTANCE, playerData.temporaryUpgrades).getOrThrow());
+            playerNbt.put("permanentUpgrades", RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig.CODEC.listOf().encodeStart(NbtOps.INSTANCE, playerData.permanentUpgrades).getOrThrow());
             playersNbt.put(uuid.toString(), playerNbt);
         });
 
@@ -47,8 +47,8 @@ public class RoguelikeMCStateSaverAndLoader extends PersistentState {
             NbtCompound playerNbt = playersNbt.getCompound(key);
             NbtElement tempElement = playerNbt.get("temporaryUpgrades");
             NbtElement permElement = playerNbt.get("permanentUpgrades");
-            playerData.temporaryUpgrades = new ArrayList<>(RoguelikeMCConfig.RogueLikeMCUpgradeConfig.CODEC.listOf().decode(NbtOps.INSTANCE, tempElement).result().map(Pair::getFirst).orElse(new ArrayList<>()));
-            playerData.permanentUpgrades = new ArrayList<>(RoguelikeMCConfig.RogueLikeMCUpgradeConfig.CODEC.listOf().decode(NbtOps.INSTANCE, permElement).result().map(Pair::getFirst).orElse(new ArrayList<>()));
+            playerData.temporaryUpgrades = new ArrayList<>(RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig.CODEC.listOf().decode(NbtOps.INSTANCE, tempElement).result().map(Pair::getFirst).orElse(new ArrayList<>()));
+            playerData.permanentUpgrades = new ArrayList<>(RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig.CODEC.listOf().decode(NbtOps.INSTANCE, permElement).result().map(Pair::getFirst).orElse(new ArrayList<>()));
             state.players.put(UUID.fromString(key), playerData);
         });
 

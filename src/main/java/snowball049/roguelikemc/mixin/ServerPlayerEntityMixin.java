@@ -1,20 +1,10 @@
 package snowball049.roguelikemc.mixin;
 
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
-import snowball049.roguelikemc.accessor.PlayerEntityAccessor;
-import snowball049.roguelikemc.config.RoguelikeMCConfig;
-import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
-import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
-import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
-
-import java.util.List;
 
 @Mixin(ServerPlayerEntity.class)
 public class ServerPlayerEntityMixin {

@@ -10,14 +10,13 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.StringIdentifiable;
 import snowball049.roguelikemc.RoguelikeMC;
-import snowball049.roguelikemc.config.RoguelikeMCConfig;
+import snowball049.roguelikemc.config.RoguelikeMCUpgradesConfig;
 
 import java.util.*;
 
 public class RoguelikeMCUpgradeUtil {
-    public static void applyUpgrade(ServerPlayerEntity player, RoguelikeMCConfig.RogueLikeMCUpgradeConfig upgrades) {
+    public static void applyUpgrade(ServerPlayerEntity player, RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig upgrades) {
         upgrades.action().forEach(action -> {
             if (action.type().equals("attribute")) {
                 RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, action.value(), upgrades.is_permanent());

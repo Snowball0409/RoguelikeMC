@@ -15,18 +15,17 @@ import java.nio.file.Path;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import snowball049.roguelikemc.RoguelikeMC;
 
-public class RoguelikeMCConfig {
+public class RoguelikeMCUpgradesConfig {
 
     // Config file path
     public static final Path UPGRADE_CONFIG_PATH = FabricLoader.getInstance()
-            .getConfigDir().resolve(RoguelikeMC.MOD_ID+"/"+RoguelikeMC.MOD_ID+"-upgrade.json");
-    public static RoguelikeMCConfig INSTANCE = new RoguelikeMCConfig();
+            .getConfigDir().resolve(RoguelikeMC.MOD_ID+"/"+RoguelikeMC.MOD_ID+"-upgrades.json");
+    public static RoguelikeMCUpgradesConfig INSTANCE = new RoguelikeMCUpgradesConfig();
 
     // Upgrade Config Model
     public List<RogueLikeMCUpgradeConfig> upgrades = new ArrayList<>();
@@ -69,7 +68,7 @@ public class RoguelikeMCConfig {
         if (file.exists()) {
             try(FileReader fileReader = new FileReader(file)) {
                 try(JsonReader reader = new JsonReader(fileReader)){
-                    INSTANCE = gson.fromJson(reader, RoguelikeMCConfig.class);
+                    INSTANCE = gson.fromJson(reader, RoguelikeMCUpgradesConfig.class);
                     //writeConfig(gson, file, INSTANCE);
                 }
             }catch(IOException e){
@@ -80,7 +79,7 @@ public class RoguelikeMCConfig {
         }
     }
 
-    public static void writeConfig(Gson gson, File file, RoguelikeMCConfig config){
+    public static void writeConfig(Gson gson, File file, RoguelikeMCUpgradesConfig config){
         try(FileWriter writer = new FileWriter(file)) {
             writeDefaultConfig(config);
             gson.toJson(config, writer);
@@ -91,7 +90,7 @@ public class RoguelikeMCConfig {
         }
     }
 
-    private static void writeDefaultConfig(RoguelikeMCConfig config) {
+    private static void writeDefaultConfig(RoguelikeMCUpgradesConfig config) {
         final RogueLikeMCUpgradeConfig health_1 = new RogueLikeMCUpgradeConfig(
                 "health_1",
                 "+1 Health",
