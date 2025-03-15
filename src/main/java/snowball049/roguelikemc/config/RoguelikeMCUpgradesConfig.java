@@ -43,18 +43,20 @@ public class RoguelikeMCUpgradesConfig {
         String id,
         String name,
         String description,
-        boolean is_permanent,
-        String icon,
         String tier,
+        boolean is_permanent,
+        boolean is_unique,
+        String icon,
         List<UpgradeAction> action) {
         public static final Codec<RogueLikeMCUpgradeConfig> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(
                         Codec.STRING.fieldOf("id").forGetter(RogueLikeMCUpgradeConfig::id),
                         Codec.STRING.fieldOf("name").forGetter(RogueLikeMCUpgradeConfig::name),
                         Codec.STRING.fieldOf("description").forGetter(RogueLikeMCUpgradeConfig::description),
-                        Codec.BOOL.fieldOf("is_permanent").forGetter(RogueLikeMCUpgradeConfig::is_permanent),
-                        Codec.STRING.fieldOf("icon").forGetter(RogueLikeMCUpgradeConfig::icon),
                         Codec.STRING.fieldOf("tier").forGetter(RogueLikeMCUpgradeConfig::tier),
+                        Codec.BOOL.fieldOf("is_permanent").forGetter(RogueLikeMCUpgradeConfig::is_permanent),
+                        Codec.BOOL.fieldOf("is_unique").forGetter(RogueLikeMCUpgradeConfig::is_unique),
+                        Codec.STRING.fieldOf("icon").forGetter(RogueLikeMCUpgradeConfig::icon),
                         Codec.list(UpgradeAction.CODEC).fieldOf("action").forGetter(RogueLikeMCUpgradeConfig::action)
                 ).apply(instance, RogueLikeMCUpgradeConfig::new)
         );
@@ -95,9 +97,10 @@ public class RoguelikeMCUpgradesConfig {
                 "health_1",
                 "+1 Health",
                 "Add 1 Health",
-                true,
-                "minecraft:textures/mob_effect/regeneration.png",
                 "common",
+                false,
+                false,
+                "minecraft:textures/mob_effect/regeneration.png",
                 List.of(
                         new UpgradeAction("attribute", List.of("minecraft:generic.max_health", "1", "add_value"))
                 )
@@ -106,9 +109,10 @@ public class RoguelikeMCUpgradesConfig {
                 "attack_1",
                 "+1 Attack",
                 "Add 1 Attack",
+                "common",
+                false,
                 false,
                 "minecraft:textures/mob_effect/strength.png",
-                "common",
                 List.of(
                         new UpgradeAction("attribute", List.of("minecraft:generic.attack_damage", "1", "add_value"))
                 )
@@ -117,9 +121,10 @@ public class RoguelikeMCUpgradesConfig {
                 "speed_10",
                 "+10% Speed",
                 "Add 10% Speed",
-                true,
-                "minecraft:textures/mob_effect/speed.png",
                 "common",
+                true,
+                false,
+                "minecraft:textures/mob_effect/speed.png",
                 List.of(
                         new UpgradeAction("attribute", List.of("minecraft:generic.movement_speed", "0.1", "add_multiplied_total"))
                 )
@@ -128,53 +133,160 @@ public class RoguelikeMCUpgradesConfig {
                 "dragon_skin",
                 "Dragon Skin",
                 "Get resistant I but minus 1 Heart",
-                false,
-                "minecraft:textures/item/dragon_breath.png",
                 "rare",
+                false,
+                true,
+                "minecraft:textures/item/dragon_breath.png",
                 List.of(
                         new UpgradeAction("attribute", List.of("minecraft:generic.max_health", "-2", "add_value")),
                         new UpgradeAction("effect", List.of("minecraft:resistance", "-1", "0"))
                 )
         );
-        final RogueLikeMCUpgradeConfig health_2 = new RogueLikeMCUpgradeConfig(
-                "health_2",
-                "+2 Health",
-                "Add 2 Health",
-                true,
-                "minecraft:textures/mob_effect/absorption.png",
-                "rare",
+        final RogueLikeMCUpgradeConfig phoenix_feather = new RogueLikeMCUpgradeConfig(
+                "phoenix_feather",
+                "Phoenix Feather",
+                "Grants regeneration effect and feather falling effect",
+                "epic",
+                false,
+                false,
+                "minecraft:textures/item/feather.png",
                 List.of(
-                        new UpgradeAction("attribute", List.of("minecraft:generic.max_health", "2", "add_value"))
+                        new UpgradeAction("effect", List.of("minecraft:regeneration", "-1", "0")),
+                        new UpgradeAction("effect", List.of("minecraft:feather_falling", "-1", "0"))
                 )
         );
-        final RogueLikeMCUpgradeConfig attack_2 = new RogueLikeMCUpgradeConfig(
-                "attack_2",
-                "+2 Attack",
-                "Add 2 Attack",
+        final RogueLikeMCUpgradeConfig titan_strength = new RogueLikeMCUpgradeConfig(
+                "titan_strength",
+                "Titan Strength",
+                "Increases attack damage by 5",
+                "legendary",
                 true,
+                false,
                 "minecraft:textures/mob_effect/strength.png",
-                "rare",
                 List.of(
-                        new UpgradeAction("attribute", List.of("minecraft:generic.attack_damage", "2", "add_value"))
+                        new UpgradeAction("attribute", List.of("minecraft:generic.attack_damage", "5", "add_value"))
                 )
         );
-        final RogueLikeMCUpgradeConfig speed_20 = new RogueLikeMCUpgradeConfig(
-                "speed_20",
-                "+20% Speed",
-                "Add 20% Speed",
+
+        final RogueLikeMCUpgradeConfig swift_boots = new RogueLikeMCUpgradeConfig(
+                "swift_boots",
+                "Swift Boots",
+                "Increases movement speed by 10%",
+                "common",
+                false,
                 true,
                 "minecraft:textures/mob_effect/speed.png",
-                "rare",
                 List.of(
-                        new UpgradeAction("attribute", List.of("minecraft:generic.movement_speed", "0.2", "add_multiplied_total"))
+                        new UpgradeAction("attribute", List.of("minecraft:generic.movement_speed", "0.1", "add_multiplied_base"))
                 )
         );
+
+        final RogueLikeMCUpgradeConfig iron_hide = new RogueLikeMCUpgradeConfig(
+                "iron_hide",
+                "Iron Hide",
+                "Increases armor by 3",
+                "rare",
+                false,
+                false,
+                "minecraft:textures/item/iron_ingot.png",
+                List.of(
+                        new UpgradeAction("attribute", List.of("minecraft:generic.armor", "3", "add_value"))
+                )
+        );
+
+        final RogueLikeMCUpgradeConfig shadow_cloak = new RogueLikeMCUpgradeConfig(
+                "shadow_cloak",
+                "Shadow Cloak",
+                "Grants invisibility effect for 5 seconds",
+                "epic",
+                true,
+                true,
+                "minecraft:textures/mob_effect/invisibility.png",
+                List.of(
+                        new UpgradeAction("effect", List.of("minecraft:invisibility", "-1", "0"))
+                )
+        );
+
+        final RogueLikeMCUpgradeConfig fire_touch = new RogueLikeMCUpgradeConfig(
+                "fire_touch",
+                "Fire Touch",
+                "Sets enemy on fire when hit",
+                "rare",
+                false,
+                false,
+                "minecraft:textures/mob_effect/fire_resistance.png",
+                List.of(
+//                        new UpgradeAction("event", List.of("roguelikemc:set_on_fire", "5", "0"))
+                )
+        );
+
+        final RogueLikeMCUpgradeConfig lifesteal = new RogueLikeMCUpgradeConfig(
+                "lifesteal",
+                "Life Steal",
+                "Heal for 20% of damage dealt",
+                "legendary",
+                true,
+                false,
+                "minecraft:textures/mob_effect/health_boost.png",
+                List.of(
+//                        new UpgradeAction("event", List.of("roguelikemc:lifesteal", "20", "0"))
+                )
+        );
+
+        final RogueLikeMCUpgradeConfig arcane_barrier = new RogueLikeMCUpgradeConfig(
+                "arcane_barrier",
+                "Arcane Barrier",
+                "Grants absorption for 30 seconds",
+                "epic",
+                false,
+                true,
+                "minecraft:textures/item/arcane_barrier.png",
+                List.of(
+                        new UpgradeAction("effect", List.of("minecraft:absorption", "-1", "0"))
+                )
+        );
+
+        final RogueLikeMCUpgradeConfig berserker_rage = new RogueLikeMCUpgradeConfig(
+                "berserker_rage",
+                "Berserker Rage",
+                "Increases attack speed but reduces defense",
+                "legendary",
+                true,
+                true,
+                "minecraft:textures/item/berserker_rage.png",
+                List.of(
+                        new UpgradeAction("attribute", List.of("minecraft:generic.attack_speed", "0.5", "add_value")),
+                        new UpgradeAction("attribute", List.of("minecraft:generic.armor", "-2", "add_value"))
+                )
+        );
+
+        final RogueLikeMCUpgradeConfig arcane_focus = new RogueLikeMCUpgradeConfig(
+                "arcane_focus",
+                "Arcane Focus",
+                "Increases mana regeneration by 15%",
+                "common",
+                false,
+                true,
+                "minecraft:textures/item/arcane_focus.png",
+                List.of(
+                        new UpgradeAction("attribute", List.of("minecraft:generic.max_health", "1", "add_value")),
+                        new UpgradeAction("effect", List.of("minecraft:haste", "-1", "0"))
+                )
+        );
+
         config.upgrades.add(health_1);
         config.upgrades.add(attack_1);
         config.upgrades.add(speed_10);
         config.upgrades.add(dragon_skin);
-        config.upgrades.add(health_2);
-        config.upgrades.add(attack_2);
-        config.upgrades.add(speed_20);
+        config.upgrades.add(phoenix_feather);
+        config.upgrades.add(titan_strength);
+        config.upgrades.add(swift_boots);
+        config.upgrades.add(iron_hide);
+        config.upgrades.add(shadow_cloak);
+        config.upgrades.add(fire_touch);
+        config.upgrades.add(lifesteal);
+        config.upgrades.add(arcane_barrier);
+        config.upgrades.add(berserker_rage);
+        config.upgrades.add(arcane_focus);
     }
 }
