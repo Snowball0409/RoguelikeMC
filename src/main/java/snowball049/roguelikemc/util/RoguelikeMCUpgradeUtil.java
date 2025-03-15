@@ -68,7 +68,7 @@ public class RoguelikeMCUpgradeUtil {
 
 
         if(!player.getWorld().isClient()) {
-            player.addStatusEffect(new StatusEffectInstance(effectEntry, Integer.parseInt(value.get(1))));
+            player.addStatusEffect(new StatusEffectInstance(effectEntry, Integer.parseInt(value.get(1)), Integer.parseInt(value.get(2)), false, false, true));
         }
     }
 }

@@ -134,7 +134,7 @@ public class RoguelikeMCConfig {
                 "rare",
                 List.of(
                         new UpgradeAction("attribute", List.of("minecraft:generic.max_health", "-2", "add_value")),
-                        new UpgradeAction("effect", List.of("minecraft:resistance", "999999", "0"))
+                        new UpgradeAction("effect", List.of("minecraft:resistance", "-1", "0"))
                 )
         );
         final RogueLikeMCUpgradeConfig health_2 = new RogueLikeMCUpgradeConfig(
