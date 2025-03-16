@@ -253,7 +253,7 @@ public class RoguelikeMCUpgradesConfig {
                 "legendary",
                 true,
                 true,
-                "minecraft:textures/item/berserker_rage.png",
+                "minecraft:textures/item/golden_sword.png",
                 List.of(
                         new UpgradeAction("attribute", List.of("minecraft:generic.attack_speed", "0.5", "add_value")),
                         new UpgradeAction("attribute", List.of("minecraft:generic.armor", "-2", "add_value"))
@@ -267,7 +267,7 @@ public class RoguelikeMCUpgradesConfig {
                 "common",
                 false,
                 true,
-                "minecraft:textures/item/arcane_focus.png",
+                "minecraft:textures/item/ender_pearl.png",
                 List.of(
                         new UpgradeAction("attribute", List.of("minecraft:generic.max_health", "1", "add_value")),
                         new UpgradeAction("effect", List.of("minecraft:haste", "-1", "0"))

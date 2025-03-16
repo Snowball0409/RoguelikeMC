@@ -23,7 +23,7 @@ public class RoguelikeMCCommonConfig {
     // Common Config Model
     public boolean enableUpgradeSystem = true;
     public boolean enableKillHostileEntityUpgrade = true;
-    public boolean enableAdvancementUpgrade = true;
+    public boolean enableAdvancementUpgrade = false;
     public boolean enableLevelUpgrade = false;
     public boolean enableClearInventoryAfterDeath = true;
     public boolean enableClearEquipmentAfterDeath = true;

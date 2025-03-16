@@ -36,7 +36,7 @@ public class RoguelikeMCClient implements ClientModInitializer {
 		// Refresh Upgrade Options
 		ClientPlayNetworking.registerGlobalReceiver(UpgradeOptionS2CPayload.ID, (payload, context) -> {
 			RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig upgrade = payload.upgrade();
-			currentScreen.currentOptions.add(upgrade);
+			if(upgrade != null) currentScreen.currentOptions.add(upgrade);
 		});
 		// Refresh Current Upgrades
 		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentUpgradeS2CPayload.ID, (payload, context) -> {

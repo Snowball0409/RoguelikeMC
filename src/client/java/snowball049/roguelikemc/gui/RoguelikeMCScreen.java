@@ -6,6 +6,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.MultilineText;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.tooltip.Tooltip;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
@@ -139,6 +141,7 @@ public class RoguelikeMCScreen extends Screen {
             if(i < currentOptions.size()){
                 RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig effect = currentOptions.get(i);
                 optionButtons[i].setMessage(Text.literal(effect.name()));
+                optionButtons[i].setTooltip(Tooltip.of(Text.literal(effect.description()).formatted(Formatting.GRAY)));
             }else{
                 optionButtons[i].setMessage(Text.empty());
             }
