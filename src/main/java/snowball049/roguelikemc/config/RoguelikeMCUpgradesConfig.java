@@ -10,7 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.nio.file.Path;
@@ -71,6 +71,14 @@ public class RoguelikeMCUpgradesConfig {
     public static void loadConfig() {
         Gson gson = new GsonBuilder().setLenient().setPrettyPrinting().create();
         File file = UPGRADE_CONFIG_PATH.toFile();
+
+        try {
+            Files.createDirectories(file.getParentFile().toPath());
+        } catch (IOException e) {
+            RoguelikeMC.LOGGER.error("Failed to create config directory", e);
+            return;
+        }
+
         if (file.exists()) {
             try (FileReader fileReader = new FileReader(file)) {
                 try (JsonReader reader = new JsonReader(fileReader)) {

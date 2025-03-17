@@ -12,7 +12,7 @@ public class RoguelikeMCPlayerData {
     public int upgradePoints = 0;
 
     public int currentKillHostile = 0;
-    public int currentKillHostileRequirement = 0;
+    public int currentKillHostileRequirement;
     public int currentLevelGain = 0;
 
     public RoguelikeMCPlayerData() {

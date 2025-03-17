@@ -34,9 +34,8 @@ public class RoguelikeMC implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		// Init Config Support
-		RoguelikeMCUpgradesConfig.loadConfig();
 		RoguelikeMCCommonConfig.loadConfig();
-		RoguelikeMCCommonConfig commonConfig = RoguelikeMCCommonConfig.INSTANCE;
+		RoguelikeMCUpgradesConfig.loadConfig();
 
 		// Handle Network Packet
 		PayloadTypeRegistry.playC2S().register(RefreshUpgradeOptionC2SPayload.ID, RefreshUpgradeOptionC2SPayload.CODEC);
@@ -46,7 +45,7 @@ public class RoguelikeMC implements ModInitializer {
 
 		// Init Network Handler
         ServerPlayNetworking.registerGlobalReceiver(RefreshUpgradeOptionC2SPayload.ID, (payload, context) -> {
-			if (commonConfig.enableUpgradeSystem) {
+			if (RoguelikeMCCommonConfig.INSTANCE.enableUpgradeSystem) {
 				RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(context.player());
 				if(playerData.upgradePoints > 0) {
 					playerData.upgradePoints--;
@@ -64,12 +63,8 @@ public class RoguelikeMC implements ModInitializer {
 			RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
 			ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(playerData.permanentUpgrades));
 			ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(playerData.temporaryUpgrades));
-			playerData.permanentUpgrades.forEach(upgrade -> {
-				RoguelikeMCUpgradeUtil.applyUpgrade(player, upgrade);
-			});
-			playerData.temporaryUpgrades.forEach(upgrade -> {
-				RoguelikeMCUpgradeUtil.applyUpgrade(player, upgrade);
-			});
+			playerData.permanentUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyUpgrade(player, upgrade));
+			playerData.temporaryUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyUpgrade(player, upgrade));
 		});
 
 		// Death Event
@@ -77,23 +72,29 @@ public class RoguelikeMC implements ModInitializer {
 			RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(oldPlayer);
 
 			playerData.temporaryUpgrades.clear();
-			playerData.permanentUpgrades.forEach(upgrade -> {
-				RoguelikeMCUpgradeUtil.applyUpgrade(newPlayer, upgrade);
-			});
+			playerData.permanentUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyUpgrade(newPlayer, upgrade));
+
+			playerData.currentKillHostile = 0;
+			playerData.currentLevelGain = 0;
+			playerData.currentKillHostileRequirement = RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirementMinMax.getFirst();
+
 			ServerPlayNetworking.send(newPlayer, new RefreshCurrentUpgradeS2CPayload(playerData.permanentUpgrades));
 			ServerPlayNetworking.send(newPlayer, new RefreshCurrentUpgradeS2CPayload(playerData.temporaryUpgrades));
 		});
 
 		// Upgrade Point Handler
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register((server, entity, context) -> {
-			if(commonConfig.enableUpgradeSystem && commonConfig.enableKillHostileEntityUpgrade) {
+			if(RoguelikeMCCommonConfig.INSTANCE.enableUpgradeSystem && RoguelikeMCCommonConfig.INSTANCE.enableKillHostileEntityUpgrade) {
 				if (entity instanceof ServerPlayerEntity) {
 					RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState((ServerPlayerEntity) entity);
 					playerData.currentKillHostile++;
 					while (playerData.currentKillHostile >= playerData.currentKillHostileRequirement) {
 						playerData.upgradePoints++;
 						playerData.currentKillHostile -= playerData.currentKillHostileRequirement;
-						playerData.currentKillHostileRequirement = Math.min(playerData.currentKillHostileRequirement + commonConfig.amountBetweenKillHostileEntityUpgrade, commonConfig.killHostileEntityRequirementMinMax.getLast());
+						playerData.currentKillHostileRequirement = Math.min(
+								playerData.currentKillHostileRequirement + RoguelikeMCCommonConfig.INSTANCE.amountBetweenKillHostileEntityUpgrade,
+								RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirementMinMax.getLast()
+						);
 						RoguelikeMCUpgradeUtil.sendPointMessage((ServerPlayerEntity) entity, 1);
 					}
 				}

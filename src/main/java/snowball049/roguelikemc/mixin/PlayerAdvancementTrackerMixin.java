@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
-import net.minecraft.text.Text;
 import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
 @Mixin(PlayerAdvancementTracker.class)

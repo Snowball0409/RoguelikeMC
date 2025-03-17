@@ -7,7 +7,6 @@ import net.minecraft.client.font.MultilineText;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
@@ -114,8 +113,8 @@ public class RoguelikeMCScreen extends Screen {
         super.render(context, mouseX, mouseY, delta);
 
         // 繪製自適應背景
-        int guiLeft = (int)((width - GUI_WIDTH ) / 2);
-        int guiTop = (int)((height - GUI_HEIGHT) / 2);
+        int guiLeft = ((width - GUI_WIDTH ) / 2);
+        int guiTop = ((height - GUI_HEIGHT) / 2);
 
         context.getMatrices().push();
 
@@ -173,7 +172,7 @@ public class RoguelikeMCScreen extends Screen {
         renderEffectsSection(context, x + SECTION_WIDTH + SECTION_SPACING, y, "Permanent Effects", PERMANENT_EFFECTS, mouseX, mouseY);
 
         // 右側功能區域
-        renderUtilitySection(context, x + 2 * (SECTION_WIDTH + SECTION_SPACING), y, "Effect Pool", mouseX, mouseY);
+        renderUtilitySection(context, x + 2 * (SECTION_WIDTH + SECTION_SPACING), y, mouseX, mouseY);
 
         // 刷新按鈕渲染
         renderRefreshButton(context, x, y, mouseX, mouseY);
@@ -208,10 +207,10 @@ public class RoguelikeMCScreen extends Screen {
         }
     }
 
-    private void renderUtilitySection(DrawContext context, int x, int y, String title, int mouseX, int mouseY) {
+    private void renderUtilitySection(DrawContext context, int x, int y, int mouseX, int mouseY) {
         // 區域背景
         context.fill(x, y-5, x + SECTION_WIDTH, y + GUI_HEIGHT - 2*CONTENT_PADDING+5, 0x80303030);
-        context.drawCenteredTextWithShadow(textRenderer, title, x+SECTION_WIDTH/2, y, 0xFFFFFF);
+        context.drawCenteredTextWithShadow(textRenderer, "Effect Pool", x+SECTION_WIDTH/2, y, 0xFFFFFF);
 
         // 繪製三個按鈕的視覺元素
         int buttonX = x + BUTTON_PADDING;
