@@ -12,6 +12,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
@@ -90,5 +91,8 @@ public class RoguelikeMCUpgradeUtil {
         if(!player.getWorld().isClient()) {
             player.addStatusEffect(new StatusEffectInstance(effectEntry, Integer.parseInt(value.get(1)), Integer.parseInt(value.get(2)), false, false, true));
         }
+    }
+    public static void sendPointMessage(ServerPlayerEntity player, int amount) {
+        player.sendMessage(Text.of("You have been granted "+ amount +" upgrade point!"));
     }
 }

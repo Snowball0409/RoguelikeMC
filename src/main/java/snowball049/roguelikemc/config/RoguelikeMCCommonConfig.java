@@ -24,13 +24,13 @@ public class RoguelikeMCCommonConfig {
     public boolean enableUpgradeSystem = true;
     public boolean enableKillHostileEntityUpgrade = true;
     public boolean enableAdvancementUpgrade = false;
-    public boolean enableLevelUpgrade = false;
+    public boolean enableLevelUpgrade = true;
     public boolean enableClearInventoryAfterDeath = true;
     public boolean enableClearEquipmentAfterDeath = true;
 
     public List<Integer> killHostileEntityRequirementMinMax = List.of(10, 30);
     public Integer amountBetweenKillHostileEntityUpgrade = 5;
-    public Integer amountOfLevelUpgrade = 10;
+    public Integer amountOfLevelUpgrade = 5;
 
     // Config read and write
     public static void loadConfig() {

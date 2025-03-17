@@ -13,6 +13,7 @@ import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import net.minecraft.text.Text;
+import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
 @Mixin(PlayerAdvancementTracker.class)
 public class PlayerAdvancementTrackerMixin {
@@ -34,9 +35,7 @@ public class PlayerAdvancementTrackerMixin {
                 ) {
             RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
             playerData.upgradePoints++;
-
-            player.sendMessage(Text.literal("You earned 1 upgrade point for completing: §a" + advancement.value().display().get().getTitle().getString()), false);
-
+            RoguelikeMCUpgradeUtil.sendPointMessage(player, 1);
         }
     }
 }

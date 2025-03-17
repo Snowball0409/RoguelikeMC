@@ -90,11 +90,11 @@ public class RoguelikeMC implements ModInitializer {
 				if (entity instanceof ServerPlayerEntity) {
 					RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState((ServerPlayerEntity) entity);
 					playerData.currentKillHostile++;
-					if (playerData.currentKillHostile >= playerData.currentKillHostileRequirement) {
+					while (playerData.currentKillHostile >= playerData.currentKillHostileRequirement) {
 						playerData.upgradePoints++;
 						playerData.currentKillHostile -= playerData.currentKillHostileRequirement;
 						playerData.currentKillHostileRequirement = Math.min(playerData.currentKillHostileRequirement + commonConfig.amountBetweenKillHostileEntityUpgrade, commonConfig.killHostileEntityRequirementMinMax.getLast());
-						entity.sendMessage(Text.literal("You got 1 upgrade point!"));
+						RoguelikeMCUpgradeUtil.sendPointMessage((ServerPlayerEntity) entity, 1);
 					}
 				}
 			}
@@ -102,7 +102,7 @@ public class RoguelikeMC implements ModInitializer {
 
 
 
-		// Command Handler
+		// Command Register
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			dispatcher.register(CommandManager.literal("roguelikemc")
 					.then(CommandManager.argument("player", EntityArgumentType.players())
