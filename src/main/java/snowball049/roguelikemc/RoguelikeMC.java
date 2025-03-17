@@ -30,7 +30,6 @@ public class RoguelikeMC implements ModInitializer {
 		// Init Config Support
 		RoguelikeMCUpgradesConfig.loadConfig();
 		RoguelikeMCCommonConfig.loadConfig();
-		RoguelikeMCUpgradesConfig upgradeConfig = RoguelikeMCUpgradesConfig.INSTANCE;
 		RoguelikeMCCommonConfig commonConfig = RoguelikeMCCommonConfig.INSTANCE;
 
 		// Handle Network Packet
@@ -45,7 +44,7 @@ public class RoguelikeMC implements ModInitializer {
 				RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(context.player());
 				if(playerData.upgradePoints > 0) {
 					playerData.upgradePoints--;
-					RefreshUpgradeOptionHandler.handle(upgradeConfig, context);
+					RefreshUpgradeOptionHandler.handle(context);
 				}else {
 					context.player().sendMessage(Text.literal("You don't have enough upgrade points!"));
 				}
