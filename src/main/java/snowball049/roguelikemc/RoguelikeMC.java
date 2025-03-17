@@ -85,7 +85,7 @@ public class RoguelikeMC implements ModInitializer {
 		// Upgrade Point Handler
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register((server, entity, context) -> {
 			if(RoguelikeMCCommonConfig.INSTANCE.enableUpgradeSystem && RoguelikeMCCommonConfig.INSTANCE.enableKillHostileEntityUpgrade) {
-				if (entity instanceof ServerPlayerEntity) {
+				if (entity instanceof ServerPlayerEntity && context.isMobOrPlayer() && !context.isPlayer()) {
 					RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState((ServerPlayerEntity) entity);
 					playerData.currentKillHostile++;
 					while (playerData.currentKillHostile >= playerData.currentKillHostileRequirement) {
