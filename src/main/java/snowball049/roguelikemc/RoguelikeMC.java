@@ -1,15 +1,21 @@
 package snowball049.roguelikemc;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import snowball049.roguelikemc.command.RoguelikeMCCommands;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.config.RoguelikeMCUpgradesConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
@@ -52,12 +58,7 @@ public class RoguelikeMC implements ModInitializer {
 		});
 		ServerPlayNetworking.registerGlobalReceiver(SelectUpgradeOptionC2SPayload.ID, SelectUpgradeOptionHandler::handle);
 
-		// Tick Event
-//		ServerTickEvents.END_SERVER_TICK.register(server -> {
-//			if (server.getTicks() % 20 == 0) {
-//				server.getPlayerManager().getPlayerList().forEach(RoguelikeMCUpgradeUtil::applyUpgrade);
-//			}
-//		});
+		// Join Event
 		ServerPlayConnectionEvents.JOIN.register((serverPlayNetworkHandler, packetSender, minecraftServer) ->{
 			ServerPlayerEntity player = serverPlayNetworkHandler.getPlayer();
 			RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
@@ -71,6 +72,7 @@ public class RoguelikeMC implements ModInitializer {
 			});
 		});
 
+		// Death Event
 		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
 			RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(oldPlayer);
 
@@ -98,15 +100,42 @@ public class RoguelikeMC implements ModInitializer {
 			}
 		});
 
+
+
 		// Command Handler
-//		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-//			dispatcher.register(CommandManager.literal("upgrade")
-//					.then(CommandManager.argument("tier", StringArgumentType.string())
-//							.suggests(RoguelikeMCCommands::suggestUpgrades)
-//							.executes(RoguelikeMCCommands::executeCommandUpgrade)
-//					)
-//			);
-//		});
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+			dispatcher.register(CommandManager.literal("roguelikemc")
+					.then(CommandManager.argument("player", EntityArgumentType.players())
+							.then(CommandManager.literal("upgrade")
+								.then(CommandManager.literal("grant")
+									.then(CommandManager.argument("upgradeOption", StringArgumentType.string()).suggests(new RoguelikeMCCommands.UpgradeSuggestionProvider())
+											.executes(RoguelikeMCCommands::grantUpgrade)
+									)
+								)
+								.then(CommandManager.literal("remove")
+									.then(CommandManager.argument("upgradeOption", StringArgumentType.string()).suggests(new RoguelikeMCCommands.UpgradeSuggestionProvider())
+											.executes(RoguelikeMCCommands::removeUpgrade)
+									)
+								)
+								.then(CommandManager.literal("clear")
+									.executes(RoguelikeMCCommands::clearUpgrade)
+								)
+							)
+							.then(CommandManager.literal("point")
+								.then(CommandManager.literal("add")
+										.then(CommandManager.argument("amount", IntegerArgumentType.integer(1))
+												.executes(RoguelikeMCCommands::addPoint)
+										)
+								)
+								.then(CommandManager.literal("remove")
+										.then(CommandManager.argument("amount", IntegerArgumentType.integer(1))
+												.executes(RoguelikeMCCommands::removePoint)
+										)
+								)
+							)
+					)
+			);
+		});
 
 		LOGGER.info("RoguelikeMC Initialized");
 	}

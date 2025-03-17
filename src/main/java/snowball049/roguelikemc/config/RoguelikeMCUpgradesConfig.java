@@ -1,5 +1,6 @@
 package snowball049.roguelikemc.config;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
@@ -8,9 +9,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.nio.file.Path;
+import java.util.Map;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -28,7 +32,7 @@ public class RoguelikeMCUpgradesConfig {
     public static RoguelikeMCUpgradesConfig INSTANCE = new RoguelikeMCUpgradesConfig();
 
     // Upgrade Config Model
-    public List<RogueLikeMCUpgradeConfig> upgrades = new ArrayList<>();
+    public Map<String, RogueLikeMCUpgradeConfig> upgrades = new HashMap<>();
 
     public record UpgradeAction(String type, List<String> value) {
         public static final Codec<UpgradeAction> CODEC = RecordCodecBuilder.create(
@@ -68,15 +72,21 @@ public class RoguelikeMCUpgradesConfig {
         Gson gson = new GsonBuilder().setLenient().setPrettyPrinting().create();
         File file = UPGRADE_CONFIG_PATH.toFile();
         if (file.exists()) {
-            try(FileReader fileReader = new FileReader(file)) {
-                try(JsonReader reader = new JsonReader(fileReader)){
-                    INSTANCE = gson.fromJson(reader, RoguelikeMCUpgradesConfig.class);
-                    //writeConfig(gson, file, INSTANCE);
+            try (FileReader fileReader = new FileReader(file)) {
+                try (JsonReader reader = new JsonReader(fileReader)) {
+                    RoguelikeMCUpgradesConfig tempConfig = gson.fromJson(reader, RoguelikeMCUpgradesConfig.class);
+
+                    // 確保 HashMap 格式正確
+                    Type type = new TypeToken<HashMap<String, RogueLikeMCUpgradeConfig>>() {}.getType();
+                    String jsonString = gson.toJson(tempConfig.upgrades); // 轉成 JSON 字串
+                    tempConfig.upgrades = gson.fromJson(jsonString, type); // 重新解析成 HashMap
+
+                    INSTANCE = tempConfig;
                 }
-            }catch(IOException e){
+            } catch (IOException e) {
                 RoguelikeMC.LOGGER.error("Failed to load config: ", e);
             }
-        }else{
+        } else {
             writeConfig(gson, file, INSTANCE);
         }
     }
@@ -240,7 +250,7 @@ public class RoguelikeMCUpgradesConfig {
                 "epic",
                 false,
                 true,
-                "minecraft:textures/item/arcane_barrier.png",
+                "minecraft:textures/item/ender_eye.png",
                 List.of(
                         new UpgradeAction("effect", List.of("minecraft:absorption", "-1", "0"))
                 )
@@ -274,19 +284,19 @@ public class RoguelikeMCUpgradesConfig {
                 )
         );
 
-        config.upgrades.add(health_1);
-        config.upgrades.add(attack_1);
-        config.upgrades.add(speed_10);
-        config.upgrades.add(dragon_skin);
-        config.upgrades.add(phoenix_feather);
-        config.upgrades.add(titan_strength);
-        config.upgrades.add(swift_boots);
-        config.upgrades.add(iron_hide);
-        config.upgrades.add(shadow_cloak);
-        config.upgrades.add(fire_touch);
-        config.upgrades.add(lifesteal);
-        config.upgrades.add(arcane_barrier);
-        config.upgrades.add(berserker_rage);
-        config.upgrades.add(arcane_focus);
+        config.upgrades.put(health_1.id, health_1);
+        config.upgrades.put(attack_1.id, attack_1);
+        config.upgrades.put(speed_10.id, speed_10);
+        config.upgrades.put(dragon_skin.id, dragon_skin);
+        config.upgrades.put(phoenix_feather.id, phoenix_feather);
+        config.upgrades.put(titan_strength.id, titan_strength);
+        config.upgrades.put(swift_boots.id, swift_boots);
+        config.upgrades.put(iron_hide.id, iron_hide);
+        config.upgrades.put(shadow_cloak.id, shadow_cloak);
+        config.upgrades.put(fire_touch.id, fire_touch);
+        config.upgrades.put(lifesteal.id, lifesteal);
+        config.upgrades.put(arcane_barrier.id, arcane_barrier);
+        config.upgrades.put(berserker_rage.id, berserker_rage);
+        config.upgrades.put(arcane_focus.id, arcane_focus);
     }
 }

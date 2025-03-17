@@ -15,10 +15,11 @@ public class RefreshUpgradeOptionHandler {
             return;
         }
 
-        Collections.shuffle(RoguelikeMCUpgradesConfig.INSTANCE.upgrades);
+        List<String> upgradeKeys = new ArrayList<>(RoguelikeMCUpgradesConfig.INSTANCE.upgrades.keySet());
+        Collections.shuffle(upgradeKeys);
         List<RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig> currentUpgrades = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            currentUpgrades.add(RoguelikeMCUpgradesConfig.INSTANCE.upgrades.get(i));
+            currentUpgrades.add(RoguelikeMCUpgradesConfig.INSTANCE.upgrades.get(upgradeKeys.get(i)));
         }
         for (RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig upgrade : currentUpgrades) {
             ServerPlayNetworking.send(context.player(), new UpgradeOptionS2CPayload(upgrade));

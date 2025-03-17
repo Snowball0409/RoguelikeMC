@@ -89,9 +89,10 @@ public class RoguelikeMCScreen extends Screen {
         }
 
         refreshButton = ButtonWidget.builder(Text.literal("Draw Upgrades"), button -> {
-                    currentOptions.clear();
-                    SendPacketToServer.send(new RefreshUpgradeOptionC2SPayload());
-                    refreshOptionsDisplay();
+                    if(currentOptions.isEmpty()){
+                        SendPacketToServer.send(new RefreshUpgradeOptionC2SPayload());
+                        refreshOptionsDisplay();
+                    }
                 })
                 .dimensions(
                         guiLeft + GUI_WIDTH / 2 - 50, // GUI水平居中
