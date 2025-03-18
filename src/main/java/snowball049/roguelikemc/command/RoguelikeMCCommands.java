@@ -8,13 +8,17 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.config.RoguelikeMCUpgradesConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
+import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
 import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
 import java.util.List;
@@ -41,11 +45,79 @@ public class RoguelikeMCCommands {
         }
     }
 
-    public static int removeUpgrade(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) {
+    public static int removeUpgrade(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        try{
+            List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "player").stream().toList();
+            String upgradeId = StringArgumentType.getString(context, "upgradeOption");
+            RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig upgrade = RoguelikeMCUpgradesConfig.INSTANCE.upgrades.get(upgradeId);
+
+            if (upgrade == null) {
+                context.getSource().sendError(Text.literal("Upgrade '" + upgradeId + "' not found!"));
+                return 0;
+            }else {
+                players.forEach(player -> {
+                    RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+                    boolean removed = false;
+                    if(upgrade.is_permanent()) {
+                        removed = playerData.permanentUpgrades.removeIf(u -> u.id().equals(upgradeId));
+                        ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(playerData.permanentUpgrades));
+                    }else {
+                        removed = playerData.temporaryUpgrades.removeIf(u -> u.id().equals(upgradeId));
+                        ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(playerData.temporaryUpgrades));
+                    }
+                    if(removed){
+                        upgrade.action().forEach(upgradeAction -> {
+                            if(upgradeAction.type().equals("attribute")){
+                                RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player, upgradeAction.value());
+                            } else if (upgradeAction.type().equals("effect")) {
+                                player.removeStatusEffect(Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(upgradeAction.value().getFirst())).orElseThrow());
+                            }
+                        });
+                    }
+                    player.sendMessage(Text.of("You have been removed upgrade: "+ upgrade.name()));
+                });
+            }
+
+        }catch (CommandSyntaxException e){
+            context.getSource().sendError(Text.literal("Error parsing players: " + e.getMessage()));
+            throw e;
+        }
         return Command.SINGLE_SUCCESS;
     }
 
-    public static int clearUpgrade(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) {
+    public static int clearUpgrade(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        try {
+            List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "player").stream().toList();
+            players.forEach(player -> {
+                RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+                playerData.permanentUpgrades.forEach(upgrade -> {
+                    upgrade.action().forEach(upgradeAction -> {
+                        if(upgradeAction.type().equals("attribute")){
+                            RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player, upgradeAction.value());
+                        } else if (upgradeAction.type().equals("effect")) {
+                            player.removeStatusEffect(Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(upgradeAction.value().getFirst())).orElseThrow());
+                        }
+                    });
+                });
+                playerData.temporaryUpgrades.forEach(upgrade -> {
+                    upgrade.action().forEach(upgradeAction -> {
+                        if(upgradeAction.type().equals("attribute")){
+                            RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player, upgradeAction.value());
+                        } else if (upgradeAction.type().equals("effect")) {
+                            player.removeStatusEffect(Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(upgradeAction.value().getFirst())).orElseThrow());
+                        }
+                    });
+                });
+                playerData.permanentUpgrades.clear();
+                playerData.temporaryUpgrades.clear();
+                ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(playerData.permanentUpgrades));
+                ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(playerData.temporaryUpgrades));
+                player.sendMessage(Text.of("You have been cleared all upgrades!"));
+            });
+        }catch (CommandSyntaxException e){
+            context.getSource().sendError(Text.literal("Error parsing players: " + e.getMessage()));
+            throw e;
+        }
         return Command.SINGLE_SUCCESS;
     }
 

@@ -6,6 +6,7 @@ import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.GameRules;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -41,6 +42,9 @@ public abstract class PlayerEntityMixin {
     @Inject(method="dropInventory", at=@At("HEAD"), cancellable=true)
     private void onPlayerDeath(CallbackInfo ci) {
         PlayerEntity player = (PlayerEntity) (Object) this;
+
+        if (player.isSpectator()) return;
+        if (player.getWorld().getGameRules().getBoolean(GameRules.KEEP_INVENTORY)) return;
 
         if (player instanceof ServerPlayerEntity serverPlayer) {
             if (RoguelikeMCCommonConfig.INSTANCE.enableClearInventoryAfterDeath) {

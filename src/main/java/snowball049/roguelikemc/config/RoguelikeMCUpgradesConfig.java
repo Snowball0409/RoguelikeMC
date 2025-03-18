@@ -170,7 +170,7 @@ public class RoguelikeMCUpgradesConfig {
                 "minecraft:textures/item/feather.png",
                 List.of(
                         new UpgradeAction("effect", List.of("minecraft:regeneration", "-1", "0")),
-                        new UpgradeAction("effect", List.of("minecraft:feather_falling", "-1", "0"))
+                        new UpgradeAction("effect", List.of("minecraft:slow_falling", "-1", "0"))
                 )
         );
         final RogueLikeMCUpgradeConfig titan_strength = new RogueLikeMCUpgradeConfig(
