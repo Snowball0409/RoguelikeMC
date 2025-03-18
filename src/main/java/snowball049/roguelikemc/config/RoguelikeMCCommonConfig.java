@@ -30,6 +30,7 @@ public class RoguelikeMCCommonConfig {
     public boolean enableClearEquipmentAfterDeath = false;
     public boolean enableDecayInventoryAfterDeath = true;
     public boolean enableDecayEquipmentAfterDeath = true;
+    public boolean enableLinearGameStage = true;
 
     public List<Integer> killHostileEntityRequirementMinMax = List.of(10, 30);
     public Integer amountBetweenKillHostileEntityUpgrade = 5;
@@ -37,6 +38,8 @@ public class RoguelikeMCCommonConfig {
     public double decayInventoryPercentage = 0.6;
     public String decayItem = "minecraft:rotten_flesh";
     public List<Integer> decayItemAmountMinMax = List.of(1, 3);
+    public List<String> gameStageEntities = List.of("minecraft:wither", "minecraft:ender_dragon");
+    public double gameStageDecayPercentage = 0.9;
 
     // Config read and write
     public static void loadConfig() {
@@ -54,6 +57,7 @@ public class RoguelikeMCCommonConfig {
             try (FileReader reader = new FileReader(file)) {
                 try (JsonReader jsonReader = new JsonReader(reader)) {
                     INSTANCE = gson.fromJson(jsonReader, RoguelikeMCCommonConfig.class);
+                    writeConfig(gson, file, INSTANCE);
                 }
             } catch (IOException e) {
                 RoguelikeMC.LOGGER.error("Failed to load config file", e);

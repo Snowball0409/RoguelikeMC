@@ -14,6 +14,7 @@ public class RoguelikeMCPlayerData {
     public int currentKillHostile = 0;
     public int currentKillHostileRequirement;
     public int currentLevelGain = 0;
+    public int currentGameStage = 0;
 
     public RoguelikeMCPlayerData() {
         this.currentKillHostileRequirement = RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirementMinMax.getFirst();

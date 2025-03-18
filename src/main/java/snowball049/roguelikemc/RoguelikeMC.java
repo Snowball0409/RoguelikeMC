@@ -101,8 +101,6 @@ public class RoguelikeMC implements ModInitializer {
 			}
 		});
 
-
-
 		// Command Register
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			dispatcher.register(CommandManager.literal("roguelikemc")
