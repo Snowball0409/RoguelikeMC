@@ -21,6 +21,7 @@ public class LivingEntityMixin {
     @Inject(method = "onDeath", at = @At("HEAD"))
     private void onBossKilled(DamageSource source, CallbackInfo ci) {
         if (!(source.getAttacker() instanceof ServerPlayerEntity player)) return;
+        if (!RoguelikeMCCommonConfig.INSTANCE.enableLinearGameStage) return;
 
         LivingEntity entity = (LivingEntity) (Object) this;
         int stageIndex = RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.indexOf(Registries.ENTITY_TYPE.getId(entity.getType()).toString());
@@ -36,6 +37,7 @@ public class LivingEntityMixin {
     @Inject(method = "modifyAppliedDamage", at = @At("HEAD"), cancellable = true)
     private void reduceBossDamage(DamageSource source, float amount, CallbackInfoReturnable<Float> cir) {
         if (!(source.getAttacker() instanceof ServerPlayerEntity player)) return;
+        if (!RoguelikeMCCommonConfig.INSTANCE.enableLinearGameStage) return;
 
         LivingEntity entity = (LivingEntity) (Object) this;
         int bossStage = RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.indexOf(Registries.ENTITY_TYPE.getId(entity.getType()).toString());
@@ -49,7 +51,6 @@ public class LivingEntityMixin {
                 float reducedDamage = (float) (amount * (1 - reduction));
                 cir.setReturnValue(reducedDamage);
                 player.sendMessage(Text.literal("§cYour damage is reduced by " + (reduction * 100) + "%.§cYou haven't defeated the previous boss!"), true);
-
             }
         }
     }
