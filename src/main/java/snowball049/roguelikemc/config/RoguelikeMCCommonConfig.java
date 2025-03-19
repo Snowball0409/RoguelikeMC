@@ -67,12 +67,24 @@ public class RoguelikeMCCommonConfig {
         }
     }
 
-    private static void writeConfig(Gson gson, File file, RoguelikeMCCommonConfig config) {
+    public static void writeConfig(Gson gson, File file, RoguelikeMCCommonConfig config) {
         try (FileWriter writer = new FileWriter(file)) {
             gson.toJson(config, writer);
             RoguelikeMC.LOGGER.info("Successfully wrote to config file {}", file);
         } catch (IOException e) {
             RoguelikeMC.LOGGER.error("Failed to write config file", e);
+        }
+    }
+
+    public static void saveConfig() {
+        Gson gson = new GsonBuilder().setLenient().setPrettyPrinting().create();
+        File file = COMMON_CONFIG_PATH.toFile();
+
+        try (FileWriter writer = new FileWriter(file)) {
+            gson.toJson(INSTANCE, writer);
+            RoguelikeMC.LOGGER.info("Saved config to {}", file);
+        } catch (IOException e) {
+            RoguelikeMC.LOGGER.error("Failed to save config", e);
         }
     }
 }
