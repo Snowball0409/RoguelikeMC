@@ -20,6 +20,12 @@ repositories {
 		name = "Terraformers"
 		url = "https://maven.terraformersmc.com/"
 	}
+	maven {
+		url = 'https://maven.blamejared.com'
+		content {
+			includeGroup 'noobanidus.mods.lootr'
+		}
+	}
 }
 
 loom {
@@ -54,6 +60,10 @@ dependencies {
 
 	// mod menu
 	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
+
+	// lootr
+	modCompileOnly "noobanidus.mods.lootr:lootr-fabric:${lootr_version}"
+	modRuntimeOnly "noobanidus.mods.lootr:lootr-fabric:${lootr_version}"
 }
 
 processResources {

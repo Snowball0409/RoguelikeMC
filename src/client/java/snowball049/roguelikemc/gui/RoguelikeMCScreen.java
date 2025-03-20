@@ -150,10 +150,6 @@ public class RoguelikeMCScreen extends Screen {
 
     public void refreshUpgradeDisplay(List<RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig> upgrades){
         if(this.client != null){
-//            if(this.client.player instanceof PlayerEntityAccessor accessor){
-//                PERMANENT_EFFECTS = accessor.getPermanentUpgrades();
-//                TEMPORARY_EFFECTS = accessor.getTemporaryUpgrades();
-//            }
             if(upgrades.isEmpty() || !upgrades.getFirst().is_permanent()){
                 TEMPORARY_EFFECTS = upgrades;
             }
