@@ -26,6 +26,15 @@ repositories {
 			includeGroup 'noobanidus.mods.lootr'
 		}
 	}
+	// accessories
+	maven { url 'https://maven.wispforest.io/releases' }
+	maven { url 'https://maven.su5ed.dev/releases' }
+
+	// trinkets
+	maven {
+		name = "Ladysnake Libs"
+		url = 'https://maven.ladysnake.org/releases'
+	}
 }
 
 loom {
@@ -55,15 +64,17 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// Config
-	implementation 'com.moandjiezana.toml:toml4j:0.7.2'
-
 	// mod menu
-	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
+	modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
+	modRuntimeOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
 
-	// lootr
-	modCompileOnly "noobanidus.mods.lootr:lootr-fabric:${lootr_version}"
-	modRuntimeOnly "noobanidus.mods.lootr:lootr-fabric:${lootr_version}"
+	// accessories
+	modCompileOnly("io.wispforest:accessories-fabric:${project.accessories_version}")
+	modRuntimeOnly("io.wispforest:accessories-fabric:${project.accessories_version}")
+
+	// trinkets
+	modCompileOnly("dev.emi:trinkets:${project.trinkets_version}")
+	modRuntimeOnly("dev.emi:trinkets:${project.trinkets_version}")
 }
 
 processResources {

@@ -6,6 +6,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -26,6 +27,7 @@ import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
 import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
+import snowball049.roguelikemc.compat.RoguelikeMCCompat;
 
 public class RoguelikeMC implements ModInitializer {
 	public static final String MOD_ID = "roguelikemc";
@@ -134,6 +136,11 @@ public class RoguelikeMC implements ModInitializer {
 							)
 					)
 			);
+		});
+
+		// Compat Check when
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+			RoguelikeMCCompat.load();
 		});
 
 		LOGGER.info("RoguelikeMC Initialized");
