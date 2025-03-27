@@ -1,0 +1,27 @@
+{
+  "id": "dragon_skin",
+  "name": "Dragon Skin",
+  "description": "Get resistant I but minus 1 Heart",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/dragon_breath.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.max_health",
+        "-2",
+        "add_value"
+      ]
+    },
+    {
+      "type": "effect",
+      "value": [
+        "minecraft:resistance",
+        "-1",
+        "0"
+      ]
+    }
+  ]
+}

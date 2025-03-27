@@ -16,16 +16,16 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
-import snowball049.roguelikemc.config.RoguelikeMCUpgradesConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
+import snowball049.roguelikemc.datagen.RoguelikeMCUpgradeDataProvider;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
 
 import java.util.*;
 
 public class RoguelikeMCUpgradeUtil {
-    public static void handleUpgrade(RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig upgrade, ServerPlayerEntity player) {
+    public static void handleUpgrade(RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade upgrade, ServerPlayerEntity player) {
         RoguelikeMCPlayerData serverState = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-        if (upgrade.is_permanent()) {
+        if (upgrade.isPermanent()) {
             serverState.permanentUpgrades.add(upgrade);
         }else{
             serverState.temporaryUpgrades.add(upgrade);
@@ -38,12 +38,12 @@ public class RoguelikeMCUpgradeUtil {
         }
     }
 
-    public static void applyUpgrade(ServerPlayerEntity player, RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig upgrade) {
-        upgrade.action().forEach(action -> {
+    public static void applyUpgrade(ServerPlayerEntity player, RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade upgrade) {
+        upgrade.actions().forEach(action -> {
             if (action.type().equals("attribute")) {
-                RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, action.value(), upgrade.is_permanent());
+                RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, action.value(), upgrade.isPermanent());
             } else if (action.type().equals("effect")) {
-                RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), upgrade.is_permanent());
+                RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), upgrade.isPermanent());
             }
         });
     }

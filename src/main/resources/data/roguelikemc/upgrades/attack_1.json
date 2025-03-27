@@ -1,0 +1,19 @@
+{
+  "id": "attack_1",
+  "name": "+1 Attack",
+  "description": "Add 1 Attack",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/mob_effect/strength.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.attack_damage",
+        "1",
+        "add_value"
+      ]
+    }
+  ]
+}

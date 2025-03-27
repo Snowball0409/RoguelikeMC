@@ -1,0 +1,19 @@
+{
+  "id": "shadow_cloak",
+  "name": "Shadow Cloak",
+  "description": "Grants invisibility effect for 5 seconds",
+  "tier": "epic",
+  "isPermanent": true,
+  "isUnique": true,
+  "icon": "minecraft:textures/mob_effect/invisibility.png",
+  "actions": [
+    {
+      "type": "effect",
+      "value": [
+        "minecraft:invisibility",
+        "-1",
+        "0"
+      ]
+    }
+  ]
+}

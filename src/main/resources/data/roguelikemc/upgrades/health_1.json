@@ -1,0 +1,19 @@
+{
+  "id": "health_1",
+  "name": "+1 Health",
+  "description": "Add 1 Health",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/mob_effect/regeneration.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.max_health",
+        "1",
+        "add_value"
+      ]
+    }
+  ]
+}

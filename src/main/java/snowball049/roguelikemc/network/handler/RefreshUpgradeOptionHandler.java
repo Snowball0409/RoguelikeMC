@@ -1,8 +1,9 @@
 package snowball049.roguelikemc.network.handler;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import snowball049.roguelikemc.config.RoguelikeMCUpgradesConfig;
+import snowball049.roguelikemc.datagen.RoguelikeMCUpgradeDataProvider;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
+import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,13 +16,14 @@ public class RefreshUpgradeOptionHandler {
             return;
         }
 
-        List<String> upgradeKeys = new ArrayList<>(RoguelikeMCUpgradesConfig.INSTANCE.upgrades.keySet());
+        List<String> upgradeKeys = new ArrayList<>(RoguelikeMCUpgradeManager.getUpgrades().stream().map(RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade::id).toList());
         Collections.shuffle(upgradeKeys);
-        List<RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig> currentUpgrades = new ArrayList<>();
+        List<RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade> currentUpgrades = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            currentUpgrades.add(RoguelikeMCUpgradesConfig.INSTANCE.upgrades.get(upgradeKeys.get(i)));
+            int finalI = i;
+            currentUpgrades.add(RoguelikeMCUpgradeManager.getUpgrades().stream().filter(u -> u.id().equals(upgradeKeys.get(finalI))).findFirst().orElse(null));
         }
-        for (RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig upgrade : currentUpgrades) {
+        for (RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade upgrade : currentUpgrades) {
             ServerPlayNetworking.send(context.player(), new UpgradeOptionS2CPayload(upgrade));
         }
     }

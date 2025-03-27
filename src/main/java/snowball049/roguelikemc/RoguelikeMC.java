@@ -10,7 +10,9 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -18,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import snowball049.roguelikemc.command.RoguelikeMCCommands;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
-import snowball049.roguelikemc.config.RoguelikeMCUpgradesConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.network.handler.RefreshUpgradeOptionHandler;
 import snowball049.roguelikemc.network.handler.SelectUpgradeOptionHandler;
@@ -26,6 +27,7 @@ import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
+import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
 import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 import snowball049.roguelikemc.compat.RoguelikeMCCompat;
 
@@ -37,7 +39,6 @@ public class RoguelikeMC implements ModInitializer {
 	public void onInitialize() {
 		// Init Config Support
 		RoguelikeMCCommonConfig.loadConfig();
-		RoguelikeMCUpgradesConfig.loadConfig();
 
 		// Handle Network Packet
 		PayloadTypeRegistry.playC2S().register(RefreshUpgradeOptionC2SPayload.ID, RefreshUpgradeOptionC2SPayload.CODEC);
@@ -142,6 +143,8 @@ public class RoguelikeMC implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			RoguelikeMCCompat.load();
 		});
+
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new RoguelikeMCUpgradeManager());
 
 		LOGGER.info("RoguelikeMC Initialized");
 	}

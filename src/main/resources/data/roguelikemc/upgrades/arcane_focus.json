@@ -1,0 +1,27 @@
+{
+  "id": "arcane_focus",
+  "name": "Arcane Focus",
+  "description": "Increases mana regeneration by 15%",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/ender_pearl.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.max_health",
+        "1",
+        "add_value"
+      ]
+    },
+    {
+      "type": "effect",
+      "value": [
+        "minecraft:haste",
+        "-1",
+        "0"
+      ]
+    }
+  ]
+}

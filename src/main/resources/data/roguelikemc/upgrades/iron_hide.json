@@ -1,0 +1,19 @@
+{
+  "id": "iron_hide",
+  "name": "Iron Hide",
+  "description": "Increases armor by 3",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/iron_ingot.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.armor",
+        "3",
+        "add_value"
+      ]
+    }
+  ]
+}

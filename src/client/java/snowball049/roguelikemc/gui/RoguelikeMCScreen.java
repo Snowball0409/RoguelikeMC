@@ -12,7 +12,7 @@ import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import snowball049.roguelikemc.config.RoguelikeMCUpgradesConfig;
+import snowball049.roguelikemc.datagen.RoguelikeMCUpgradeDataProvider;
 import snowball049.roguelikemc.network.SendPacketToServer;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
@@ -24,9 +24,9 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class RoguelikeMCScreen extends Screen {
 
-    private List<RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig> TEMPORARY_EFFECTS = new ArrayList<>();
-    private List<RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig> PERMANENT_EFFECTS = new ArrayList<>();
-    public final List<RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig> currentOptions = new ArrayList<>(3);
+    private List<RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade> TEMPORARY_EFFECTS = new ArrayList<>();
+    private List<RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade> PERMANENT_EFFECTS = new ArrayList<>();
+    public final List<RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade> currentOptions = new ArrayList<>(3);
 
     // 自定義 GUI 背景圖
     private static final Identifier BACKGROUND_TEXTURE = Identifier.tryParse("roguelikemc", "textures/gui/upgrade_bg.png");
@@ -70,7 +70,7 @@ public class RoguelikeMCScreen extends Screen {
             final int index = i;
             optionButtons[i] = ButtonWidget.builder(Text.empty(), button -> {
                         if (currentOptions.size() > index) {
-                            RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig selected = currentOptions.get(index);
+                            RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade selected = currentOptions.get(index);
                             SendPacketToServer.send(new SelectUpgradeOptionC2SPayload(selected));
                             currentOptions.clear();
                             refreshOptionsDisplay();
@@ -139,7 +139,7 @@ public class RoguelikeMCScreen extends Screen {
     private void refreshOptionsDisplay(){
         for(int i=0; i<3; i++){
             if(i < currentOptions.size()){
-                RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig effect = currentOptions.get(i);
+                RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade effect = currentOptions.get(i);
                 optionButtons[i].setMessage(Text.literal(effect.name()));
                 optionButtons[i].setTooltip(Tooltip.of(Text.literal(effect.description()).formatted(Formatting.GRAY)));
             }else{
@@ -148,9 +148,9 @@ public class RoguelikeMCScreen extends Screen {
         }
     }
 
-    public void refreshUpgradeDisplay(List<RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig> upgrades){
+    public void refreshUpgradeDisplay(List<RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade> upgrades){
         if(this.client != null){
-            if(upgrades.isEmpty() || !upgrades.getFirst().is_permanent()){
+            if(upgrades.isEmpty() || !upgrades.getFirst().isPermanent()){
                 TEMPORARY_EFFECTS = upgrades;
             }
             else{
@@ -174,7 +174,7 @@ public class RoguelikeMCScreen extends Screen {
         renderRefreshButton(context, x, y, mouseX, mouseY);
     }
 
-    private void renderEffectsSection(DrawContext context, int x, int y, String title, List<RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig> effects, int mouseX, int mouseY) {
+    private void renderEffectsSection(DrawContext context, int x, int y, String title, List<RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade> effects, int mouseX, int mouseY) {
         // 標題文字
         context.drawCenteredTextWithShadow(textRenderer, title, x+SECTION_WIDTH/2, y, 0xFFFFFF);
 
@@ -188,7 +188,7 @@ public class RoguelikeMCScreen extends Screen {
             int itemX = x + Math.divideExact(i, 6)*(itemWidth+itemPadding);
 
             // 繪製顏色方塊
-            RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig effect = effects.get(i);
+            RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade effect = effects.get(i);
             context.drawTexture(Identifier.tryParse(effect.icon()),itemX, itemY, 0, 0, itemWidth, itemHeight, itemWidth, itemHeight); // 設置透明度
 
             // 檢查滑鼠懸停
@@ -220,7 +220,7 @@ public class RoguelikeMCScreen extends Screen {
             );
 
             if(i < currentOptions.size()) {
-                RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig effect = currentOptions.get(i);
+                RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade effect = currentOptions.get(i);
                 // 顏色方塊
                 context.drawTexture(
                         Identifier.tryParse(effect.icon()),

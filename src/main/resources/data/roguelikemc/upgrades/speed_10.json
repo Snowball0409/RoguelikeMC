@@ -1,0 +1,19 @@
+{
+  "id": "speed_10",
+  "name": "+10% Speed",
+  "description": "Add 10% Speed",
+  "tier": "common",
+  "isPermanent": true,
+  "isUnique": false,
+  "icon": "minecraft:textures/mob_effect/speed.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.movement_speed",
+        "0.1",
+        "add_multiplied_total"
+      ]
+    }
+  ]
+}

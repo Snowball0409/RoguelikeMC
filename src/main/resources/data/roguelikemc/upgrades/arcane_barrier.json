@@ -1,0 +1,19 @@
+{
+  "id": "arcane_barrier",
+  "name": "Arcane Barrier",
+  "description": "Grants absorption for 30 seconds",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/ender_eye.png",
+  "actions": [
+    {
+      "type": "effect",
+      "value": [
+        "minecraft:absorption",
+        "-1",
+        "0"
+      ]
+    }
+  ]
+}

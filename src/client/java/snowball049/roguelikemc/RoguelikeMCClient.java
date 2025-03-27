@@ -7,7 +7,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
-import snowball049.roguelikemc.config.RoguelikeMCUpgradesConfig;
+import snowball049.roguelikemc.datagen.RoguelikeMCUpgradeDataProvider;
 import snowball049.roguelikemc.gui.RoguelikeMCScreen;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
@@ -35,7 +35,7 @@ public class RoguelikeMCClient implements ClientModInitializer {
 		// Netowrk Packet
 		// Refresh Upgrade Options
 		ClientPlayNetworking.registerGlobalReceiver(UpgradeOptionS2CPayload.ID, (payload, context) -> {
-			RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig upgrade = payload.upgrade();
+			RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade upgrade = payload.upgrade();
 			if(upgrade != null) currentScreen.currentOptions.add(upgrade);
 		});
 		// Refresh Current Upgrades
