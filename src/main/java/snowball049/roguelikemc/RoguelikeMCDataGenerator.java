@@ -3,7 +3,6 @@ package snowball049.roguelikemc;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.data.server.advancement.AdvancementProvider;
 import snowball049.roguelikemc.datagen.RoguelikeMCUpgradeDataProvider;
 
 public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
@@ -16,7 +15,7 @@ public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 			RoguelikeMCUpgradeDataProvider upgradeProvider = new RoguelikeMCUpgradeDataProvider(output);
 
 			upgradeProvider.addUpgrade(
-					new RoguelikeMCUpgradeDataProvider.UpgradeData("health_1", "+1 Health")
+					new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade("health_1", "+1 Health")
 							.description("Add 1 Health")
 							.tier("common")
 							.isPermanent(false)
@@ -26,7 +25,7 @@ public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 			);
 
 			upgradeProvider.addUpgrade(
-					new RoguelikeMCUpgradeDataProvider.UpgradeData("attack_1", "+1 Attack")
+					new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade("attack_1", "+1 Attack")
 							.description("Add 1 Attack")
 							.tier("common")
 							.isPermanent(false)
@@ -36,7 +35,7 @@ public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 			);
 
 			upgradeProvider.addUpgrade(
-					new RoguelikeMCUpgradeDataProvider.UpgradeData("speed_10", "+10% Speed")
+					new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade("speed_10", "+10% Speed")
 							.description("Add 10% Speed")
 							.tier("common")
 							.isPermanent(true)
@@ -46,7 +45,7 @@ public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 			);
 
 			upgradeProvider.addUpgrade(
-					new RoguelikeMCUpgradeDataProvider.UpgradeData("dragon_skin", "Dragon Skin")
+					new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade("dragon_skin", "Dragon Skin")
 							.description("Get resistant I but minus 1 Heart")
 							.tier("rare")
 							.isPermanent(false)
@@ -57,7 +56,7 @@ public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 			);
 
 			upgradeProvider.addUpgrade(
-					new RoguelikeMCUpgradeDataProvider.UpgradeData("phoenix_feather", "Phoenix Feather")
+					new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade("phoenix_feather", "Phoenix Feather")
 							.description("Grants regeneration effect and feather falling effect")
 							.tier("epic")
 							.isPermanent(false)
@@ -68,7 +67,7 @@ public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 			);
 
 			upgradeProvider.addUpgrade(
-					new RoguelikeMCUpgradeDataProvider.UpgradeData("titan_strength", "Titan Strength")
+					new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade("titan_strength", "Titan Strength")
 							.description("Increases attack damage by 5")
 							.tier("legendary")
 							.isPermanent(true)
@@ -78,7 +77,7 @@ public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 			);
 
 			upgradeProvider.addUpgrade(
-					new RoguelikeMCUpgradeDataProvider.UpgradeData("swift_boots", "Swift Boots")
+					new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade("swift_boots", "Swift Boots")
 							.description("Increases movement speed by 10%")
 							.tier("common")
 							.isPermanent(false)
@@ -88,7 +87,7 @@ public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 			);
 
 			upgradeProvider.addUpgrade(
-					new RoguelikeMCUpgradeDataProvider.UpgradeData("iron_hide", "Iron Hide")
+					new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade("iron_hide", "Iron Hide")
 							.description("Increases armor by 3")
 							.tier("rare")
 							.isPermanent(false)
@@ -98,7 +97,7 @@ public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 			);
 
 			upgradeProvider.addUpgrade(
-					new RoguelikeMCUpgradeDataProvider.UpgradeData("shadow_cloak", "Shadow Cloak")
+					new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade("shadow_cloak", "Shadow Cloak")
 							.description("Grants invisibility effect for 5 seconds")
 							.tier("epic")
 							.isPermanent(true)
@@ -109,7 +108,7 @@ public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 
 			// Note: Commented out event actions are left out
 			upgradeProvider.addUpgrade(
-					new RoguelikeMCUpgradeDataProvider.UpgradeData("arcane_barrier", "Arcane Barrier")
+					new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade("arcane_barrier", "Arcane Barrier")
 							.description("Grants absorption for 30 seconds")
 							.tier("epic")
 							.isPermanent(false)
@@ -119,7 +118,7 @@ public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 			);
 
 			upgradeProvider.addUpgrade(
-					new RoguelikeMCUpgradeDataProvider.UpgradeData("berserker_rage", "Berserker Rage")
+					new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade("berserker_rage", "Berserker Rage")
 							.description("Increases attack speed but reduces defense")
 							.tier("legendary")
 							.isPermanent(true)
@@ -130,7 +129,7 @@ public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 			);
 
 			upgradeProvider.addUpgrade(
-					new RoguelikeMCUpgradeDataProvider.UpgradeData("arcane_focus", "Arcane Focus")
+					new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade("arcane_focus", "Arcane Focus")
 							.description("Increases mana regeneration by 15%")
 							.tier("common")
 							.isPermanent(false)

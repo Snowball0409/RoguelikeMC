@@ -17,14 +17,14 @@ import java.util.concurrent.CompletableFuture;
 
 public class RoguelikeMCUpgradeDataProvider implements DataProvider {
     private final FabricDataOutput output;
-    private final List<UpgradeData> upgrades = new ArrayList<>();
+    private final List<RoguelikeMCUpgrade> upgrades = new ArrayList<>();
 
     public RoguelikeMCUpgradeDataProvider(FabricDataOutput output) {
         this.output = output;
     }
 
     // Nested class to represent upgrade data
-    public static class UpgradeData {
+    public static class RoguelikeMCUpgrade {
         private final String id;
         private final String name;
         private String description = "";
@@ -34,37 +34,37 @@ public class RoguelikeMCUpgradeDataProvider implements DataProvider {
         private String icon = "";
         private final List<ActionData> actions = new ArrayList<>();
 
-        public UpgradeData(String id, String name) {
+        public RoguelikeMCUpgrade(String id, String name) {
             this.id = id;
             this.name = name;
         }
 
-        public UpgradeData description(String description) {
+        public RoguelikeMCUpgrade description(String description) {
             this.description = description;
             return this;
         }
 
-        public UpgradeData tier(String tier) {
+        public RoguelikeMCUpgrade tier(String tier) {
             this.tier = tier;
             return this;
         }
 
-        public UpgradeData isPermanent(boolean isPermanent) {
+        public RoguelikeMCUpgrade isPermanent(boolean isPermanent) {
             this.isPermanent = isPermanent;
             return this;
         }
 
-        public UpgradeData isUnique(boolean isUnique) {
+        public RoguelikeMCUpgrade isUnique(boolean isUnique) {
             this.isUnique = isUnique;
             return this;
         }
 
-        public UpgradeData icon(String icon) {
+        public RoguelikeMCUpgrade icon(String icon) {
             this.icon = icon;
             return this;
         }
 
-        public UpgradeData addEffectAction(String type, String effect, String duration, String amplifier) {
+        public RoguelikeMCUpgrade addEffectAction(String type, String effect, String duration, String amplifier) {
             actions.add(new ActionData(type, effect, duration, amplifier));
             return this;
         }
@@ -109,7 +109,7 @@ public class RoguelikeMCUpgradeDataProvider implements DataProvider {
     }
 
     // Method to add upgrades
-    public void addUpgrade(UpgradeData upgrade) {
+    public void addUpgrade(RoguelikeMCUpgrade upgrade) {
         upgrades.add(upgrade);
     }
 
@@ -118,7 +118,7 @@ public class RoguelikeMCUpgradeDataProvider implements DataProvider {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         List<CompletableFuture<?>> futures = new ArrayList<>();
 
-        for (UpgradeData upgrade : upgrades) {
+        for (RoguelikeMCUpgrade upgrade : upgrades) {
             JsonObject upgradeJson = upgrade.toJson();
 
             Path path = output.getPath()
