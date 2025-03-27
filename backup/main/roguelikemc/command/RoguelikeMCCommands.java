@@ -1,7 +1,6 @@
 package snowball049.roguelikemc.command;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -10,19 +9,16 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.registry.Registries;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
+import snowball049.roguelikemc.config.RoguelikeMCUpgradesConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
-import snowball049.roguelikemc.datagen.RoguelikeMCUpgradeDataProvider;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
-import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
 import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
 import java.util.List;
@@ -30,13 +26,11 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class RoguelikeMCCommands {
-
     public static int grantUpgrade(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         try {
             List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "player").stream().toList();
             String upgradeId = StringArgumentType.getString(context, "upgradeOption");
-//            RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig upgrade = RoguelikeMCUpgradesConfig.INSTANCE.upgrades.get(upgradeId);
-            RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade upgrade = RoguelikeMCUpgradeManager.getUpgrades().stream().filter(u -> u.id().equals(upgradeId)).findFirst().orElse(null);
+            RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig upgrade = RoguelikeMCUpgradesConfig.INSTANCE.upgrades.get(upgradeId);
 
             if (upgrade == null) {
                 context.getSource().sendError(Text.literal("Upgrade '" + upgradeId + "' not found!"));
@@ -55,7 +49,7 @@ public class RoguelikeMCCommands {
         try{
             List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "player").stream().toList();
             String upgradeId = StringArgumentType.getString(context, "upgradeOption");
-            RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade upgrade = RoguelikeMCUpgradeManager.getUpgrades().stream().filter(u -> u.id().equals(upgradeId)).findFirst().orElse(null);
+            RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig upgrade = RoguelikeMCUpgradesConfig.INSTANCE.upgrades.get(upgradeId);
 
             if (upgrade == null) {
                 context.getSource().sendError(Text.literal("Upgrade '" + upgradeId + "' not found!"));
@@ -64,7 +58,7 @@ public class RoguelikeMCCommands {
                 players.forEach(player -> {
                     RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
                     boolean removed = false;
-                    if(upgrade.isPermanent()) {
+                    if(upgrade.is_permanent()) {
                         removed = playerData.permanentUpgrades.removeIf(u -> u.id().equals(upgradeId));
                         ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(playerData.permanentUpgrades));
                     }else {
@@ -72,7 +66,7 @@ public class RoguelikeMCCommands {
                         ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(playerData.temporaryUpgrades));
                     }
                     if(removed){
-                        upgrade.actions().forEach(upgradeAction -> {
+                        upgrade.action().forEach(upgradeAction -> {
                             if(upgradeAction.type().equals("attribute")){
                                 RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player, upgradeAction.value());
                             } else if (upgradeAction.type().equals("effect")) {
@@ -97,7 +91,7 @@ public class RoguelikeMCCommands {
             players.forEach(player -> {
                 RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
                 playerData.permanentUpgrades.forEach(upgrade -> {
-                    upgrade.actions().forEach(upgradeAction -> {
+                    upgrade.action().forEach(upgradeAction -> {
                         if(upgradeAction.type().equals("attribute")){
                             RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player, upgradeAction.value());
                         } else if (upgradeAction.type().equals("effect")) {
@@ -106,7 +100,7 @@ public class RoguelikeMCCommands {
                     });
                 });
                 playerData.temporaryUpgrades.forEach(upgrade -> {
-                    upgrade.actions().forEach(upgradeAction -> {
+                    upgrade.action().forEach(upgradeAction -> {
                         if(upgradeAction.type().equals("attribute")){
                             RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player, upgradeAction.value());
                         } else if (upgradeAction.type().equals("effect")) {
@@ -155,8 +149,8 @@ public class RoguelikeMCCommands {
     public static class UpgradeSuggestionProvider implements SuggestionProvider<ServerCommandSource> {
         @Override
         public CompletableFuture<Suggestions> getSuggestions(CommandContext commandContext, SuggestionsBuilder suggestionsBuilder){
-            List<RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade> upgrades = RoguelikeMCUpgradeManager.getUpgrades().stream().toList();
-            upgrades.forEach((upgrade) -> suggestionsBuilder.suggest(upgrade.id()));
+            Map<String, RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig> upgrades = RoguelikeMCUpgradesConfig.INSTANCE.upgrades;
+            upgrades.forEach((id, upgrade) -> suggestionsBuilder.suggest(id));
             return suggestionsBuilder.buildFuture();
         }
     }
