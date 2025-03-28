@@ -1,23 +1,15 @@
 package snowball049.roguelikemc.util;
 
-import dev.emi.trinkets.api.SlotReference;
-import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketsApi;
 import io.wispforest.accessories.api.AccessoriesCapability;
 import io.wispforest.accessories.api.Accessory;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import snowball049.roguelikemc.RoguelikeMC;
-import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.compat.RoguelikeMCCompat;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
-import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
-import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
 
 import java.util.Random;
 
@@ -114,17 +106,16 @@ public class RoguelikeMCDeathUtil {
         // accessories compatibility
         if(RoguelikeMCCompat.isAccessoriesLoaded) {
             if(player instanceof AccessoriesCapability accessoriedPlayer) {
-                accessoriedPlayer.getAllEquipped().forEach((slot) -> {
-                    slot.reference().setStack(ItemStack.EMPTY);
-                });
+                accessoriedPlayer.getAllEquipped().forEach((slot) ->
+                        slot.reference().setStack(ItemStack.EMPTY));
             }
         }
 
         // trinkets compatibility
         if(RoguelikeMCCompat.isTrinketsLoaded) {
-            TrinketsApi.getTrinketComponent(player).ifPresent(trinketComponent -> trinketComponent.getAllEquipped().forEach((slot) -> {
-                slot.getLeft().inventory().setStack(slot.getLeft().index(), ItemStack.EMPTY);
-            }));
+            TrinketsApi.getTrinketComponent(player).ifPresent(trinketComponent ->
+                    trinketComponent.getAllEquipped().forEach((slot) ->
+                            slot.getLeft().inventory().setStack(slot.getLeft().index(), ItemStack.EMPTY)));
         }
     }
 

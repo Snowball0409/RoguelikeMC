@@ -1,7 +1,6 @@
 package snowball049.roguelikemc.command;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -10,10 +9,8 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.registry.Registries;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -26,7 +23,6 @@ import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
 import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class RoguelikeMCCommands {
@@ -63,7 +59,7 @@ public class RoguelikeMCCommands {
             }else {
                 players.forEach(player -> {
                     RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-                    boolean removed = false;
+                    boolean removed;
                     if(upgrade.isPermanent()) {
                         removed = playerData.permanentUpgrades.removeIf(u -> u.id().equals(upgradeId));
                         ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(playerData.permanentUpgrades));

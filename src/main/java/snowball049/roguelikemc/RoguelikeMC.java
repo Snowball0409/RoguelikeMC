@@ -10,11 +10,9 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
-import net.minecraft.server.network.ServerPlayerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
-import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.network.handler.RefreshUpgradeOptionHandler;
 import snowball049.roguelikemc.network.handler.SelectUpgradeOptionHandler;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
@@ -23,7 +21,6 @@ import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
 import snowball049.roguelikemc.util.RoguelikeMCRegisterUtil;
-import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
 public class RoguelikeMC implements ModInitializer {
 	public static final String MOD_ID = "roguelikemc";

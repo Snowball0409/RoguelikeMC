@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;

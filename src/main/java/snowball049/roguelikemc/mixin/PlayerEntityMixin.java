@@ -1,6 +1,5 @@
 package snowball049.roguelikemc.mixin;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.GameRules;
