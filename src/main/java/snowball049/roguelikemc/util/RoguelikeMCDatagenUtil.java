@@ -1,12 +1,13 @@
 package snowball049.roguelikemc.util;
 
+import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.datagen.RoguelikeMCUpgradeDataProvider;
 
 import java.util.List;
 
 public class RoguelikeMCDatagenUtil {
     public static void addDefaultUpgrades(RoguelikeMCUpgradeDataProvider upgradeProvider) {
-        final RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade health_1 = new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade(
+        final RoguelikeMCUpgradeData health_1 = new RoguelikeMCUpgradeData(
                 "health_1",
                 "+1 Health",
                 "Add 1 Health",
@@ -15,10 +16,10 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 "minecraft:textures/mob_effect/regeneration.png",
                 List.of(
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("attribute", List.of("minecraft:generic.max_health", "1", "add_value"))
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.max_health", "1", "add_value"))
                 )
         );
-        final RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade attack_1 = new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade(
+        final RoguelikeMCUpgradeData attack_1 = new RoguelikeMCUpgradeData(
                 "attack_1",
                 "+1 Attack",
                 "Add 1 Attack",
@@ -27,10 +28,10 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 "minecraft:textures/mob_effect/strength.png",
                 List.of(
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("attribute", List.of("minecraft:generic.attack_damage", "1", "add_value"))
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.attack_damage", "1", "add_value"))
                 )
         );
-        final RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade speed_10 = new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade(
+        final RoguelikeMCUpgradeData speed_10 = new RoguelikeMCUpgradeData(
                 "speed_10",
                 "+10% Speed",
                 "Add 10% Speed",
@@ -39,10 +40,10 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 "minecraft:textures/mob_effect/speed.png",
                 List.of(
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("attribute", List.of("minecraft:generic.movement_speed", "0.1", "add_multiplied_total"))
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.movement_speed", "0.1", "add_multiplied_total"))
                 )
         );
-        final RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade dragon_skin = new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade(
+        final RoguelikeMCUpgradeData dragon_skin = new RoguelikeMCUpgradeData(
                 "dragon_skin",
                 "Dragon Skin",
                 "Get resistant I but minus 1 Heart",
@@ -51,11 +52,11 @@ public class RoguelikeMCDatagenUtil {
                 true,
                 "minecraft:textures/item/dragon_breath.png",
                 List.of(
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("attribute", List.of("minecraft:generic.max_health", "-2", "add_value")),
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("effect", List.of("minecraft:resistance", "-1", "0"))
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.max_health", "-2", "add_value")),
+                        new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:resistance", "-1", "0"))
                 )
         );
-        final RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade phoenix_feather = new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade(
+        final RoguelikeMCUpgradeData phoenix_feather = new RoguelikeMCUpgradeData(
                 "phoenix_feather",
                 "Phoenix Feather",
                 "Grants regeneration effect and feather falling effect",
@@ -64,11 +65,11 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 "minecraft:textures/item/feather.png",
                 List.of(
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("effect", List.of("minecraft:regeneration", "-1", "0")),
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("effect", List.of("minecraft:slow_falling", "-1", "0"))
+                        new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:regeneration", "-1", "0")),
+                        new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:slow_falling", "-1", "0"))
                 )
         );
-        final RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade titan_strength = new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade(
+        final RoguelikeMCUpgradeData titan_strength = new RoguelikeMCUpgradeData(
                 "titan_strength",
                 "Titan Strength",
                 "Increases attack damage by 5",
@@ -77,11 +78,11 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 "minecraft:textures/mob_effect/strength.png",
                 List.of(
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("attribute", List.of("minecraft:generic.attack_damage", "5", "add_value"))
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.attack_damage", "5", "add_value"))
                 )
         );
 
-        final RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade swift_boots = new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade(
+        final RoguelikeMCUpgradeData swift_boots = new RoguelikeMCUpgradeData(
                 "swift_boots",
                 "Swift Boots",
                 "Increases movement speed by 10%",
@@ -90,11 +91,11 @@ public class RoguelikeMCDatagenUtil {
                 true,
                 "minecraft:textures/mob_effect/speed.png",
                 List.of(
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("attribute", List.of("minecraft:generic.movement_speed", "0.1", "add_multiplied_base"))
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.movement_speed", "0.1", "add_multiplied_base"))
                 )
         );
 
-        final RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade iron_hide = new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade(
+        final RoguelikeMCUpgradeData iron_hide = new RoguelikeMCUpgradeData(
                 "iron_hide",
                 "Iron Hide",
                 "Increases armor by 3",
@@ -103,11 +104,11 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 "minecraft:textures/item/iron_ingot.png",
                 List.of(
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("attribute", List.of("minecraft:generic.armor", "3", "add_value"))
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.armor", "3", "add_value"))
                 )
         );
 
-        final RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade shadow_cloak = new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade(
+        final RoguelikeMCUpgradeData shadow_cloak = new RoguelikeMCUpgradeData(
                 "shadow_cloak",
                 "Shadow Cloak",
                 "Grants invisibility effect for 5 seconds",
@@ -116,11 +117,11 @@ public class RoguelikeMCDatagenUtil {
                 true,
                 "minecraft:textures/mob_effect/invisibility.png",
                 List.of(
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("effect", List.of("minecraft:invisibility", "-1", "0"))
+                        new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:invisibility", "-1", "0"))
                 )
         );
 
-        final RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade fire_touch = new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade(
+        final RoguelikeMCUpgradeData fire_touch = new RoguelikeMCUpgradeData(
                 "fire_touch",
                 "Fire Touch",
                 "Sets enemy on fire when hit",
@@ -133,7 +134,7 @@ public class RoguelikeMCDatagenUtil {
                 )
         );
 
-        final RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade lifesteal = new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade(
+        final RoguelikeMCUpgradeData lifesteal = new RoguelikeMCUpgradeData(
                 "lifesteal",
                 "Life Steal",
                 "Heal for 20% of damage dealt",
@@ -146,7 +147,7 @@ public class RoguelikeMCDatagenUtil {
                 )
         );
 
-        final RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade arcane_barrier = new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade(
+        final RoguelikeMCUpgradeData arcane_barrier = new RoguelikeMCUpgradeData(
                 "arcane_barrier",
                 "Arcane Barrier",
                 "Grants absorption for 30 seconds",
@@ -155,11 +156,11 @@ public class RoguelikeMCDatagenUtil {
                 true,
                 "minecraft:textures/item/ender_eye.png",
                 List.of(
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("effect", List.of("minecraft:absorption", "-1", "0"))
+                        new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:absorption", "-1", "0"))
                 )
         );
 
-        final RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade berserker_rage = new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade(
+        final RoguelikeMCUpgradeData berserker_rage = new RoguelikeMCUpgradeData(
                 "berserker_rage",
                 "Berserker Rage",
                 "Increases attack speed but reduces defense",
@@ -168,12 +169,12 @@ public class RoguelikeMCDatagenUtil {
                 true,
                 "minecraft:textures/item/golden_sword.png",
                 List.of(
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("attribute", List.of("minecraft:generic.attack_speed", "0.5", "add_value")),
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("attribute", List.of("minecraft:generic.armor", "-2", "add_value"))
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.attack_speed", "0.5", "add_value")),
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.armor", "-2", "add_value"))
                 )
         );
 
-        final RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade arcane_focus = new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade(
+        final RoguelikeMCUpgradeData arcane_focus = new RoguelikeMCUpgradeData(
                 "arcane_focus",
                 "Arcane Focus",
                 "Increases mana regeneration by 15%",
@@ -182,8 +183,8 @@ public class RoguelikeMCDatagenUtil {
                 true,
                 "minecraft:textures/item/ender_pearl.png",
                 List.of(
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("attribute", List.of("minecraft:generic.max_health", "1", "add_value")),
-                        new RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.ActionData("effect", List.of("minecraft:haste", "-1", "0"))
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.max_health", "1", "add_value")),
+                        new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:haste", "-1", "0"))
                 )
         );
 

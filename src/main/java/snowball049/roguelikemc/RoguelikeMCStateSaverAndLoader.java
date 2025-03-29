@@ -11,7 +11,7 @@ import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
-import snowball049.roguelikemc.datagen.RoguelikeMCUpgradeDataProvider;
+import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 
 import java.util.*;
 
@@ -30,8 +30,8 @@ public class RoguelikeMCStateSaverAndLoader extends PersistentState {
         NbtCompound playersNbt = new NbtCompound();
         players.forEach((uuid, playerData) -> {
             NbtCompound playerNbt = new NbtCompound();
-            playerNbt.put("temporaryUpgrades", RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.CODEC.listOf().encodeStart(NbtOps.INSTANCE, playerData.temporaryUpgrades).getOrThrow());
-            playerNbt.put("permanentUpgrades", RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.CODEC.listOf().encodeStart(NbtOps.INSTANCE, playerData.permanentUpgrades).getOrThrow());
+            playerNbt.put("temporaryUpgrades", RoguelikeMCUpgradeData.CODEC.listOf().encodeStart(NbtOps.INSTANCE, playerData.temporaryUpgrades).getOrThrow());
+            playerNbt.put("permanentUpgrades", RoguelikeMCUpgradeData.CODEC.listOf().encodeStart(NbtOps.INSTANCE, playerData.permanentUpgrades).getOrThrow());
             playerNbt.putInt("currentKillHostile", playerData.currentKillHostile);
             playerNbt.putInt("currentKillHostileRequirement", playerData.currentKillHostileRequirement);
             playerNbt.putInt("upgradePoints", playerData.upgradePoints);
@@ -50,8 +50,8 @@ public class RoguelikeMCStateSaverAndLoader extends PersistentState {
             NbtCompound playerNbt = playersNbt.getCompound(key);
             NbtElement tempElement = playerNbt.get("temporaryUpgrades");
             NbtElement permElement = playerNbt.get("permanentUpgrades");
-            playerData.temporaryUpgrades = new ArrayList<>(RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.CODEC.listOf().decode(NbtOps.INSTANCE, tempElement).result().map(Pair::getFirst).orElse(new ArrayList<>()));
-            playerData.permanentUpgrades = new ArrayList<>(RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.CODEC.listOf().decode(NbtOps.INSTANCE, permElement).result().map(Pair::getFirst).orElse(new ArrayList<>()));
+            playerData.temporaryUpgrades = new ArrayList<>(RoguelikeMCUpgradeData.CODEC.listOf().decode(NbtOps.INSTANCE, tempElement).result().map(Pair::getFirst).orElse(new ArrayList<>()));
+            playerData.permanentUpgrades = new ArrayList<>(RoguelikeMCUpgradeData.CODEC.listOf().decode(NbtOps.INSTANCE, permElement).result().map(Pair::getFirst).orElse(new ArrayList<>()));
             playerData.currentKillHostile = playerNbt.getInt("currentKillHostile");
             playerData.currentKillHostileRequirement = playerNbt.getInt("currentKillHostileRequirement");
             playerData.upgradePoints = playerNbt.getInt("upgradePoints");

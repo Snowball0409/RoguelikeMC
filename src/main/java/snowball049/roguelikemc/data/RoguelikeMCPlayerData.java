@@ -1,14 +1,13 @@
 package snowball049.roguelikemc.data;
 
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
-import snowball049.roguelikemc.datagen.RoguelikeMCUpgradeDataProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RoguelikeMCPlayerData {
-    public List<RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade> temporaryUpgrades = new ArrayList<>();
-    public List<RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade> permanentUpgrades = new ArrayList<>();
+    public List<RoguelikeMCUpgradeData> temporaryUpgrades = new ArrayList<>();
+    public List<RoguelikeMCUpgradeData> permanentUpgrades = new ArrayList<>();
     public int upgradePoints = 0;
 
     public int currentKillHostile = 0;

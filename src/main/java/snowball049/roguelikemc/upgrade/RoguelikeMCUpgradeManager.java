@@ -6,11 +6,8 @@ import com.mojang.serialization.JsonOps;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.profiler.Profiler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import snowball049.roguelikemc.RoguelikeMC;
-import snowball049.roguelikemc.datagen.RoguelikeMCUpgradeDataProvider;
+import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -20,16 +17,16 @@ import java.util.Map;
 
 public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloadListener {
     private static final Gson GSON = new Gson();
-    private static final Map<String, RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade> UPGRADES = new HashMap<>();
+    private static final Map<String, RoguelikeMCUpgradeData> UPGRADES = new HashMap<>();
 
     public static void loadUpgrades(ResourceManager resourceManager) {
-        Map<String, RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade> allUpgrades = new HashMap<>();
+        Map<String, RoguelikeMCUpgradeData> allUpgrades = new HashMap<>();
         String dataType = "upgrades";
 
         for (Identifier id: resourceManager.findAllResources(dataType, path -> path.getPath().endsWith(".json")).keySet()) {
             try (InputStreamReader reader = new InputStreamReader(resourceManager.getResource(id).orElseThrow().getInputStream(), StandardCharsets.UTF_8)) {
                 JsonObject json = GSON.fromJson(reader, JsonObject.class);
-                RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade upgrade = RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade.CODEC
+                RoguelikeMCUpgradeData upgrade = RoguelikeMCUpgradeData.CODEC
                         .parse(JsonOps.INSTANCE, json)
                         .resultOrPartial(RoguelikeMC.LOGGER::error)
                         .orElse(null);
@@ -48,7 +45,7 @@ public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloa
     }
 
 
-    public static Collection<RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade> getUpgrades() {
+    public static Collection<RoguelikeMCUpgradeData> getUpgrades() {
         return UPGRADES.values();
     }
 

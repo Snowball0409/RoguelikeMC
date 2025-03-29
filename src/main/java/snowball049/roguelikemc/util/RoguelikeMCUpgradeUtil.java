@@ -2,6 +2,7 @@ package snowball049.roguelikemc.util;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -17,28 +18,29 @@ import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
-import snowball049.roguelikemc.datagen.RoguelikeMCUpgradeDataProvider;
+import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
 
 import java.util.*;
 
 public class RoguelikeMCUpgradeUtil {
-    public static void handleUpgrade(RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade upgrade, ServerPlayerEntity player) {
+    public static void handleUpgrade(RoguelikeMCUpgradeData upgrade, ServerPlayerEntity player) {
         RoguelikeMCPlayerData serverState = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+        serverState.upgradePoints --;
         if (upgrade.isPermanent()) {
             serverState.permanentUpgrades.add(upgrade);
         }else{
             serverState.temporaryUpgrades.add(upgrade);
         }
         RoguelikeMCUpgradeUtil.applyUpgrade(player, upgrade);
-        ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(serverState.permanentUpgrades));
-        ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(serverState.temporaryUpgrades));
+        ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(true, serverState.permanentUpgrades));
+        ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(false, serverState.temporaryUpgrades));
         if(!player.getWorld().isClient()){
             player.getWorld().playSound(null, player.getBlockPos(), SoundEvents.ENTITY_PLAYER_LEVELUP, player.getSoundCategory(), 1.0F, 1.0F);
         }
     }
 
-    public static void applyUpgrade(ServerPlayerEntity player, RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade upgrade) {
+    public static void applyUpgrade(ServerPlayerEntity player, RoguelikeMCUpgradeData upgrade) {
         upgrade.actions().forEach(action -> {
             if (action.type().equals("attribute")) {
                 RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, action.value(), upgrade.isPermanent());
@@ -113,5 +115,9 @@ public class RoguelikeMCUpgradeUtil {
                 });
             });
         });
+    }
+
+    public static void removeUpgradeEffect(ServerPlayerEntity player, List<String> value) {
+        player.removeStatusEffect(Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(value.getFirst())).orElseThrow());
     }
 }
