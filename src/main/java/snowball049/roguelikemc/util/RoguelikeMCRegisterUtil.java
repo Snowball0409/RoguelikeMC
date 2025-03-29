@@ -101,4 +101,11 @@ public class RoguelikeMCRegisterUtil {
             }
         }
     }
+
+    public static void onServerTick(MinecraftServer minecraftServer) {
+        // Handle infinite effect upgrade every 5 seconds
+        if (minecraftServer.getTicks() % 40 == 0) {
+            RoguelikeMCUpgradeUtil.tickInfiniteEffects(minecraftServer);
+        }
+    }
 }

@@ -2,6 +2,7 @@ package snowball049.roguelikemc.gui;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.MultilineText;
 import net.minecraft.client.gui.DrawContext;
@@ -13,7 +14,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.datagen.RoguelikeMCUpgradeDataProvider;
-import snowball049.roguelikemc.network.SendPacketToServer;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
 
@@ -71,7 +71,7 @@ public class RoguelikeMCScreen extends Screen {
             optionButtons[i] = ButtonWidget.builder(Text.empty(), button -> {
                         if (currentOptions.size() > index) {
                             RoguelikeMCUpgradeDataProvider.RoguelikeMCUpgrade selected = currentOptions.get(index);
-                            SendPacketToServer.send(new SelectUpgradeOptionC2SPayload(selected));
+                            ClientPlayNetworking.send(new SelectUpgradeOptionC2SPayload(selected));
                             currentOptions.clear();
                             refreshOptionsDisplay();
                         }
@@ -89,7 +89,7 @@ public class RoguelikeMCScreen extends Screen {
 
         refreshButton = ButtonWidget.builder(Text.literal("Draw Upgrades"), button -> {
                     if(currentOptions.isEmpty()){
-                        SendPacketToServer.send(new RefreshUpgradeOptionC2SPayload());
+                        ClientPlayNetworking.send(new RefreshUpgradeOptionC2SPayload());
                         refreshOptionsDisplay();
                     }
                 })

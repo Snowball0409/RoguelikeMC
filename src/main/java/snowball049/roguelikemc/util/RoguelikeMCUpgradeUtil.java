@@ -9,6 +9,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -92,5 +93,25 @@ public class RoguelikeMCUpgradeUtil {
     }
     public static void sendPointMessage(ServerPlayerEntity player, int amount) {
         player.sendMessage(Text.of("You have been granted "+ amount +" upgrade point!"));
+    }
+
+    public static void tickInfiniteEffects(MinecraftServer minecraftServer) {
+        minecraftServer.getPlayerManager().getPlayerList().forEach(player -> {
+            RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+            playerData.temporaryUpgrades.forEach(upgrade -> {
+                upgrade.actions().forEach(action -> {
+                    if (action.type().equals("effect") && action.value().get(1).equals("-1")) {
+                        RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), false);
+                    }
+                });
+            });
+            playerData.permanentUpgrades.forEach(upgrade -> {
+                upgrade.actions().forEach(action -> {
+                    if (action.type().equals("effect") && action.value().get(1).equals("-1")) {
+                        RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), true);
+                    }
+                });
+            });
+        });
     }
 }
