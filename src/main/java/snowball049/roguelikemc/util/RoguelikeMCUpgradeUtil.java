@@ -20,8 +20,10 @@ import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
+import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RoguelikeMCUpgradeUtil {
     public static void handleUpgrade(RoguelikeMCUpgradeData upgrade, ServerPlayerEntity player) {
@@ -134,4 +136,66 @@ public class RoguelikeMCUpgradeUtil {
             }
         }
     }
+
+    public static List<RoguelikeMCUpgradeData> getRandomUpgrades(RoguelikeMCPlayerData playerData) {
+        List<RoguelikeMCUpgradeData> allUpgrades = RoguelikeMCUpgradeManager.getUpgrades().stream().toList();
+
+        // 1. 過濾掉玩家已擁有且為 unique 的升級
+        Set<String> ownedUniqueIds = playerData.getAllUpgrades().stream()
+                .filter(RoguelikeMCUpgradeData::isUnique)
+                .map(RoguelikeMCUpgradeData::id)
+                .collect(Collectors.toSet());
+
+        List<RoguelikeMCUpgradeData> available = allUpgrades.stream()
+                .filter(data -> !(data.isUnique() && ownedUniqueIds.contains(data.id())))
+                .toList();
+
+        if (available.isEmpty()) return List.of();
+
+        // 2. 根據 tier 分配機率
+        Map<String, Integer> tierWeights = Map.of(
+                "legendary", 5,
+                "epic", 15,
+                "rare", 30,
+                "common", 50
+        );
+
+        List<RoguelikeMCUpgradeData> weightedPool = new ArrayList<>();
+        for (RoguelikeMCUpgradeData upgrade : available) {
+            int weight = tierWeights.getOrDefault(upgrade.tier().toLowerCase(), 0);
+            for (int i = 0; i < weight; i++) {
+                weightedPool.add(upgrade);
+            }
+        }
+
+        // 3. 隨機挑選三個，但要保證至少一個 isUnique 為 false
+        List<RoguelikeMCUpgradeData> chosen = new ArrayList<>();
+        Collections.shuffle(weightedPool);
+        Set<String> selectedIds = new HashSet<>();
+
+        int tries = 0;
+        while (chosen.size() < 3 && tries < 1000) {
+            tries++;
+            RoguelikeMCUpgradeData candidate = weightedPool.get(new Random().nextInt(weightedPool.size()));
+            if (selectedIds.contains(candidate.id())) continue; // 避免重複
+            chosen.add(candidate);
+            selectedIds.add(candidate.id());
+        }
+
+        // 4. 確保至少有一個不是 unique
+        if (chosen.stream().noneMatch(upg -> !upg.isUnique())) {
+            // 嘗試用非 unique 的替換一個
+            List<RoguelikeMCUpgradeData> nonUniquePool = available.stream()
+                    .filter(upg -> !upg.isUnique() && !selectedIds.contains(upg.id()))
+                    .collect(Collectors.toList());
+
+            if (!nonUniquePool.isEmpty()) {
+                RoguelikeMCUpgradeData replacement = nonUniquePool.get(new Random().nextInt(nonUniquePool.size()));
+                chosen.set(0, replacement); // 替換第一個
+            }
+        }
+
+        return chosen;
+    }
+
 }

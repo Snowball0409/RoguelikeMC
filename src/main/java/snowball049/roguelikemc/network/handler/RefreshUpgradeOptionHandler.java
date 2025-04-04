@@ -9,6 +9,7 @@ import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
+import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,13 +32,7 @@ public class RefreshUpgradeOptionHandler {
             return;
         }
 
-        List<String> upgradeKeys = new ArrayList<>(RoguelikeMCUpgradeManager.getUpgrades().stream().map(RoguelikeMCUpgradeData::id).toList());
-        Collections.shuffle(upgradeKeys);
-        List<RoguelikeMCUpgradeData> currentUpgrades = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            int finalI = i;
-            currentUpgrades.add(RoguelikeMCUpgradeManager.getUpgrades().stream().filter(u -> u.id().equals(upgradeKeys.get(finalI))).findFirst().orElse(null));
-        }
+        List<RoguelikeMCUpgradeData> currentUpgrades = RoguelikeMCUpgradeUtil.getRandomUpgrades(playerData);
         for (RoguelikeMCUpgradeData upgrade : currentUpgrades) {
             ServerPlayNetworking.send(context.player(), new UpgradeOptionS2CPayload(upgrade));
         }

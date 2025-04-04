@@ -237,7 +237,7 @@ public class RoguelikeMCScreen extends Screen {
                         20, 20, 20, 20
                 );
 
-                // 文字渲染
+                // Render text
                 context.drawTextWrapped(
                         textRenderer,
                         StringVisitable.plain(effect.name()),
