@@ -1,0 +1,10 @@
+{
+  "id": "toxic_presence",
+  "name": "Toxic Presence",
+  "description": "Hostile mobs around you are poisoned",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/spider_eye.png",
+  "actions": []
+}

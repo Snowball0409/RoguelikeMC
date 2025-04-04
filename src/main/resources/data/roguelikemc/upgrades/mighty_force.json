@@ -1,0 +1,19 @@
+{
+  "id": "mighty_force",
+  "name": "Mighty Force",
+  "description": "Power +5%",
+  "tier": "common",
+  "isPermanent": true,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/anvil.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.attack_damage",
+        "0.05",
+        "add_multiplied_base"
+      ]
+    }
+  ]
+}

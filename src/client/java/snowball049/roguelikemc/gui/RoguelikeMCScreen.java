@@ -243,7 +243,7 @@ public class RoguelikeMCScreen extends Screen {
                         StringVisitable.plain(effect.name()),
                         buttonX + BUTTON_PADDING * 2 + 20, // 顏色方塊右側
                         buttonY + i * (BUTTON_HEIGHT + BUTTON_PADDING) + BUTTON_HEIGHT/2 - BUTTON_PADDING, // 垂直居中
-                        BUTTON_WIDTH - BUTTON_PADDING * 2 - 20,
+                        BUTTON_WIDTH - BUTTON_PADDING * 3 - 20,
                         getColorByRarity(effect.tier()).getColorValue() // 文字顏色
                 );
                 // Render Tooltip

@@ -1,0 +1,10 @@
+{
+  "id": "spicy_feast",
+  "name": "Spicy Feast",
+  "description": "Eating cooked chicken sets you on fire, but fully restores hunger",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/cooked_chicken.png",
+  "actions": []
+}

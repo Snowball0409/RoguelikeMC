@@ -1,0 +1,10 @@
+{
+  "id": "undying_will",
+  "name": "Undying Will",
+  "description": "Retain equipment after death",
+  "tier": "legendary",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/totem_of_undying.png",
+  "actions": []
+}

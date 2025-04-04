@@ -1,0 +1,17 @@
+{
+  "id": "mystic_steed",
+  "name": "Mystic Steed",
+  "description": "Receive a SPECIAL horse",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/golden_horse_armor.png",
+  "actions": [
+    {
+      "type": "command",
+      "value": [
+        "summon horse ~ ~ ~ {Tame:1b,equipment:{saddle:{id:\"minecraft:saddle\",count:1}},attributes:[{id:\"minecraft:jump_strength\",base:32},{id:\"minecraft:movement_speed\",base:1}]}"
+      ]
+    }
+  ]
+}

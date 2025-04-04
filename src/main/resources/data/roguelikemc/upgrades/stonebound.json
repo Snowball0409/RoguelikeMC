@@ -1,0 +1,10 @@
+{
+  "id": "stonebound",
+  "name": "Stonebound",
+  "description": "Gain Resistance I, but maximum health -1",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/block/stone.png",
+  "actions": []
+}

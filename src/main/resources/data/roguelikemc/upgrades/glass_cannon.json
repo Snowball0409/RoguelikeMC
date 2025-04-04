@@ -1,0 +1,10 @@
+{
+  "id": "glass_cannon",
+  "name": "Glass Cannon",
+  "description": "Projectile damage +50%, but takes 50% more projectile damage",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/bow.png",
+  "actions": []
+}

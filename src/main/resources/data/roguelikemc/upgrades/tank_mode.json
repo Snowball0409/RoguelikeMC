@@ -1,0 +1,10 @@
+{
+  "id": "tank_mode",
+  "name": "Tank Mode",
+  "description": "Gain Resistance II and +2 max health, but cannot wear pants",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/iron_chestplate.png",
+  "actions": []
+}

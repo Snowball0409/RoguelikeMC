@@ -1,0 +1,10 @@
+{
+  "id": "winged_warrior",
+  "name": "Winged Warrior",
+  "description": "Your chestplate becomes an unbreakable and binding Elytra",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/elytra.png",
+  "actions": []
+}

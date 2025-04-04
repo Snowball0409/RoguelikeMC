@@ -1,0 +1,10 @@
+{
+  "id": "heavy_appetite",
+  "name": "Heavy Appetite",
+  "description": "Gain Saturation, movement speed -20%",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/cooked_beef.png",
+  "actions": []
+}

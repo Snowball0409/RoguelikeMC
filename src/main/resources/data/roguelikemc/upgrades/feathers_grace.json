@@ -1,0 +1,19 @@
+{
+  "id": "feathers_grace",
+  "name": "Feather\u0027s Grace",
+  "description": "Gain Slow Falling",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/feather.png",
+  "actions": [
+    {
+      "type": "effect",
+      "value": [
+        "minecraft:slow_falling",
+        "-1",
+        "0"
+      ]
+    }
+  ]
+}

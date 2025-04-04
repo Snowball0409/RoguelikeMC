@@ -1,0 +1,10 @@
+{
+  "id": "prospectors_luck",
+  "name": "Prospector\u0027s Luck",
+  "description": "Receive a stack of random ores",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/diamond_ore.png",
+  "actions": []
+}

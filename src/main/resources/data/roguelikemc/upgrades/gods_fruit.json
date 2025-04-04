@@ -1,0 +1,17 @@
+{
+  "id": "gods_fruit",
+  "name": "God\u0027s Fruit",
+  "description": "Receive 1 enchanted golden apple",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/enchanted_golden_apple.png",
+  "actions": [
+    {
+      "type": "command",
+      "value": [
+        "give @s enchanted_golden_apple 1"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "villager_slayer",
+  "name": "Villager Slayer",
+  "description": "Killing villagers drops emeralds, but Iron Golems will permanently be hostile",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/emerald.png",
+  "actions": []
+}

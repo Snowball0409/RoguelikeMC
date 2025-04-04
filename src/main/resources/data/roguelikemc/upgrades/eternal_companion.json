@@ -1,0 +1,17 @@
+{
+  "id": "eternal_companion",
+  "name": "Eternal Companion",
+  "description": "Receive a tamed cat",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/cod.png",
+  "actions": [
+    {
+      "type": "command",
+      "value": [
+        "summon cat ~ ~ ~ {Invulnerable:1b}"
+      ]
+    }
+  ]
+}

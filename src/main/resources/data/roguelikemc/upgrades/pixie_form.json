@@ -1,0 +1,35 @@
+{
+  "id": "pixie_form",
+  "name": "Pixie Form",
+  "description": "Size halved, movement speed +20%, attack -20%",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/feather.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.scale",
+        "-0.5",
+        "add_multiplied_total"
+      ]
+    },
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.movement_speed",
+        "0.2",
+        "add_multiplied_base"
+      ]
+    },
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.attack_damage",
+        "-0.2",
+        "add_multiplied_base"
+      ]
+    }
+  ]
+}

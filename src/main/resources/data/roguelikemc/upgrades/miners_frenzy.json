@@ -1,0 +1,19 @@
+{
+  "id": "miners_frenzy",
+  "name": "Miner\u0027s Frenzy",
+  "description": "Gain Haste",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/golden_pickaxe.png",
+  "actions": [
+    {
+      "type": "effect",
+      "value": [
+        "minecraft:haste",
+        "-1",
+        "0"
+      ]
+    }
+  ]
+}

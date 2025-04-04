@@ -183,11 +183,11 @@ public class RoguelikeMCUpgradeUtil {
         }
 
         // 4. 確保至少有一個不是 unique
-        if (chosen.stream().noneMatch(upg -> !upg.isUnique())) {
+        if (chosen.stream().allMatch(RoguelikeMCUpgradeData::isUnique)) {
             // 嘗試用非 unique 的替換一個
             List<RoguelikeMCUpgradeData> nonUniquePool = available.stream()
                     .filter(upg -> !upg.isUnique() && !selectedIds.contains(upg.id()))
-                    .collect(Collectors.toList());
+                    .toList();
 
             if (!nonUniquePool.isEmpty()) {
                 RoguelikeMCUpgradeData replacement = nonUniquePool.get(new Random().nextInt(nonUniquePool.size()));

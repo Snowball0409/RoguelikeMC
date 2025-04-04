@@ -1,0 +1,19 @@
+{
+  "id": "brutes_strength",
+  "name": "Brute\u0027s Strength",
+  "description": "Gain Strength",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/netherite_sword.png",
+  "actions": [
+    {
+      "type": "effect",
+      "value": [
+        "minecraft:strength",
+        "-1",
+        "0"
+      ]
+    }
+  ]
+}

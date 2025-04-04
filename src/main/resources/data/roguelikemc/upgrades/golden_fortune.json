@@ -1,0 +1,17 @@
+{
+  "id": "golden_fortune",
+  "name": "Golden Fortune",
+  "description": "Receive half stack of golden apple",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/golden_apple.png",
+  "actions": [
+    {
+      "type": "command",
+      "value": [
+        "give @s golden_apple 32"
+      ]
+    }
+  ]
+}

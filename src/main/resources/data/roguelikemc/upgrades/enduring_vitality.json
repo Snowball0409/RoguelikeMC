@@ -1,0 +1,19 @@
+{
+  "id": "enduring_vitality",
+  "name": "Enduring Vitality",
+  "description": "Maximum Health add a Heart",
+  "tier": "common",
+  "isPermanent": true,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/golden_apple.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.max_health",
+        "2",
+        "add_value"
+      ]
+    }
+  ]
+}

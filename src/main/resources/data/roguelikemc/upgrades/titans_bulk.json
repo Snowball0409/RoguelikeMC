@@ -1,0 +1,35 @@
+{
+  "id": "titans_bulk",
+  "name": "Titan\u0027s Bulk",
+  "description": "Size doubled, movement speed -20%, attack +20%",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/enchanted_book.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.scale",
+        "1",
+        "add_multiplied_total"
+      ]
+    },
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.movement_speed",
+        "-0.2",
+        "add_multiplied_base"
+      ]
+    },
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.attack_damage",
+        "0.2",
+        "add_multiplied_base"
+      ]
+    }
+  ]
+}

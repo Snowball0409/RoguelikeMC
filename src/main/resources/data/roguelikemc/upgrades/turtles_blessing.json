@@ -1,0 +1,10 @@
+{
+  "id": "turtles_blessing",
+  "name": "Turtle\u0027s Blessing",
+  "description": "Your helmet becomes an unbreakable binding Turtle Helmet",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/turtle_helmet.png",
+  "actions": []
+}

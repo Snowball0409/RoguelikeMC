@@ -1,0 +1,10 @@
+{
+  "id": "skyborn",
+  "name": "Skyborn",
+  "description": "Allows creative flight, but maximum health is halved",
+  "tier": "legendary",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/elytra.png",
+  "actions": []
+}

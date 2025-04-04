@@ -1,0 +1,19 @@
+{
+  "id": "blade_dancer",
+  "name": "Blade Dancer",
+  "description": "Attack Speed +5%",
+  "tier": "common",
+  "isPermanent": true,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/iron_sword.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.attack_speed",
+        "0.05",
+        "add_multiplied_base"
+      ]
+    }
+  ]
+}

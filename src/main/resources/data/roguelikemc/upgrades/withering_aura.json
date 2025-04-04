@@ -1,0 +1,10 @@
+{
+  "id": "withering_aura",
+  "name": "Withering Aura",
+  "description": "Hostile mobs around you are inflicted with Wither",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/wither_rose.png",
+  "actions": []
+}

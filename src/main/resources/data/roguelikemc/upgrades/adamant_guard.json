@@ -1,0 +1,19 @@
+{
+  "id": "adamant_guard",
+  "name": "Adamant Guard",
+  "description": "Armor +1",
+  "tier": "common",
+  "isPermanent": true,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/iron_chestplate.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.armor",
+        "1",
+        "add_value"
+      ]
+    }
+  ]
+}

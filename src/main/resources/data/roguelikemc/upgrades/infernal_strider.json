@@ -1,0 +1,10 @@
+{
+  "id": "infernal_strider",
+  "name": "Infernal Strider",
+  "description": "Wear unbreakable binding strong Netherite Boots",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/netherite_boots.png",
+  "actions": []
+}

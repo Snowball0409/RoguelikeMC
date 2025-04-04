@@ -1,8 +1,8 @@
 {
-  "id": "arcane_barrier",
-  "name": "Arcane Barrier",
-  "description": "Grants absorption for 30 seconds",
-  "tier": "epic",
+  "id": "nocturnal_sight",
+  "name": "Nocturnal Sight",
+  "description": "Gain night vision",
+  "tier": "common",
   "isPermanent": false,
   "isUnique": true,
   "icon": "minecraft:textures/item/ender_eye.png",
@@ -10,7 +10,7 @@
     {
       "type": "effect",
       "value": [
-        "minecraft:absorption",
+        "minecraft:night_vision",
         "-1",
         "0"
       ]

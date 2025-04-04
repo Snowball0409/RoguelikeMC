@@ -1,0 +1,19 @@
+{
+  "id": "leap_of_faith",
+  "name": "Leap of Faith",
+  "description": "Gain Jump Boost",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/rabbit_foot.png",
+  "actions": [
+    {
+      "type": "effect",
+      "value": [
+        "minecraft:jump_boost",
+        "-1",
+        "0"
+      ]
+    }
+  ]
+}

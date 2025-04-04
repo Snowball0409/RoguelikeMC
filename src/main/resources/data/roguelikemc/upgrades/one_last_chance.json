@@ -1,0 +1,10 @@
+{
+  "id": "one_last_chance",
+  "name": "One Last Chance",
+  "description": "One-time Totem of Undying",
+  "tier": "legendary",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/totem_of_undying.png",
+  "actions": []
+}

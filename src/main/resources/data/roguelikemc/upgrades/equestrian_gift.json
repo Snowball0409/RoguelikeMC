@@ -1,0 +1,17 @@
+{
+  "id": "equestrian_gift",
+  "name": "Equestrian Gift",
+  "description": "Receive a horse",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/saddle.png",
+  "actions": [
+    {
+      "type": "command",
+      "value": [
+        "summon horse ~ ~ ~ {Tame:1b,equipment:{saddle:{id:\"minecraft:saddle\",count:1}}}"
+      ]
+    }
+  ]
+}
