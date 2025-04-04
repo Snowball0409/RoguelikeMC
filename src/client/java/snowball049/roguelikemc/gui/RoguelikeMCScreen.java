@@ -21,6 +21,7 @@ import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class RoguelikeMCScreen extends Screen {
@@ -77,12 +78,11 @@ public class RoguelikeMCScreen extends Screen {
                             refreshOptionsDisplay();
                         }
                     })
-                    // 調整按鈕位置計算
                     .dimensions(
                             rightPanelX,
                             rightPanelY + i * (BUTTON_HEIGHT + BUTTON_PADDING),
-                            BUTTON_WIDTH,  // 按鈕寬度配合右側區域
-                            BUTTON_HEIGHT    // 按鈕高度
+                            BUTTON_WIDTH,
+                            BUTTON_HEIGHT
                     )
                     .build();
             this.addDrawableChild(optionButtons[i]);
@@ -138,15 +138,25 @@ public class RoguelikeMCScreen extends Screen {
     }
 
     private void refreshOptionsDisplay(){
-        for(int i=0; i<3; i++){
+        for(int i=0; i<optionButtons.length; i++){
             if(i < currentOptions.size()){
                 RoguelikeMCUpgradeData effect = currentOptions.get(i);
-                optionButtons[i].setMessage(Text.literal(effect.name()));
+                optionButtons[i].setMessage(Text.literal(effect.name()).formatted(getColorByRarity(effect.tier())));
                 optionButtons[i].setTooltip(Tooltip.of(Text.literal(effect.description()).formatted(Formatting.GRAY)));
             }else{
                 optionButtons[i].setMessage(Text.empty());
             }
         }
+    }
+
+    private Formatting getColorByRarity(String rarity) {
+        return switch (rarity) {
+            case "common" -> Formatting.WHITE;
+            case "rare" -> Formatting.BLUE;
+            case "epic" -> Formatting.DARK_PURPLE;
+            case "legendary" -> Formatting.GOLD;
+            default -> Formatting.WHITE; // 默認顏色
+        };
     }
 
     public void refreshUpgradeDisplay(boolean is_permanent, List<RoguelikeMCUpgradeData> upgrades){
@@ -172,7 +182,8 @@ public class RoguelikeMCScreen extends Screen {
         renderUtilitySection(context, x + 2 * (SECTION_WIDTH + SECTION_SPACING), y, mouseX, mouseY);
 
         // 刷新按鈕渲染
-        renderRefreshButton(context, x, y, mouseX, mouseY);
+//        renderRefreshButton(context, x, y, mouseX, mouseY);
+        refreshButton.render(context, mouseX, mouseY, 0);
     }
 
     private void renderEffectsSection(DrawContext context, int x, int y, String title, List<RoguelikeMCUpgradeData> effects, int mouseX, int mouseY) {
@@ -196,7 +207,7 @@ public class RoguelikeMCScreen extends Screen {
             if (isMouseOver(mouseX, mouseY, itemX, itemY, itemWidth, itemHeight)) {
                 // 繪製懸停提示
                 List<Text> tooltip = Arrays.asList(
-                        Text.literal(effect.name()).formatted(Formatting.GREEN),
+                        Text.literal(effect.name()).formatted(getColorByRarity(effect.tier())),
                         Text.literal(effect.description()).formatted(Formatting.GRAY)
                 );
                 context.drawTooltip(textRenderer, tooltip, mouseX, mouseY);
@@ -213,41 +224,33 @@ public class RoguelikeMCScreen extends Screen {
         int buttonX = x + BUTTON_PADDING;
         int buttonY = y + CONTENT_PADDING;
         for(int i=0; i<3; i++){
-            // 按鈕背景
-            context.fill(
-                    buttonX, buttonY + i*(BUTTON_HEIGHT + BUTTON_PADDING),
-                    buttonX + BUTTON_WIDTH, buttonY + (i+1)*BUTTON_HEIGHT + i*BUTTON_PADDING,
-                    0xFF404040 // 深灰色背景
-            );
+            optionButtons[i].render(context, mouseX, mouseY, i);
 
             if(i < currentOptions.size()) {
                 RoguelikeMCUpgradeData effect = currentOptions.get(i);
-                // 顏色方塊
+                // Render icon
                 context.drawTexture(
                         Identifier.tryParse(effect.icon()),
                         buttonX + BUTTON_PADDING,
                         buttonY + i * (BUTTON_HEIGHT + BUTTON_PADDING) + BUTTON_HEIGHT/2 - 10,
-//                        buttonX + BUTTON_PADDING + 20,
-//                        buttonY + i * (BUTTON_HEIGHT + BUTTON_PADDING) + BUTTON_HEIGHT/2 + 10,
                         0, 0,
                         20, 20, 20, 20
                 );
 
                 // 文字渲染
-                final MultilineText effectName = MultilineText.create(textRenderer, Text.of(effect.name()));
                 context.drawTextWrapped(
                         textRenderer,
                         StringVisitable.plain(effect.name()),
                         buttonX + BUTTON_PADDING * 2 + 20, // 顏色方塊右側
                         buttonY + i * (BUTTON_HEIGHT + BUTTON_PADDING) + BUTTON_HEIGHT/2 - BUTTON_PADDING, // 垂直居中
                         BUTTON_WIDTH - BUTTON_PADDING * 2 - 20,
-                        0xFFFFFF
+                        getColorByRarity(effect.tier()).getColorValue() // 文字顏色
                 );
-                // 繪製懸停提示
+                // Render Tooltip
                 if (optionButtons[i].isMouseOver(mouseX, mouseY)) {
                     context.drawTooltip(textRenderer,
                             List.of(
-                                    Text.literal(effect.name()).formatted(Formatting.GREEN),
+                                    Text.literal(effect.name()).formatted(getColorByRarity(effect.tier())),
                                     Text.literal(effect.description()).formatted(Formatting.GRAY)
                             ),
                             mouseX, mouseY
@@ -266,13 +269,7 @@ public class RoguelikeMCScreen extends Screen {
                 refreshButton.getY() + refreshButton.getHeight(),
                 0xFF606060
         );
-//        context.drawCenteredTextWithShadow(
-//                textRenderer,
-//                "Draw Upgrades",
-//                refreshButton.getX() + BUTTON_WIDTH/2, // 文字居中
-//                refreshButton.getY() + BUTTON_PADDING,
-//                0xFFFFFF
-//        );
+        refreshButton.render(context, mouseX, mouseY, 0);
     }
 
     private boolean isMouseOver(int mouseX, int mouseY, int x, int y, int width, int height) {

@@ -56,7 +56,7 @@ public class RoguelikeMCUpgradeUtil {
         MinecraftServer server = player.getServer();
 
         if (server != null) {
-            server.getCommandManager().executeWithPrefix(player.getCommandSource().withLevel(4), command);
+            server.getCommandManager().executeWithPrefix(player.getCommandSource().withLevel(4).withSilent(), command);
         } else {
             throw new IllegalStateException("Server is null");
         }
