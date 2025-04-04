@@ -1,0 +1,17 @@
+{
+  "id": "scholars_gift",
+  "name": "Scholar\u0027s Gift",
+  "description": "Receive a Mending book",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/book.png",
+  "actions": [
+    {
+      "type": "command",
+      "value": [
+        "give @p enchanted_book[stored_enchantments\u003d{\"minecraft:mending\":1}] 1"
+      ]
+    }
+  ]
+}

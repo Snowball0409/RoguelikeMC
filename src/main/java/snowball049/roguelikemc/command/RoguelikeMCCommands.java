@@ -32,7 +32,6 @@ public class RoguelikeMCCommands {
         try {
             List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "player").stream().toList();
             String upgradeId = StringArgumentType.getString(context, "upgradeOption");
-//            RoguelikeMCUpgradesConfig.RogueLikeMCUpgradeConfig upgrade = RoguelikeMCUpgradesConfig.INSTANCE.upgrades.get(upgradeId);
             RoguelikeMCUpgradeData upgrade = RoguelikeMCUpgradeManager.getUpgrades().stream().filter(u -> u.id().equals(upgradeId)).findFirst().orElse(null);
 
             if (upgrade == null) {

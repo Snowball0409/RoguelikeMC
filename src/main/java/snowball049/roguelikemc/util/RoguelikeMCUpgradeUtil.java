@@ -42,13 +42,26 @@ public class RoguelikeMCUpgradeUtil {
 
     public static void applyUpgrade(ServerPlayerEntity player, RoguelikeMCUpgradeData upgrade) {
         upgrade.actions().forEach(action -> {
-            if (action.type().equals("attribute")) {
-                RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, action.value(), upgrade.isPermanent());
-            } else if (action.type().equals("effect")) {
-                RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), upgrade.isPermanent());
+            switch (action.type()) {
+                case "attribute" -> RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, action.value(), upgrade.isPermanent());
+                case "effect" -> RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), upgrade.isPermanent());
+                case "command" -> RoguelikeMCUpgradeUtil.applyCommandEffect(player, action.value(), upgrade.isPermanent());
+                default -> throw new IllegalStateException("Unexpected value: " + action.type());
             }
         });
     }
+
+    private static void applyCommandEffect(ServerPlayerEntity player, List<String> value, boolean isPermanent) {
+        String command = value.getFirst();
+        MinecraftServer server = player.getServer();
+
+        if (server != null) {
+            server.getCommandManager().executeWithPrefix(player.getCommandSource().withLevel(4), command);
+        } else {
+            throw new IllegalStateException("Server is null");
+        }
+    }
+
     public static void addUpgradeAttribute(ServerPlayerEntity player, List<String> value, boolean isPermanent) {
         Identifier attributeIdentifier = Identifier.tryParse(value.getFirst());
         RegistryEntry.Reference<EntityAttribute> attributeEntry = Registries.ATTRIBUTE.getEntry(attributeIdentifier)
@@ -72,17 +85,7 @@ public class RoguelikeMCUpgradeUtil {
 
         player.getAttributes().addTemporaryModifiers(modifiers);
     }
-    public static void removeUpgradeAttribute(ServerPlayerEntity player, List<String> value) {
-        Identifier attributeIdentifier = Identifier.tryParse(value.getFirst());
-        RegistryEntry.Reference<EntityAttribute> attributeEntry = Registries.ATTRIBUTE.getEntry(attributeIdentifier)
-                .orElseThrow(() -> new IllegalStateException("Attribute not found: " + attributeIdentifier));
 
-        for (EntityAttributeModifier modifier : Objects.requireNonNull(player.getAttributeInstance(attributeEntry)).getModifiers()) {
-            if (modifier.id().toString().startsWith(RoguelikeMC.MOD_ID+":tmp/")) {
-                Objects.requireNonNull(player.getAttributeInstance(attributeEntry)).removeModifier(modifier);
-            }
-        }
-    }
     public static void applyUpgradeEffect(ServerPlayerEntity player, List<String> value, boolean isPermanent) {
         Identifier effectIdentifier = Identifier.tryParse(value.getFirst());
         RegistryEntry.Reference<StatusEffect> effectEntry = Registries.STATUS_EFFECT.getEntry(effectIdentifier)
@@ -119,5 +122,16 @@ public class RoguelikeMCUpgradeUtil {
 
     public static void removeUpgradeEffect(ServerPlayerEntity player, List<String> value) {
         player.removeStatusEffect(Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(value.getFirst())).orElseThrow());
+    }
+    public static void removeUpgradeAttribute(ServerPlayerEntity player, List<String> value) {
+        Identifier attributeIdentifier = Identifier.tryParse(value.getFirst());
+        RegistryEntry.Reference<EntityAttribute> attributeEntry = Registries.ATTRIBUTE.getEntry(attributeIdentifier)
+                .orElseThrow(() -> new IllegalStateException("Attribute not found: " + attributeIdentifier));
+
+        for (EntityAttributeModifier modifier : Objects.requireNonNull(player.getAttributeInstance(attributeEntry)).getModifiers()) {
+            if (modifier.id().toString().startsWith(RoguelikeMC.MOD_ID+":tmp/")) {
+                Objects.requireNonNull(player.getAttributeInstance(attributeEntry)).removeModifier(modifier);
+            }
+        }
     }
 }

@@ -188,6 +188,19 @@ public class RoguelikeMCDatagenUtil {
                 )
         );
 
+        final RoguelikeMCUpgradeData scholars_gift = new RoguelikeMCUpgradeData(
+                "scholars_gift",
+                "Scholar's Gift",
+                "Receive a Mending book",
+                "common",
+                false,
+                false,
+                "minecraft:textures/item/book.png",
+                List.of(
+                        new RoguelikeMCUpgradeData.ActionData("command", List.of("give @p enchanted_book[stored_enchantments={\"minecraft:mending\":1}] 1"))
+                )
+        );
+
         upgradeProvider.addUpgrade(health_1);
         upgradeProvider.addUpgrade(attack_1);
         upgradeProvider.addUpgrade(speed_10);
@@ -202,5 +215,6 @@ public class RoguelikeMCDatagenUtil {
         upgradeProvider.addUpgrade(arcane_barrier);
         upgradeProvider.addUpgrade(berserker_rage);
         upgradeProvider.addUpgrade(arcane_focus);
+        upgradeProvider.addUpgrade(scholars_gift);
     }
 }
