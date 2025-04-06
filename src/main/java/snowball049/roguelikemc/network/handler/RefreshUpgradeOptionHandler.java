@@ -32,6 +32,7 @@ public class RefreshUpgradeOptionHandler {
             return;
         }
 
+        playerData.upgradePoints --;
         List<RoguelikeMCUpgradeData> currentUpgrades = RoguelikeMCUpgradeUtil.getRandomUpgrades(playerData);
         for (RoguelikeMCUpgradeData upgrade : currentUpgrades) {
             ServerPlayNetworking.send(context.player(), new UpgradeOptionS2CPayload(upgrade));

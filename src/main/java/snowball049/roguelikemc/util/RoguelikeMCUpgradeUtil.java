@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 public class RoguelikeMCUpgradeUtil {
     public static void handleUpgrade(RoguelikeMCUpgradeData upgrade, ServerPlayerEntity player) {
         RoguelikeMCPlayerData serverState = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-        serverState.upgradePoints --;
         if (upgrade.isPermanent()) {
             serverState.permanentUpgrades.add(upgrade);
         }else{
