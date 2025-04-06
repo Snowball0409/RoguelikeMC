@@ -16,6 +16,11 @@ public class RoguelikeMCPlayerData {
     public int currentLevelGain = 0;
     public int currentGameStage = 0;
 
+    // Event Upgrade
+    public boolean keepEquipmentAfterDeath = false;
+    public boolean revive = false;
+    public float damageGainMultiplier = 1.0f;
+
     public RoguelikeMCPlayerData() {
         this.currentKillHostileRequirement = RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirementMinMax.getFirst();
     }
@@ -25,5 +30,15 @@ public class RoguelikeMCPlayerData {
         allUpgrades.addAll(temporaryUpgrades);
         allUpgrades.addAll(permanentUpgrades);
         return allUpgrades;
+    }
+
+    public void reset() {
+        this.currentKillHostile = 0;
+        this.currentKillHostileRequirement = RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirementMinMax.getFirst();
+        this.currentLevelGain = 0;
+        this.currentGameStage = 0;
+        this.keepEquipmentAfterDeath = false;
+        this.revive = false;
+        this.damageGainMultiplier = 1.0f;
     }
 }

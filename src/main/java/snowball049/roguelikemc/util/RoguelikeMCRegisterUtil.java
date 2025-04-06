@@ -27,12 +27,18 @@ public class RoguelikeMCRegisterUtil {
     public static void onDeathEventRegister(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive) {
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(oldPlayer);
 
+        playerData.reset();
+
         playerData.temporaryUpgrades.clear();
         playerData.permanentUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyUpgrade(newPlayer, upgrade));
 
-        playerData.currentKillHostile = 0;
-        playerData.currentLevelGain = 0;
-        playerData.currentKillHostileRequirement = RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirementMinMax.getFirst();
+        if(playerData.keepEquipmentAfterDeath){
+            for (int i = 0; i < oldPlayer.getInventory().armor.size(); i++) {
+                newPlayer.getInventory().armor.set(i, oldPlayer.getInventory().armor.get(i));
+            }
+            oldPlayer.getInventory().armor.clear();
+            oldPlayer.getInventory().dropAll();
+        }
 
         ServerPlayNetworking.send(newPlayer, new RefreshCurrentUpgradeS2CPayload(true, playerData.permanentUpgrades));
         ServerPlayNetworking.send(newPlayer, new RefreshCurrentUpgradeS2CPayload(false, playerData.temporaryUpgrades));
@@ -104,9 +110,13 @@ public class RoguelikeMCRegisterUtil {
     }
 
     public static void onServerTick(MinecraftServer minecraftServer) {
-        // Handle infinite effect upgrade every 5 seconds
+        // Handle infinite effect upgrade every 2 seconds
         if (minecraftServer.getTicks() % 40 == 0) {
             RoguelikeMCUpgradeUtil.tickInfiniteEffects(minecraftServer);
+        }
+        // Handle empty set_equipment upgrade every second
+        if (minecraftServer.getTicks() % 20 == 0) {
+            RoguelikeMCUpgradeUtil.tickSetEquipment(minecraftServer);
         }
     }
 }

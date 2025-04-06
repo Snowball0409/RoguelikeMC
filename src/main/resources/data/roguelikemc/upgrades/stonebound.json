@@ -1,10 +1,27 @@
 {
   "id": "stonebound",
   "name": "Stonebound",
-  "description": "Gain Resistance I, but maximum health -1",
+  "description": "Gain Resistance I, but maximum health -1 heart",
   "tier": "rare",
   "isPermanent": false,
   "isUnique": false,
   "icon": "minecraft:textures/block/stone.png",
-  "actions": []
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.max_health",
+        "-2",
+        "add_value"
+      ]
+    },
+    {
+      "type": "effect",
+      "value": [
+        "minecraft:resistance",
+        "-1",
+        "0"
+      ]
+    }
+  ]
 }

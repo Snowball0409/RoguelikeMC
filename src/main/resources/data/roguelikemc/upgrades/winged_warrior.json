@@ -6,5 +6,14 @@
   "isPermanent": false,
   "isUnique": true,
   "icon": "minecraft:textures/item/elytra.png",
-  "actions": []
+  "actions": [
+    {
+      "type": "event",
+      "value": [
+        "set_equipment",
+        "2",
+        "{components: {\"minecraft:enchantments\": {levels: {\"minecraft:binding_curse\": 1}}, \"minecraft:unbreakable\": {}}, count: 1, id: \"minecraft:elytra\"}"
+      ]
+    }
+  ]
 }

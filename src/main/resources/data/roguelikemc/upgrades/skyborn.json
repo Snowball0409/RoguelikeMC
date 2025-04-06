@@ -6,5 +6,20 @@
   "isPermanent": false,
   "isUnique": true,
   "icon": "minecraft:textures/item/elytra.png",
-  "actions": []
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.max_health",
+        "-0.5",
+        "add_multiplied_base"
+      ]
+    },
+    {
+      "type": "event",
+      "value": [
+        "allow_creative_flying"
+      ]
+    }
+  ]
 }

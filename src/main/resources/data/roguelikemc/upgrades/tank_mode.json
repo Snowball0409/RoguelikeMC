@@ -6,5 +6,30 @@
   "isPermanent": false,
   "isUnique": true,
   "icon": "minecraft:textures/item/iron_chestplate.png",
-  "actions": []
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.max_health",
+        "4",
+        "add_value"
+      ]
+    },
+    {
+      "type": "effect",
+      "value": [
+        "minecraft:resistance",
+        "-1",
+        "1"
+      ]
+    },
+    {
+      "type": "event",
+      "value": [
+        "set_equipment",
+        "1",
+        ""
+      ]
+    }
+  ]
 }

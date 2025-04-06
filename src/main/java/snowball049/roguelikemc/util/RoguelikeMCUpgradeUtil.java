@@ -2,12 +2,15 @@ package snowball049.roguelikemc.util;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.mojang.datafixers.util.Pair;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
@@ -48,6 +51,7 @@ public class RoguelikeMCUpgradeUtil {
                 case "attribute" -> RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, action.value(), upgrade.isPermanent());
                 case "effect" -> RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), upgrade.isPermanent());
                 case "command" -> RoguelikeMCUpgradeUtil.applyCommandEffect(player, action.value(), upgrade.isPermanent());
+                case "event" -> RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), upgrade.isPermanent());
                 default -> throw new IllegalStateException("Unexpected value: " + action.type());
             }
         });
@@ -198,4 +202,104 @@ public class RoguelikeMCUpgradeUtil {
         return chosen;
     }
 
+    public static void removeUpgrade(ServerPlayerEntity player, RoguelikeMCUpgradeData.ActionData upgradeAction) {
+        switch(upgradeAction.type()){
+            case "attribute" -> RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player, upgradeAction.value());
+            case "effect" -> RoguelikeMCUpgradeUtil.removeUpgradeEffect(player, upgradeAction.value());
+            case "command" -> {
+            }
+            case "event" -> RoguelikeMCUpgradeUtil.removeUpgradeEvent(player, upgradeAction.value());
+            default -> {
+                throw new IllegalStateException("Unexpected value: " + upgradeAction.type());
+            }
+        }
+    }
+
+    private static void applyUpgradeEvent(ServerPlayerEntity player, List<String> value, boolean isPermanent) {
+        String eventType = value.getFirst();
+        switch(eventType){
+            case "allow_creative_flying" -> {
+                player.getAbilities().allowFlying = true;
+                player.sendAbilitiesUpdate();
+            }
+            case "keep_equipment_after_death" -> {
+                RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+                playerData.keepEquipmentAfterDeath = true;
+            }
+            case "one_last_chance" -> {
+                RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+                playerData.revive = true;
+            }
+            case "damage_gain_multiplier" -> {
+                RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+                playerData.damageGainMultiplier += Float.parseFloat(value.get(1));
+            }
+            case "set_equipment" -> {
+                int slotIndex = Integer.parseInt(value.get(1));
+                String nbtString = value.get(2);
+                try {
+                    NbtCompound nbt = !nbtString.isEmpty()?StringNbtReader.parse(nbtString):new NbtCompound();
+                    if (!player.getInventory().armor.get(slotIndex).isEmpty()) {
+                        player.dropItem(player.getInventory().armor.get(slotIndex), false);
+                        player.sendMessage(Text.literal("You have been dropped your equipment!"), false);
+                    }
+                    player.getInventory().armor.set(slotIndex, ItemStack.fromNbtOrEmpty(player.getWorld().getRegistryManager(), nbt));
+                } catch (CommandSyntaxException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            default -> {
+                throw new IllegalStateException("Unexpected value: " + eventType);
+            }
+        }
+    }
+
+    private static void removeUpgradeEvent(ServerPlayerEntity player, List<String> value) {
+        String eventType = value.getFirst();
+        switch(eventType){
+            case "allow_creative_flying" -> {
+                player.getAbilities().allowFlying = false;
+                player.sendAbilitiesUpdate();
+            }
+            case "keep_equipment_after_death" -> {
+                RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+                playerData.keepEquipmentAfterDeath = false;
+            }
+            case "one_last_chance" -> {
+                RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+                playerData.revive = false;
+            }
+            case "damage_gain_multiplier" -> {
+                RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+                playerData.damageGainMultiplier = 1.0f;
+            }
+            case "set_equipment" -> {
+                int slotIndex = Integer.parseInt(value.get(1));
+                player.getInventory().armor.set(slotIndex, ItemStack.EMPTY);
+            }
+            default -> {
+                throw new IllegalStateException("Unexpected value: " + eventType);
+            }
+        }
+    }
+
+    public static void tickSetEquipment(MinecraftServer minecraftServer) {
+        minecraftServer.getPlayerManager().getPlayerList().forEach(player -> {
+            RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+            playerData.temporaryUpgrades.forEach(upgrade -> {
+                upgrade.actions().forEach(action -> {
+                    if (action.type().equals("event") && action.value().get(0).equals("set_equipment") && action.value().get(2).isEmpty()) {
+                        RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), false);
+                    }
+                });
+            });
+            playerData.permanentUpgrades.forEach(upgrade -> {
+                upgrade.actions().forEach(action -> {
+                    if (action.type().equals("event") && action.value().get(0).equals("set_equipment") && action.value().get(2).isEmpty()) {
+                        RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), true);
+                    }
+                });
+            });
+        });
+    }
 }

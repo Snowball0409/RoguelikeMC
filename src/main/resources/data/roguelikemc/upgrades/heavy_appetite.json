@@ -1,10 +1,27 @@
 {
   "id": "heavy_appetite",
   "name": "Heavy Appetite",
-  "description": "Gain Saturation, movement speed -20%",
+  "description": "Gain Saturation, movement speed -50%",
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,
   "icon": "minecraft:textures/item/cooked_beef.png",
-  "actions": []
+  "actions": [
+    {
+      "type": "effect",
+      "value": [
+        "minecraft:saturation",
+        "-1",
+        "0"
+      ]
+    },
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.movement_speed",
+        "-0.5",
+        "add_multiplied_base"
+      ]
+    }
+  ]
 }

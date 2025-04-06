@@ -1,10 +1,19 @@
 {
   "id": "last_stand",
   "name": "Last Stand",
-  "description": "When health is below half, gain Regeneration I",
+  "description": "Gain Regeneration I",
   "tier": "epic",
   "isPermanent": false,
   "isUnique": false,
   "icon": "minecraft:textures/item/golden_apple.png",
-  "actions": []
+  "actions": [
+    {
+      "type": "effect",
+      "value": [
+        "minecraft:regeneration",
+        "-1",
+        "0"
+      ]
+    }
+  ]
 }

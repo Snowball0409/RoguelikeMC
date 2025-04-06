@@ -74,27 +74,27 @@ public class RoguelikeMCDatagenUtil {
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.armor", "1", "add_value")))
         );
 
-        final RoguelikeMCUpgradeData sharpshooters_aim = new RoguelikeMCUpgradeData(
-                "sharpshooters_aim",
-                "Sharpshooter's Aim",
-                "Projectile Power +5%",
-                "common",
-                true,
-                false,
-                "minecraft:textures/item/bow.png",
-                List.of()
-        );
+//        final RoguelikeMCUpgradeData sharpshooters_aim = new RoguelikeMCUpgradeData(
+//                "sharpshooters_aim",
+//                "Sharpshooter's Aim",
+//                "Projectile Power +5%",
+//                "common",
+//                true,
+//                false,
+//                "minecraft:textures/item/bow.png",
+//                List.of()
+//        );
 
-        final RoguelikeMCUpgradeData wisdoms_bounty = new RoguelikeMCUpgradeData(
-                "wisdoms_bounty",
-                "Wisdom's Bounty",
-                "Experience Gain +6%",
-                "common",
-                true,
-                false,
-                "minecraft:textures/item/experience_bottle.png",
-                List.of()
-        );
+//        final RoguelikeMCUpgradeData wisdoms_bounty = new RoguelikeMCUpgradeData(
+//                "wisdoms_bounty",
+//                "Wisdom's Bounty",
+//                "Experience Gain +6%",
+//                "common",
+//                true,
+//                false,
+//                "minecraft:textures/item/experience_bottle.png",
+//                List.of()
+//        );
 
         //temporary upgrades
         // Legendary tier upgrades
@@ -106,7 +106,8 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 true,
                 "minecraft:textures/item/elytra.png",
-                List.of()
+                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.max_health", "-0.5", "add_multiplied_base")),
+                        new RoguelikeMCUpgradeData.ActionData("event", List.of("allow_creative_flying")))
         );
 
         final RoguelikeMCUpgradeData undying_will = new RoguelikeMCUpgradeData(
@@ -117,7 +118,7 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 true,
                 "minecraft:textures/item/totem_of_undying.png",
-                List.of()
+                List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("keep_equipment_after_death")))
         );
 
         final RoguelikeMCUpgradeData one_last_chance = new RoguelikeMCUpgradeData(
@@ -128,31 +129,32 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 true,
                 "minecraft:textures/item/totem_of_undying.png",
-                List.of()
+                List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("one_last_chance")))
         );
 
         // Epic tier upgrades
         final RoguelikeMCUpgradeData berserkers_wrath = new RoguelikeMCUpgradeData(
                 "berserkers_wrath",
                 "Berserker's Wrath",
-                "Strength +50%, but takes 50% more physical damage",
+                "Strength +50%, but takes 50% more damage",
                 "epic",
                 false,
                 false,
                 "minecraft:textures/item/netherite_axe.png",
-                List.of()
+                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.attack_damage", "0.5", "add_multiplied_base")),
+                        new RoguelikeMCUpgradeData.ActionData("event", List.of("damage_gain_multiplier", "0.5")))
         );
 
-        final RoguelikeMCUpgradeData glass_cannon = new RoguelikeMCUpgradeData(
-                "glass_cannon",
-                "Glass Cannon",
-                "Projectile damage +50%, but takes 50% more projectile damage",
-                "epic",
-                false,
-                false,
-                "minecraft:textures/item/bow.png",
-                List.of()
-        );
+//        final RoguelikeMCUpgradeData glass_cannon = new RoguelikeMCUpgradeData(
+//                "glass_cannon",
+//                "Glass Cannon",
+//                "Projectile damage +50%, but takes 50% more projectile damage",
+//                "epic",
+//                false,
+//                false,
+//                "minecraft:textures/item/bow.png",
+//                List.of()
+//        );
 
         final RoguelikeMCUpgradeData winged_warrior = new RoguelikeMCUpgradeData(
                 "winged_warrior",
@@ -162,7 +164,7 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 true,
                 "minecraft:textures/item/elytra.png",
-                List.of()
+                List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("set_equipment", "2", "{components: {\"minecraft:enchantments\": {levels: {\"minecraft:binding_curse\": 1}}, \"minecraft:unbreakable\": {}}, count: 1, id: \"minecraft:elytra\"}")))
         );
 
         final RoguelikeMCUpgradeData infernal_strider = new RoguelikeMCUpgradeData(
@@ -179,23 +181,24 @@ public class RoguelikeMCDatagenUtil {
         final RoguelikeMCUpgradeData heavy_appetite = new RoguelikeMCUpgradeData(
                 "heavy_appetite",
                 "Heavy Appetite",
-                "Gain Saturation, movement speed -20%",
+                "Gain Saturation, movement speed -50%",
                 "epic",
                 false,
                 true,
                 "minecraft:textures/item/cooked_beef.png",
-                List.of()
+                List.of(new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:saturation", "-1", "0")),
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.movement_speed", "-0.5", "add_multiplied_base")))
         );
 
         final RoguelikeMCUpgradeData last_stand = new RoguelikeMCUpgradeData(
                 "last_stand",
                 "Last Stand",
-                "When health is below half, gain Regeneration I",
+                "Gain Regeneration I",
                 "epic",
                 false,
                 false,
                 "minecraft:textures/item/golden_apple.png",
-                List.of()
+                List.of(new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:regeneration", "-1", "0")))
         );
 
         // Rare tier upgrades
@@ -213,12 +216,13 @@ public class RoguelikeMCDatagenUtil {
         final RoguelikeMCUpgradeData stonebound = new RoguelikeMCUpgradeData(
                 "stonebound",
                 "Stonebound",
-                "Gain Resistance I, but maximum health -1",
+                "Gain Resistance I, but maximum health -1 heart",
                 "rare",
                 false,
                 false,
                 "minecraft:textures/block/stone.png",
-                List.of()
+                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.max_health", "-2", "add_value")),
+                        new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:resistance", "-1", "0")))
         );
 
         final RoguelikeMCUpgradeData tank_mode = new RoguelikeMCUpgradeData(
@@ -229,7 +233,9 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 true,
                 "minecraft:textures/item/iron_chestplate.png",
-                List.of()
+                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.max_health", "4", "add_value")),
+                        new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:resistance", "-1", "1")),
+                        new RoguelikeMCUpgradeData.ActionData("event", List.of("set_equipment", "1", "")))
         );
 
         final RoguelikeMCUpgradeData villager_slayer = new RoguelikeMCUpgradeData(
@@ -383,12 +389,12 @@ public class RoguelikeMCDatagenUtil {
         final RoguelikeMCUpgradeData golden_fortune = new RoguelikeMCUpgradeData(
                 "golden_fortune",
                 "Golden Fortune",
-                "Receive half stack of golden apple",
+                "Receive 16 of golden apple",
                 "common",
                 false,
                 false,
                 "minecraft:textures/item/golden_apple.png",
-                List.of(new RoguelikeMCUpgradeData.ActionData("command", List.of("give @s golden_apple 32")))
+                List.of(new RoguelikeMCUpgradeData.ActionData("command", List.of("give @s golden_apple 16")))
         );
 
         final RoguelikeMCUpgradeData golden_harvest = new RoguelikeMCUpgradeData(
@@ -463,13 +469,13 @@ public class RoguelikeMCDatagenUtil {
         upgradeProvider.addUpgrade(blade_dancer);
         upgradeProvider.addUpgrade(mighty_force);
         upgradeProvider.addUpgrade(adamant_guard);
-        upgradeProvider.addUpgrade(sharpshooters_aim);
-        upgradeProvider.addUpgrade(wisdoms_bounty);
+//        upgradeProvider.addUpgrade(sharpshooters_aim);
+//        upgradeProvider.addUpgrade(wisdoms_bounty);
         upgradeProvider.addUpgrade(skyborn);
         upgradeProvider.addUpgrade(undying_will);
         upgradeProvider.addUpgrade(one_last_chance);
         upgradeProvider.addUpgrade(berserkers_wrath);
-        upgradeProvider.addUpgrade(glass_cannon);
+//        upgradeProvider.addUpgrade(glass_cannon);
         upgradeProvider.addUpgrade(winged_warrior);
         upgradeProvider.addUpgrade(infernal_strider);
         upgradeProvider.addUpgrade(heavy_appetite);

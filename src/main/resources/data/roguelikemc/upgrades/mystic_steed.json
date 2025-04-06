@@ -10,7 +10,7 @@
     {
       "type": "command",
       "value": [
-        "summon horse ~ ~ ~ {Tame:1b,equipment:{saddle:{id:\"minecraft:saddle\",count:1}},attributes:[{id:\"minecraft:jump_strength\",base:32},{id:\"minecraft:movement_speed\",base:1}]}"
+        "summon horse ~ ~ ~ {Tame:1b,SaddleItem:{id:\"minecraft:saddle\",count:1},attributes:[{id:\"minecraft:generic.jump_strength\",base:5},{id:\"minecraft:generic.movement_speed\",base:0.05},{id:\"minecraft:generic.fall_damage_multiplier\", base:0}]}"
       ]
     }
   ]

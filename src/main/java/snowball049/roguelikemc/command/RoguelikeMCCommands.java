@@ -69,11 +69,7 @@ public class RoguelikeMCCommands {
                     }
                     if(removed){
                         upgrade.actions().forEach(upgradeAction -> {
-                            if(upgradeAction.type().equals("attribute")){
-                                RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player, upgradeAction.value());
-                            } else if (upgradeAction.type().equals("effect")) {
-                                RoguelikeMCUpgradeUtil.removeUpgradeEffect(player, upgradeAction.value());
-                            }
+                            RoguelikeMCUpgradeUtil.removeUpgrade(player, upgradeAction);
                         });
                     }
                     player.sendMessage(Text.of("You have been removed upgrade: "+ upgrade.name()));
@@ -94,20 +90,12 @@ public class RoguelikeMCCommands {
                 RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
                 playerData.permanentUpgrades.forEach(upgrade -> {
                     upgrade.actions().forEach(upgradeAction -> {
-                        if(upgradeAction.type().equals("attribute")){
-                            RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player, upgradeAction.value());
-                        } else if (upgradeAction.type().equals("effect")) {
-                            player.removeStatusEffect(Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(upgradeAction.value().getFirst())).orElseThrow());
-                        }
+                        RoguelikeMCUpgradeUtil.removeUpgrade(player, upgradeAction);
                     });
                 });
                 playerData.temporaryUpgrades.forEach(upgrade -> {
                     upgrade.actions().forEach(upgradeAction -> {
-                        if(upgradeAction.type().equals("attribute")){
-                            RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player, upgradeAction.value());
-                        } else if (upgradeAction.type().equals("effect")) {
-                            player.removeStatusEffect(Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(upgradeAction.value().getFirst())).orElseThrow());
-                        }
+                        RoguelikeMCUpgradeUtil.removeUpgrade(player, upgradeAction);
                     });
                 });
                 playerData.permanentUpgrades.clear();
