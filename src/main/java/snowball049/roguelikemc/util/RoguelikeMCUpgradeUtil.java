@@ -9,6 +9,7 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
@@ -54,7 +55,9 @@ public class RoguelikeMCUpgradeUtil {
                 case "effect" -> RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), upgrade.isPermanent());
                 case "command" -> RoguelikeMCUpgradeUtil.applyCommandEffect(player, action.value(), upgrade.isPermanent());
                 case "event" -> RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), upgrade.isPermanent());
-                default -> throw new IllegalStateException("Unexpected value: " + action.type());
+                default -> {
+                    RoguelikeMC.LOGGER.warn("Unknown action type: " + action.type());
+                }
             }
         });
     }
@@ -66,20 +69,20 @@ public class RoguelikeMCUpgradeUtil {
         if (server != null) {
             server.getCommandManager().executeWithPrefix(player.getCommandSource().withLevel(4).withSilent(), command);
         } else {
-            throw new IllegalStateException("Server is null");
+            RoguelikeMC.LOGGER.warn("Server is null");
         }
     }
 
     public static void addUpgradeAttribute(ServerPlayerEntity player, String id, List<String> value, boolean isPermanent) {
         Identifier attributeIdentifier = Identifier.tryParse(value.getFirst());
         RegistryEntry.Reference<EntityAttribute> attributeEntry = Registries.ATTRIBUTE.getEntry(attributeIdentifier)
-                .orElseThrow(() -> new IllegalStateException("Attribute not found: " + attributeIdentifier));
+                .orElseThrow();
         double amount = Double.parseDouble(value.get(1));
         EntityAttributeModifier.Operation operation = switch (value.get(2)) {
             case "add_value" -> EntityAttributeModifier.Operation.ADD_VALUE;
             case "add_multiplied_base" -> EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE;
             case "add_multiplied_total" -> EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
-            default -> throw new IllegalStateException("Unexpected value: " + value.get(2));
+            default -> EntityAttributeModifier.Operation.ADD_VALUE;
         };
         EntityAttributeModifier attributeModifier;
         attributeModifier = new EntityAttributeModifier(Identifier.of(RoguelikeMC.MOD_ID + ":" + id + "/" + UUID.randomUUID()), amount, operation);
@@ -93,7 +96,7 @@ public class RoguelikeMCUpgradeUtil {
     public static void applyUpgradeEffect(ServerPlayerEntity player, List<String> value, boolean isPermanent) {
         Identifier effectIdentifier = Identifier.tryParse(value.getFirst());
         RegistryEntry.Reference<StatusEffect> effectEntry = Registries.STATUS_EFFECT.getEntry(effectIdentifier)
-                .orElseThrow(()->new IllegalStateException("Effect not found: "+effectIdentifier));
+                .orElseThrow();//()->new IllegalStateException("Effect not found: "+effectIdentifier));
 
 
         if(!player.getWorld().isClient()) {
@@ -130,7 +133,7 @@ public class RoguelikeMCUpgradeUtil {
     public static void removeUpgradeAttribute(ServerPlayerEntity player, String id, List<String> value) {
         Identifier attributeIdentifier = Identifier.tryParse(value.getFirst());
         RegistryEntry.Reference<EntityAttribute> attributeEntry = Registries.ATTRIBUTE.getEntry(attributeIdentifier)
-                .orElseThrow(() -> new IllegalStateException("Attribute not found: " + attributeIdentifier));
+                .orElseThrow();//(() -> new IllegalStateException("Attribute not found: " + attributeIdentifier));
 
         for (EntityAttributeModifier modifier : Objects.requireNonNull(player.getAttributeInstance(attributeEntry)).getModifiers()) {
             RoguelikeMC.LOGGER.debug("Removing attribute " + modifier.id() + " from upgrade effect");
@@ -208,7 +211,7 @@ public class RoguelikeMCUpgradeUtil {
             }
             case "event" -> RoguelikeMCUpgradeUtil.removeUpgradeEvent(player, upgradeAction.value());
             default -> {
-                throw new IllegalStateException("Unexpected value: " + upgradeAction.type());
+                RoguelikeMC.LOGGER.warn("Unexpected value: " + upgradeAction.type());
             }
         }
     }
@@ -233,9 +236,9 @@ public class RoguelikeMCUpgradeUtil {
                 playerData.damageGainMultiplier += Float.parseFloat(value.get(1));
             }
             case "set_equipment" -> {
-                int slotIndex = Integer.parseInt(value.get(1));
-                String nbtString = value.get(2);
                 try {
+                    int slotIndex = Integer.parseInt(value.get(1));
+                    String nbtString = value.get(2);
                     NbtCompound nbt = !nbtString.isEmpty()?StringNbtReader.parse(nbtString):new NbtCompound();
                     if (!player.getInventory().armor.get(slotIndex).isEmpty()) {
                         player.dropItem(player.getInventory().armor.get(slotIndex), false);
@@ -243,26 +246,26 @@ public class RoguelikeMCUpgradeUtil {
                     }
                     player.getInventory().armor.set(slotIndex, ItemStack.fromNbtOrEmpty(player.getWorld().getRegistryManager(), nbt));
                 } catch (CommandSyntaxException e) {
-                    throw new RuntimeException(e);
+                    RoguelikeMC.LOGGER.warn(e.getClass() + ":" + e.getMessage());
                 }
             }
             case "effect_mobs" -> {
-                Identifier effectIdentifier = Identifier.tryParse(value.get(1));
-                RegistryEntry.Reference<StatusEffect> effectEntry = Registries.STATUS_EFFECT.getEntry(effectIdentifier)
-                        .orElseThrow(() -> new IllegalStateException("Effect not found: " + effectIdentifier));
-                World world = player.getWorld();
-                if (world.isClient()) return;
                 try {
-                    Box area = new Box(player.getBlockPos()).expand(8);
-                    for (LivingEntity entity : world.getEntitiesByClass(LivingEntity.class, area, e -> !e.isPlayer() && e.isMobOrPlayer())) {
+                    Identifier effectIdentifier = Identifier.tryParse(value.get(1));
+                    RegistryEntry.Reference<StatusEffect> effectEntry = Registries.STATUS_EFFECT.getEntry(effectIdentifier)
+                            .orElseThrow();
+                    World world = player.getWorld();
+                    if (world.isClient()) return;
+                    Box area = new Box(player.getBlockPos()).expand(Double.parseDouble(value.get(3)));
+                    for (LivingEntity entity : world.getEntitiesByClass(LivingEntity.class, area, e -> !e.isPlayer() && e instanceof HostileEntity)) {
                         entity.addStatusEffect(new StatusEffectInstance(effectEntry, 40, Integer.parseInt(value.get(2)), false, true, false));
                     }
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    RoguelikeMC.LOGGER.warn(e.getClass() + ":" + e.getMessage());
                 }
             }
             default -> {
-                throw new IllegalStateException("Unexpected value: " + eventType);
+                RoguelikeMC.LOGGER.warn("Unexpected eventType value: " + eventType);
             }
         }
     }
@@ -293,7 +296,7 @@ public class RoguelikeMCUpgradeUtil {
             case "effect_mobs" -> {
             }
             default -> {
-                throw new IllegalStateException("Unexpected value: " + eventType);
+                RoguelikeMC.LOGGER.warn("Unexpected eventType value: " + eventType);
             }
         }
     }

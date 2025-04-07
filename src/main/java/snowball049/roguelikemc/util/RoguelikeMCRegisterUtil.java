@@ -3,13 +3,13 @@ package snowball049.roguelikemc.util;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -90,10 +90,9 @@ public class RoguelikeMCRegisterUtil {
                 )
         );
     }
-
     public static void onKillEntityEventRegister(ServerWorld server, Entity entity, LivingEntity context) {
         if(RoguelikeMCCommonConfig.INSTANCE.enableUpgradeSystem && RoguelikeMCCommonConfig.INSTANCE.enableKillHostileEntityUpgrade) {
-            if (entity instanceof ServerPlayerEntity && context.isMobOrPlayer() && !context.isPlayer()) {
+            if (entity instanceof ServerPlayerEntity && context instanceof HostileEntity && !context.isPlayer()) {
                 RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState((ServerPlayerEntity) entity);
                 playerData.currentKillHostile++;
                 while (playerData.currentKillHostile >= playerData.currentKillHostileRequirement) {

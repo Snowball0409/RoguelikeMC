@@ -12,7 +12,8 @@
       "value": [
         "effect_mobs",
         "minecraft:poison",
-        "0"
+        "0",
+        "8.0"
       ]
     }
   ]

@@ -306,7 +306,7 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 true,
                 "minecraft:textures/item/spider_eye.png",
-                List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("effect_mobs", "minecraft:poison", "0")))
+                List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("effect_mobs", "minecraft:poison", "0", "8.0")))
         );
 
         final RoguelikeMCUpgradeData withering_aura = new RoguelikeMCUpgradeData(
@@ -317,7 +317,7 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 true,
                 "minecraft:textures/item/wither_rose.png",
-                List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("effect_mobs", "minecraft:wither", "0")))
+                List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("effect_mobs", "minecraft:wither", "0", "8.0")))
         );
 
         final RoguelikeMCUpgradeData nocturnal_sight = new RoguelikeMCUpgradeData(
