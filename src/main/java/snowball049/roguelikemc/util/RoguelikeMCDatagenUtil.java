@@ -15,7 +15,7 @@ public class RoguelikeMCDatagenUtil {
                 "rare",
                 true,
                 false,
-                "minecraft:textures/item/rabbit_foot.png",
+                "roguelikemc:textures/upgrades/fortunes_favor.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.luck", "1", "add_value")))
         );
 
@@ -469,13 +469,10 @@ public class RoguelikeMCDatagenUtil {
         upgradeProvider.addUpgrade(blade_dancer);
         upgradeProvider.addUpgrade(mighty_force);
         upgradeProvider.addUpgrade(adamant_guard);
-//        upgradeProvider.addUpgrade(sharpshooters_aim);
-//        upgradeProvider.addUpgrade(wisdoms_bounty);
         upgradeProvider.addUpgrade(skyborn);
         upgradeProvider.addUpgrade(undying_will);
         upgradeProvider.addUpgrade(one_last_chance);
         upgradeProvider.addUpgrade(berserkers_wrath);
-//        upgradeProvider.addUpgrade(glass_cannon);
         upgradeProvider.addUpgrade(winged_warrior);
         upgradeProvider.addUpgrade(infernal_strider);
         upgradeProvider.addUpgrade(heavy_appetite);
@@ -483,8 +480,6 @@ public class RoguelikeMCDatagenUtil {
         upgradeProvider.addUpgrade(turtles_blessing);
         upgradeProvider.addUpgrade(stonebound);
         upgradeProvider.addUpgrade(tank_mode);
-//        upgradeProvider.addUpgrade(villager_slayer);
-//        upgradeProvider.addUpgrade(spicy_feast);
         upgradeProvider.addUpgrade(mystic_steed);
         upgradeProvider.addUpgrade(titans_bulk);
         upgradeProvider.addUpgrade(pixie_form);
@@ -492,7 +487,6 @@ public class RoguelikeMCDatagenUtil {
         upgradeProvider.addUpgrade(withering_aura);
         upgradeProvider.addUpgrade(nocturnal_sight);
         upgradeProvider.addUpgrade(eternal_companion);
-//        upgradeProvider.addUpgrade(grass_grazer);
         upgradeProvider.addUpgrade(leap_of_faith);
         upgradeProvider.addUpgrade(feathers_grace);
         upgradeProvider.addUpgrade(equestrian_gift);
@@ -503,5 +497,11 @@ public class RoguelikeMCDatagenUtil {
         upgradeProvider.addUpgrade(scholars_gift);
         upgradeProvider.addUpgrade(prospectors_luck);
         upgradeProvider.addUpgrade(brutes_strength);
+//        upgradeProvider.addUpgrade(sharpshooters_aim);
+//        upgradeProvider.addUpgrade(wisdoms_bounty);
+//        upgradeProvider.addUpgrade(glass_cannon);
+//        upgradeProvider.addUpgrade(villager_slayer);
+//        upgradeProvider.addUpgrade(spicy_feast);
+//        upgradeProvider.addUpgrade(grass_grazer);
     }
 }
