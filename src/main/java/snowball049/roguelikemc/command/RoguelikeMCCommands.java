@@ -69,7 +69,7 @@ public class RoguelikeMCCommands {
                     }
                     if(removed){
                         upgrade.actions().forEach(upgradeAction -> {
-                            RoguelikeMCUpgradeUtil.removeUpgrade(player, upgradeAction);
+                            RoguelikeMCUpgradeUtil.removeUpgrade(player, upgradeId, upgradeAction);
                         });
                     }
                     player.sendMessage(Text.of("You have been removed upgrade: "+ upgrade.name()));
@@ -90,12 +90,12 @@ public class RoguelikeMCCommands {
                 RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
                 playerData.permanentUpgrades.forEach(upgrade -> {
                     upgrade.actions().forEach(upgradeAction -> {
-                        RoguelikeMCUpgradeUtil.removeUpgrade(player, upgradeAction);
+                        RoguelikeMCUpgradeUtil.removeUpgrade(player, upgrade.id(), upgradeAction);
                     });
                 });
                 playerData.temporaryUpgrades.forEach(upgrade -> {
                     upgrade.actions().forEach(upgradeAction -> {
-                        RoguelikeMCUpgradeUtil.removeUpgrade(player, upgradeAction);
+                        RoguelikeMCUpgradeUtil.removeUpgrade(player, upgrade.id(), upgradeAction);
                     });
                 });
                 playerData.permanentUpgrades.clear();

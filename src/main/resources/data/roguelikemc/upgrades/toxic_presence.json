@@ -2,9 +2,18 @@
   "id": "toxic_presence",
   "name": "Toxic Presence",
   "description": "Hostile mobs around you are poisoned",
-  "tier": "common",
+  "tier": "rare",
   "isPermanent": false,
   "isUnique": true,
   "icon": "minecraft:textures/item/spider_eye.png",
-  "actions": []
+  "actions": [
+    {
+      "type": "event",
+      "value": [
+        "effect_mobs",
+        "minecraft:poison",
+        "0"
+      ]
+    }
+  ]
 }

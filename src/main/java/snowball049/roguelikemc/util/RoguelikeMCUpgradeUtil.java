@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.effect.StatusEffect;
@@ -18,6 +19,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Box;
+import net.minecraft.world.World;
 import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
@@ -47,7 +50,7 @@ public class RoguelikeMCUpgradeUtil {
     public static void applyUpgrade(ServerPlayerEntity player, RoguelikeMCUpgradeData upgrade) {
         upgrade.actions().forEach(action -> {
             switch (action.type()) {
-                case "attribute" -> RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, action.value(), upgrade.isPermanent());
+                case "attribute" -> RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, upgrade.id(), action.value(), upgrade.isPermanent());
                 case "effect" -> RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), upgrade.isPermanent());
                 case "command" -> RoguelikeMCUpgradeUtil.applyCommandEffect(player, action.value(), upgrade.isPermanent());
                 case "event" -> RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), upgrade.isPermanent());
@@ -67,7 +70,7 @@ public class RoguelikeMCUpgradeUtil {
         }
     }
 
-    public static void addUpgradeAttribute(ServerPlayerEntity player, List<String> value, boolean isPermanent) {
+    public static void addUpgradeAttribute(ServerPlayerEntity player, String id, List<String> value, boolean isPermanent) {
         Identifier attributeIdentifier = Identifier.tryParse(value.getFirst());
         RegistryEntry.Reference<EntityAttribute> attributeEntry = Registries.ATTRIBUTE.getEntry(attributeIdentifier)
                 .orElseThrow(() -> new IllegalStateException("Attribute not found: " + attributeIdentifier));
@@ -79,11 +82,7 @@ public class RoguelikeMCUpgradeUtil {
             default -> throw new IllegalStateException("Unexpected value: " + value.get(2));
         };
         EntityAttributeModifier attributeModifier;
-        if (isPermanent) {
-            attributeModifier = new EntityAttributeModifier(Identifier.of(RoguelikeMC.MOD_ID + ":tmp/" + UUID.randomUUID()), amount, operation);
-        }else{
-            attributeModifier = new EntityAttributeModifier(Identifier.of(RoguelikeMC.MOD_ID + ":" + UUID.randomUUID()), amount, operation);
-        }
+        attributeModifier = new EntityAttributeModifier(Identifier.of(RoguelikeMC.MOD_ID + ":" + id + "/" + UUID.randomUUID()), amount, operation);
 
         Multimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier> modifiers = HashMultimap.create();
         modifiers.put(attributeEntry, attributeModifier);
@@ -128,13 +127,14 @@ public class RoguelikeMCUpgradeUtil {
     public static void removeUpgradeEffect(ServerPlayerEntity player, List<String> value) {
         player.removeStatusEffect(Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(value.getFirst())).orElseThrow());
     }
-    public static void removeUpgradeAttribute(ServerPlayerEntity player, List<String> value) {
+    public static void removeUpgradeAttribute(ServerPlayerEntity player, String id, List<String> value) {
         Identifier attributeIdentifier = Identifier.tryParse(value.getFirst());
         RegistryEntry.Reference<EntityAttribute> attributeEntry = Registries.ATTRIBUTE.getEntry(attributeIdentifier)
                 .orElseThrow(() -> new IllegalStateException("Attribute not found: " + attributeIdentifier));
 
         for (EntityAttributeModifier modifier : Objects.requireNonNull(player.getAttributeInstance(attributeEntry)).getModifiers()) {
-            if (modifier.id().toString().startsWith(RoguelikeMC.MOD_ID+":tmp/")) {
+            RoguelikeMC.LOGGER.info("Removing attribute " + modifier.id() + " from upgrade effect");
+            if (modifier.id().toString().startsWith(RoguelikeMC.MOD_ID + ":" + id)) {
                 Objects.requireNonNull(player.getAttributeInstance(attributeEntry)).removeModifier(modifier);
             }
         }
@@ -201,9 +201,9 @@ public class RoguelikeMCUpgradeUtil {
         return chosen;
     }
 
-    public static void removeUpgrade(ServerPlayerEntity player, RoguelikeMCUpgradeData.ActionData upgradeAction) {
+    public static void removeUpgrade(ServerPlayerEntity player, String id, RoguelikeMCUpgradeData.ActionData upgradeAction) {
         switch(upgradeAction.type()){
-            case "attribute" -> RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player, upgradeAction.value());
+            case "attribute" -> RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player, id, upgradeAction.value());
             case "effect" -> RoguelikeMCUpgradeUtil.removeUpgradeEffect(player, upgradeAction.value());
             case "command" -> {
             }
@@ -247,6 +247,21 @@ public class RoguelikeMCUpgradeUtil {
                     throw new RuntimeException(e);
                 }
             }
+            case "effect_mobs" -> {
+                Identifier effectIdentifier = Identifier.tryParse(value.get(1));
+                RegistryEntry.Reference<StatusEffect> effectEntry = Registries.STATUS_EFFECT.getEntry(effectIdentifier)
+                        .orElseThrow(() -> new IllegalStateException("Effect not found: " + effectIdentifier));
+                World world = player.getWorld();
+                if (world.isClient()) return;
+                try {
+                    Box area = new Box(player.getBlockPos()).expand(8);
+                    for (LivingEntity entity : world.getEntitiesByClass(LivingEntity.class, area, e -> !e.isPlayer() && e.isMobOrPlayer())) {
+                        entity.addStatusEffect(new StatusEffectInstance(effectEntry, 40, Integer.parseInt(value.get(2)), false, true, false));
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
             default -> {
                 throw new IllegalStateException("Unexpected value: " + eventType);
             }
@@ -276,6 +291,8 @@ public class RoguelikeMCUpgradeUtil {
                 int slotIndex = Integer.parseInt(value.get(1));
                 player.getInventory().armor.set(slotIndex, ItemStack.EMPTY);
             }
+            case "effect_mobs" -> {
+            }
             default -> {
                 throw new IllegalStateException("Unexpected value: " + eventType);
             }
@@ -295,6 +312,26 @@ public class RoguelikeMCUpgradeUtil {
             playerData.permanentUpgrades.forEach(upgrade -> {
                 upgrade.actions().forEach(action -> {
                     if (action.type().equals("event") && action.value().get(0).equals("set_equipment") && action.value().get(2).isEmpty()) {
+                        RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), true);
+                    }
+                });
+            });
+        });
+    }
+
+    public static void tickEffectToMobEntity(MinecraftServer minecraftServer) {
+        minecraftServer.getPlayerManager().getPlayerList().forEach(player -> {
+            RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+            playerData.temporaryUpgrades.forEach(upgrade -> {
+                upgrade.actions().forEach(action -> {
+                    if (action.type().equals("event") && action.value().getFirst().equals("effect_mobs")) {
+                        RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), false);
+                    }
+                });
+            });
+            playerData.permanentUpgrades.forEach(upgrade -> {
+                upgrade.actions().forEach(action -> {
+                    if (action.type().equals("event") && action.value().getFirst().equals("effect_mobs")) {
                         RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), true);
                     }
                 });

@@ -175,7 +175,7 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 true,
                 "minecraft:textures/item/netherite_boots.png",
-                List.of()
+                List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("set_equipment", "0", "{components: {\"minecraft:enchantments\": {levels: {\"minecraft:frost_walker\": 2, \"minecraft:binding_curse\": 1, \"minecraft:protection\": 5}}, \"minecraft:unbreakable\": {}}, count: 1, id: \"minecraft:netherite_boots\"}")))
         );
 
         final RoguelikeMCUpgradeData heavy_appetite = new RoguelikeMCUpgradeData(
@@ -210,7 +210,7 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 true,
                 "minecraft:textures/item/turtle_helmet.png",
-                List.of()
+                List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("set_equipment", "3", "{components: {\"minecraft:enchantments\": {levels: {\"minecraft:binding_curse\": 1}}, \"minecraft:unbreakable\": {}}, count: 1, id: \"minecraft:turtle_helmet\"}")))
         );
 
         final RoguelikeMCUpgradeData stonebound = new RoguelikeMCUpgradeData(
@@ -238,27 +238,27 @@ public class RoguelikeMCDatagenUtil {
                         new RoguelikeMCUpgradeData.ActionData("event", List.of("set_equipment", "1", "")))
         );
 
-        final RoguelikeMCUpgradeData villager_slayer = new RoguelikeMCUpgradeData(
-                "villager_slayer",
-                "Villager Slayer",
-                "Killing villagers drops emeralds, but Iron Golems will permanently be hostile",
-                "rare",
-                false,
-                true,
-                "minecraft:textures/item/emerald.png",
-                List.of()
-        );
+//        final RoguelikeMCUpgradeData villager_slayer = new RoguelikeMCUpgradeData(
+//                "villager_slayer",
+//                "Villager Slayer",
+//                "Killing villagers drops emeralds, but Iron Golems will permanently be hostile",
+//                "rare",
+//                false,
+//                true,
+//                "minecraft:textures/item/emerald.png",
+//                List.of()
+//        );
 
-        final RoguelikeMCUpgradeData spicy_feast = new RoguelikeMCUpgradeData(
-                "spicy_feast",
-                "Spicy Feast",
-                "Eating cooked chicken sets you on fire, but fully restores hunger",
-                "rare",
-                false,
-                true,
-                "minecraft:textures/item/cooked_chicken.png",
-                List.of()
-        );
+//        final RoguelikeMCUpgradeData spicy_feast = new RoguelikeMCUpgradeData(
+//                "spicy_feast",
+//                "Spicy Feast",
+//                "Eating cooked chicken sets you on fire, but fully restores hunger",
+//                "rare",
+//                false,
+//                true,
+//                "minecraft:textures/item/cooked_chicken.png",
+//                List.of()
+//        );
 
         final RoguelikeMCUpgradeData mystic_steed = new RoguelikeMCUpgradeData(
                 "mystic_steed",
@@ -302,22 +302,22 @@ public class RoguelikeMCDatagenUtil {
                 "toxic_presence",
                 "Toxic Presence",
                 "Hostile mobs around you are poisoned",
-                "common",
+                "rare",
                 false,
                 true,
                 "minecraft:textures/item/spider_eye.png",
-                List.of()
+                List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("effect_mobs", "minecraft:poison", "0")))
         );
 
         final RoguelikeMCUpgradeData withering_aura = new RoguelikeMCUpgradeData(
                 "withering_aura",
                 "Withering Aura",
                 "Hostile mobs around you are inflicted with Wither",
-                "common",
+                "epic",
                 false,
                 true,
                 "minecraft:textures/item/wither_rose.png",
-                List.of()
+                List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("effect_mobs", "minecraft:wither", "0")))
         );
 
         final RoguelikeMCUpgradeData nocturnal_sight = new RoguelikeMCUpgradeData(
@@ -342,16 +342,16 @@ public class RoguelikeMCDatagenUtil {
                 List.of(new RoguelikeMCUpgradeData.ActionData("command", List.of("summon cat ~ ~ ~ {Invulnerable:1b}")))
         );
 
-        final RoguelikeMCUpgradeData grass_grazer = new RoguelikeMCUpgradeData(
-                "grass_grazer",
-                "Grass Grazer",
-                "Sneaking allows you to eat grass",
-                "common",
-                false,
-                true,
-                "minecraft:textures/block/grass_block_top.png",
-                List.of()
-        );
+//        final RoguelikeMCUpgradeData grass_grazer = new RoguelikeMCUpgradeData(
+//                "grass_grazer",
+//                "Grass Grazer",
+//                "Sneaking allows you to eat grass",
+//                "common",
+//                false,
+//                true,
+//                "minecraft:textures/block/grass_block_top.png",
+//                List.of()
+//        );
 
         final RoguelikeMCUpgradeData leap_of_faith = new RoguelikeMCUpgradeData(
                 "leap_of_faith",
@@ -444,12 +444,12 @@ public class RoguelikeMCDatagenUtil {
         final RoguelikeMCUpgradeData prospectors_luck = new RoguelikeMCUpgradeData(
                 "prospectors_luck",
                 "Prospector's Luck",
-                "Receive a stack of random ores",
+                "Receive some random ores",
                 "common",
                 false,
                 false,
                 "minecraft:textures/item/diamond_ore.png",
-                List.of()
+                List.of(new RoguelikeMCUpgradeData.ActionData("command", List.of("loot give @s loot roguelikemc:random_ores")))
         );
 
         final RoguelikeMCUpgradeData brutes_strength = new RoguelikeMCUpgradeData(
@@ -483,8 +483,8 @@ public class RoguelikeMCDatagenUtil {
         upgradeProvider.addUpgrade(turtles_blessing);
         upgradeProvider.addUpgrade(stonebound);
         upgradeProvider.addUpgrade(tank_mode);
-        upgradeProvider.addUpgrade(villager_slayer);
-        upgradeProvider.addUpgrade(spicy_feast);
+//        upgradeProvider.addUpgrade(villager_slayer);
+//        upgradeProvider.addUpgrade(spicy_feast);
         upgradeProvider.addUpgrade(mystic_steed);
         upgradeProvider.addUpgrade(titans_bulk);
         upgradeProvider.addUpgrade(pixie_form);
@@ -492,7 +492,7 @@ public class RoguelikeMCDatagenUtil {
         upgradeProvider.addUpgrade(withering_aura);
         upgradeProvider.addUpgrade(nocturnal_sight);
         upgradeProvider.addUpgrade(eternal_companion);
-        upgradeProvider.addUpgrade(grass_grazer);
+//        upgradeProvider.addUpgrade(grass_grazer);
         upgradeProvider.addUpgrade(leap_of_faith);
         upgradeProvider.addUpgrade(feathers_grace);
         upgradeProvider.addUpgrade(equestrian_gift);

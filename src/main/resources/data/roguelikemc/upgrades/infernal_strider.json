@@ -6,5 +6,14 @@
   "isPermanent": false,
   "isUnique": true,
   "icon": "minecraft:textures/item/netherite_boots.png",
-  "actions": []
+  "actions": [
+    {
+      "type": "event",
+      "value": [
+        "set_equipment",
+        "0",
+        "{components: {\"minecraft:enchantments\": {levels: {\"minecraft:frost_walker\": 2, \"minecraft:binding_curse\": 1, \"minecraft:protection\": 5}}, \"minecraft:unbreakable\": {}}, count: 1, id: \"minecraft:netherite_boots\"}"
+      ]
+    }
+  ]
 }

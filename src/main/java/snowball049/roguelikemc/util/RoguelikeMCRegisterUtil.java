@@ -118,5 +118,9 @@ public class RoguelikeMCRegisterUtil {
         if (minecraftServer.getTicks() % 20 == 0) {
             RoguelikeMCUpgradeUtil.tickSetEquipment(minecraftServer);
         }
+        // Handle effect to mob entity
+        if (minecraftServer.getTicks() % 20 == 0) {
+            RoguelikeMCUpgradeUtil.tickEffectToMobEntity(minecraftServer);
+        }
     }
 }

@@ -1,7 +1,7 @@
 {
   "id": "golden_fortune",
   "name": "Golden Fortune",
-  "description": "Receive half stack of golden apple",
+  "description": "Receive 16 of golden apple",
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,
@@ -10,7 +10,7 @@
     {
       "type": "command",
       "value": [
-        "give @s golden_apple 32"
+        "give @s golden_apple 16"
       ]
     }
   ]

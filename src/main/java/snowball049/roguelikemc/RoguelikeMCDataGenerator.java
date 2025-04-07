@@ -12,6 +12,7 @@ public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
+		// Upgrade
 		pack.addProvider((FabricDataOutput output) -> {
 			RoguelikeMCUpgradeDataProvider upgradeProvider = new RoguelikeMCUpgradeDataProvider(output);
 

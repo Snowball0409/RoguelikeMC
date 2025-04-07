@@ -1,10 +1,17 @@
 {
   "id": "prospectors_luck",
   "name": "Prospector\u0027s Luck",
-  "description": "Receive a stack of random ores",
+  "description": "Receive some random ores",
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,
   "icon": "minecraft:textures/item/diamond_ore.png",
-  "actions": []
+  "actions": [
+    {
+      "type": "command",
+      "value": [
+        "loot give @s loot roguelikemc:random_ores"
+      ]
+    }
+  ]
 }

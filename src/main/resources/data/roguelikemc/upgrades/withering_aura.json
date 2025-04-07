@@ -2,9 +2,18 @@
   "id": "withering_aura",
   "name": "Withering Aura",
   "description": "Hostile mobs around you are inflicted with Wither",
-  "tier": "common",
+  "tier": "epic",
   "isPermanent": false,
   "isUnique": true,
   "icon": "minecraft:textures/item/wither_rose.png",
-  "actions": []
+  "actions": [
+    {
+      "type": "event",
+      "value": [
+        "effect_mobs",
+        "minecraft:wither",
+        "0"
+      ]
+    }
+  ]
 }
