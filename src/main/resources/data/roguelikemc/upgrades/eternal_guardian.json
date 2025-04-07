@@ -1,0 +1,17 @@
+{
+  "id": "eternal_guardian",
+  "name": "Eternal Guardian",
+  "description": "Gain an unbreakable shield",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/mob_effect/resistance.png",
+  "actions": [
+    {
+      "type": "command",
+      "value": [
+        "give @s shield[unbreakable\u003d{}] 1"
+      ]
+    }
+  ]
+}

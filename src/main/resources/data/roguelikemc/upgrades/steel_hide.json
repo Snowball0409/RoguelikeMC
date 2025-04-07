@@ -1,0 +1,19 @@
+{
+  "id": "steel_hide",
+  "name": "Steel Hide",
+  "description": "Armor toughness + 0.5",
+  "tier": "common",
+  "isPermanent": true,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/iron_chestplate.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.armor_toughness",
+        "0.5",
+        "add_value"
+      ]
+    }
+  ]
+}

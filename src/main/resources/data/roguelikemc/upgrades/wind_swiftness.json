@@ -1,0 +1,19 @@
+{
+  "id": "wind_swiftness",
+  "name": "Wind Swiftness",
+  "description": "Gain Speed I",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/mob_effect/speed.png",
+  "actions": [
+    {
+      "type": "effect",
+      "value": [
+        "minecraft:speed",
+        "-1",
+        "0"
+      ]
+    }
+  ]
+}

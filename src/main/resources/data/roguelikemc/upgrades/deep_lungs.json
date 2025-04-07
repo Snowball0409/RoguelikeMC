@@ -1,0 +1,19 @@
+{
+  "id": "deep_lungs",
+  "name": "Deep Lungs",
+  "description": "Breath underwater time + 50%",
+  "tier": "common",
+  "isPermanent": true,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/heart_of_the_sea.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.oxygen_bonus",
+        "1",
+        "add_value"
+      ]
+    }
+  ]
+}

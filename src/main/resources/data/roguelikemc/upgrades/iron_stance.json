@@ -1,0 +1,19 @@
+{
+  "id": "iron_stance",
+  "name": "Iron Stance",
+  "description": "Knockback resistance + 1",
+  "tier": "common",
+  "isPermanent": true,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/iron_block.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.knockback_resistance",
+        "1",
+        "add_value"
+      ]
+    }
+  ]
+}

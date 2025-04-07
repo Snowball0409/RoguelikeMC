@@ -1,0 +1,19 @@
+{
+  "id": "feather_bound",
+  "name": "Feather Bound",
+  "description": "Immune to fall damage",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "minecraft:textures/item/feather.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.fall_damage_multiplier",
+        "-1",
+        "add_value"
+      ]
+    }
+  ]
+}

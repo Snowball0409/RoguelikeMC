@@ -4,7 +4,7 @@
   "description": "Gain Strength",
   "tier": "common",
   "isPermanent": false,
-  "isUnique": false,
+  "isUnique": true,
   "icon": "minecraft:textures/item/netherite_sword.png",
   "actions": [
     {

@@ -196,7 +196,7 @@ public class RoguelikeMCDatagenUtil {
                 "Gain Regeneration I",
                 "epic",
                 false,
-                false,
+                true,
                 "minecraft:textures/item/golden_apple.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:regeneration", "-1", "0")))
         );
@@ -219,7 +219,7 @@ public class RoguelikeMCDatagenUtil {
                 "Gain Resistance I, but maximum health -1 heart",
                 "rare",
                 false,
-                false,
+                true,
                 "minecraft:textures/block/stone.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.max_health", "-2", "add_value")),
                         new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:resistance", "-1", "0")))
@@ -359,7 +359,7 @@ public class RoguelikeMCDatagenUtil {
                 "Gain Jump Boost",
                 "common",
                 false,
-                false,
+                true,
                 "minecraft:textures/item/rabbit_foot.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:jump_boost", "-1", "0")))
         );
@@ -370,7 +370,7 @@ public class RoguelikeMCDatagenUtil {
                 "Gain Slow Falling",
                 "common",
                 false,
-                false,
+                true,
                 "minecraft:textures/item/feather.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:slow_falling", "-1", "0")))
         );
@@ -425,7 +425,7 @@ public class RoguelikeMCDatagenUtil {
                 "Gain Haste",
                 "common",
                 false,
-                false,
+                true,
                 "minecraft:textures/item/golden_pickaxe.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:haste", "-1", "0")))
         );
@@ -458,9 +458,86 @@ public class RoguelikeMCDatagenUtil {
                 "Gain Strength",
                 "common",
                 false,
-                false,
+                true,
                 "minecraft:textures/item/netherite_sword.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:strength", "-1", "0")))
+        );
+
+        final RoguelikeMCUpgradeData feather_bound = new RoguelikeMCUpgradeData(
+                "feather_bound",
+                "Feather Bound",
+                "Immune to fall damage",
+                "epic",
+                false,
+                true,
+                "minecraft:textures/item/feather.png",
+                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.fall_damage_multiplier", "-1", "add_value")))
+        );
+
+        final RoguelikeMCUpgradeData tide_glider = new RoguelikeMCUpgradeData(
+                "tide_glider",
+                "Tide Glider",
+                "Water movement speed + 30%",
+                "common",
+                true,
+                false,
+                "minecraft:textures/item/pufferfish.png",
+                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.water_movement_efficiency", "0.33", "add_value")))
+        );
+
+        final RoguelikeMCUpgradeData iron_stance = new RoguelikeMCUpgradeData(
+                "iron_stance",
+                "Iron Stance",
+                "Knockback resistance + 1",
+                "common",
+                true,
+                false,
+                "minecraft:textures/item/iron_block.png",
+                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.knockback_resistance", "1", "add_value")))
+        );
+
+        final RoguelikeMCUpgradeData deep_lungs = new RoguelikeMCUpgradeData(
+                "deep_lungs",
+                "Deep Lungs",
+                "Breath underwater time + 50%",
+                "common",
+                true,
+                false,
+                "minecraft:textures/item/heart_of_the_sea.png",
+                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.oxygen_bonus", "1", "add_value")))
+        );
+
+        final RoguelikeMCUpgradeData steel_hide = new RoguelikeMCUpgradeData(
+                "steel_hide",
+                "Steel Hide",
+                "Armor toughness + 0.5",
+                "common",
+                true,
+                false,
+                "minecraft:textures/item/iron_chestplate.png",
+                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.armor_toughness", "0.5", "add_value")))
+        );
+
+        final RoguelikeMCUpgradeData wind_swiftness = new RoguelikeMCUpgradeData(
+                "wind_swiftness",
+                "Wind Swiftness",
+                "Gain Speed I",
+                "rare",
+                false,
+                true,
+                "minecraft:textures/mob_effect/speed.png",
+                List.of(new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:speed", "-1", "0")))
+        );
+
+        final RoguelikeMCUpgradeData eternal_guardian = new RoguelikeMCUpgradeData(
+                "eternal_guardian",
+                "Eternal Guardian",
+                "Gain an unbreakable shield",
+                "epic",
+                false,
+                true,
+                "minecraft:textures/mob_effect/resistance.png",
+                List.of(new RoguelikeMCUpgradeData.ActionData("command", List.of("give @s shield[unbreakable={}] 1")))
         );
 
         upgradeProvider.addUpgrade(fortunes_favor);
@@ -497,6 +574,14 @@ public class RoguelikeMCDatagenUtil {
         upgradeProvider.addUpgrade(scholars_gift);
         upgradeProvider.addUpgrade(prospectors_luck);
         upgradeProvider.addUpgrade(brutes_strength);
+        upgradeProvider.addUpgrade(feather_bound);
+        upgradeProvider.addUpgrade(tide_glider);
+        upgradeProvider.addUpgrade(iron_stance);
+        upgradeProvider.addUpgrade(deep_lungs);
+        upgradeProvider.addUpgrade(steel_hide);
+        upgradeProvider.addUpgrade(wind_swiftness);
+        upgradeProvider.addUpgrade(eternal_guardian);
+
 //        upgradeProvider.addUpgrade(sharpshooters_aim);
 //        upgradeProvider.addUpgrade(wisdoms_bounty);
 //        upgradeProvider.addUpgrade(glass_cannon);

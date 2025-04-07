@@ -4,7 +4,7 @@
   "description": "Gain Slow Falling",
   "tier": "common",
   "isPermanent": false,
-  "isUnique": false,
+  "isUnique": true,
   "icon": "minecraft:textures/item/feather.png",
   "actions": [
     {

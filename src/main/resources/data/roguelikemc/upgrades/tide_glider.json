@@ -1,0 +1,19 @@
+{
+  "id": "tide_glider",
+  "name": "Tide Glider",
+  "description": "Water movement speed + 30%",
+  "tier": "common",
+  "isPermanent": true,
+  "isUnique": false,
+  "icon": "minecraft:textures/item/pufferfish.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.water_movement_efficiency",
+        "0.33",
+        "add_value"
+      ]
+    }
+  ]
+}

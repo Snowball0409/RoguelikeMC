@@ -4,7 +4,7 @@
   "description": "Gain Resistance I, but maximum health -1 heart",
   "tier": "rare",
   "isPermanent": false,
-  "isUnique": false,
+  "isUnique": true,
   "icon": "minecraft:textures/block/stone.png",
   "actions": [
     {

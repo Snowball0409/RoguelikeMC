@@ -4,7 +4,7 @@
   "description": "Gain Jump Boost",
   "tier": "common",
   "isPermanent": false,
-  "isUnique": false,
+  "isUnique": true,
   "icon": "minecraft:textures/item/rabbit_foot.png",
   "actions": [
     {
