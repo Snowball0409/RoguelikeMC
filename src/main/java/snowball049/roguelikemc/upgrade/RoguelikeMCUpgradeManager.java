@@ -40,8 +40,9 @@ public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloa
                 RoguelikeMC.LOGGER.error("Error reading resource: {}", id, e);
             }
         }
+        UPGRADES.clear(); // Clear existing upgrades
         UPGRADES.putAll(allUpgrades);
-        RoguelikeMC.LOGGER.info("Loaded {} upgrades", allUpgrades.size());
+        RoguelikeMC.LOGGER.info("Loaded {} upgrades", UPGRADES.size());
     }
 
 
@@ -51,7 +52,7 @@ public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloa
 
     @Override
     public Identifier getFabricId() {
-        return Identifier.of("roguelikemc", "upgrades");
+        return Identifier.of(RoguelikeMC.MOD_ID, "upgrades");
     }
 
     @Override

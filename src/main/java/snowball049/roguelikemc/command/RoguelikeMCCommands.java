@@ -139,8 +139,12 @@ public class RoguelikeMCCommands {
     public static class UpgradeSuggestionProvider implements SuggestionProvider<ServerCommandSource> {
         @Override
         public CompletableFuture<Suggestions> getSuggestions(CommandContext commandContext, SuggestionsBuilder suggestionsBuilder){
+            String input = suggestionsBuilder.getRemaining().toLowerCase();
             List<RoguelikeMCUpgradeData> upgrades = RoguelikeMCUpgradeManager.getUpgrades().stream().toList();
-            upgrades.forEach((upgrade) -> suggestionsBuilder.suggest(upgrade.id()));
+            upgrades.forEach((upgrade) -> {
+                if(upgrade.id().toLowerCase().contains(input))
+                    suggestionsBuilder.suggest(upgrade.id());
+            });
             return suggestionsBuilder.buildFuture();
         }
     }
