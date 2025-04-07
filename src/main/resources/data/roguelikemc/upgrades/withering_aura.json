@@ -5,7 +5,7 @@
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/item/wither_rose.png",
+  "icon": "minecraft:textures/block/wither_rose.png",
   "actions": [
     {
       "type": "event",

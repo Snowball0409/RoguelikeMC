@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,
-  "icon": "minecraft:textures/item/diamond_ore.png",
+  "icon": "roguelikemc:textures/upgrades/prospectors_luck.png",
   "actions": [
     {
       "type": "command",

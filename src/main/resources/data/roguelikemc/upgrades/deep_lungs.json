@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,
-  "icon": "minecraft:textures/item/heart_of_the_sea.png",
+  "icon": "minecraft:textures/mob_effect/water_breathing.png",
   "actions": [
     {
       "type": "attribute",

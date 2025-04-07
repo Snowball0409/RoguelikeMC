@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/item/netherite_sword.png",
+  "icon": "minecraft:textures/mob_effect/strength.png",
   "actions": [
     {
       "type": "effect",

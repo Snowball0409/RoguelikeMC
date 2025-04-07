@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,
-  "icon": "minecraft:textures/item/enchanted_golden_apple.png",
+  "icon": "minecraft:textures/item/golden_apple.png",
   "actions": [
     {
       "type": "command",

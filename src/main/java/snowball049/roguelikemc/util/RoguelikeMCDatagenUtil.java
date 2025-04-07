@@ -15,7 +15,7 @@ public class RoguelikeMCDatagenUtil {
                 "rare",
                 true,
                 false,
-                "roguelikemc:textures/upgrades/fortunes_favor.png",
+                "minecraft:textures/mob_effect/luck.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.luck", "1", "add_value")))
         );
 
@@ -37,7 +37,7 @@ public class RoguelikeMCDatagenUtil {
                 "common",
                 true,
                 false,
-                "minecraft:textures/item/golden_apple.png",
+                "minecraft:textures/mob_effect/health_boost.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.max_health", "2", "add_value")))
         );
 
@@ -59,7 +59,7 @@ public class RoguelikeMCDatagenUtil {
                 "common",
                 true,
                 false,
-                "minecraft:textures/item/anvil.png",
+                "minecraft:textures/mob_effect/strength.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.attack_damage", "0.05", "add_multiplied_base")))
         );
 
@@ -278,7 +278,7 @@ public class RoguelikeMCDatagenUtil {
                 "rare",
                 false,
                 false,
-                "minecraft:textures/item/enchanted_book.png",
+                "roguelikemc:textures/upgrades/titans_bulk.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.scale", "1", "add_multiplied_total")),
                         new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.movement_speed", "-0.2", "add_multiplied_base")),
                         new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.attack_damage", "0.2", "add_multiplied_base")))
@@ -316,7 +316,7 @@ public class RoguelikeMCDatagenUtil {
                 "epic",
                 false,
                 true,
-                "minecraft:textures/item/wither_rose.png",
+                "minecraft:textures/block/wither_rose.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("effect_mobs", "minecraft:wither", "0", "8.0")))
         );
 
@@ -415,7 +415,7 @@ public class RoguelikeMCDatagenUtil {
                 "common",
                 false,
                 false,
-                "minecraft:textures/item/enchanted_golden_apple.png",
+                "minecraft:textures/item/golden_apple.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("command", List.of("give @s enchanted_golden_apple 1")))
         );
 
@@ -426,7 +426,7 @@ public class RoguelikeMCDatagenUtil {
                 "common",
                 false,
                 true,
-                "minecraft:textures/item/golden_pickaxe.png",
+                "minecraft:textures/mob_effect/haste.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:haste", "-1", "0")))
         );
 
@@ -437,7 +437,7 @@ public class RoguelikeMCDatagenUtil {
                 "common",
                 false,
                 false,
-                "minecraft:textures/item/book.png",
+                "minecraft:textures/item/enchanted_book.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("command", List.of("give @p enchanted_book[stored_enchantments={\"minecraft:mending\":1}] 1")))
         );
 
@@ -448,7 +448,7 @@ public class RoguelikeMCDatagenUtil {
                 "common",
                 false,
                 false,
-                "minecraft:textures/item/diamond_ore.png",
+                "roguelikemc:textures/upgrades/prospectors_luck.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("command", List.of("loot give @s loot roguelikemc:random_ores")))
         );
 
@@ -459,7 +459,7 @@ public class RoguelikeMCDatagenUtil {
                 "common",
                 false,
                 true,
-                "minecraft:textures/item/netherite_sword.png",
+                "minecraft:textures/mob_effect/strength.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:strength", "-1", "0")))
         );
 
@@ -492,7 +492,7 @@ public class RoguelikeMCDatagenUtil {
                 "common",
                 true,
                 false,
-                "minecraft:textures/item/iron_block.png",
+                "minecraft:textures/item/armor_stand.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.knockback_resistance", "1", "add_value")))
         );
 
@@ -503,7 +503,7 @@ public class RoguelikeMCDatagenUtil {
                 "common",
                 true,
                 false,
-                "minecraft:textures/item/heart_of_the_sea.png",
+                "minecraft:textures/mob_effect/water_breathing.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.oxygen_bonus", "1", "add_value")))
         );
 

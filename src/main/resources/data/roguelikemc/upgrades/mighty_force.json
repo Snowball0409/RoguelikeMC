@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,
-  "icon": "minecraft:textures/item/anvil.png",
+  "icon": "minecraft:textures/mob_effect/strength.png",
   "actions": [
     {
       "type": "attribute",

@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,
-  "icon": "minecraft:textures/item/iron_block.png",
+  "icon": "minecraft:textures/item/armor_stand.png",
   "actions": [
     {
       "type": "attribute",
