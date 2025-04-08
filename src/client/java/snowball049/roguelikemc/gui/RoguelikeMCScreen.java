@@ -199,7 +199,7 @@ public class RoguelikeMCScreen extends Screen {
 
         // Draw experience orb texture
         context.drawTexture(
-                Identifier.tryParse("roguelikemc", "textures/gui/points_icon.png"),
+                Identifier.tryParse("roguelikemc", "textures/item/upgrade_point_orb.png"),
                 x + 2, y + 5, 0, 0, 10, 10, 10, 10
         );
 
@@ -208,7 +208,7 @@ public class RoguelikeMCScreen extends Screen {
         context.drawText(
                 textRenderer,
                 Text.literal("Upgrade Points: " + currentPoints),
-                Math.round((x + 13)/0.85f), Math.round((y + 7)/0.85f), 0x00BB00, true
+                Math.round((x + 13)/0.85f), Math.round((y + 7)/0.85f), 0xd397fe, true
         );
         context.getMatrices().scale(1.0f / 0.85f, 1.0f / 0.85f, 1.0f);
     }

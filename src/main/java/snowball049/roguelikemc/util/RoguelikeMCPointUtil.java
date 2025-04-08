@@ -25,7 +25,7 @@ public class RoguelikeMCPointUtil {
             player.sendMessage(Text.literal("You don't have enough upgrade points!"), false);
             return false;
         }
-        playerData.upgradePoints -= point;
+        playerData.upgradePoints = Math.max(playerData.upgradePoints - point, 0);
 
         ServerPlayNetworking.send(player, new SendUpgradePointsS2CPayload(playerData.upgradePoints));
         return true;

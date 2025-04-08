@@ -128,7 +128,9 @@ public class RoguelikeMCCommands {
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
         players.forEach(player -> {
-            RoguelikeMCPointUtil.removeUpgradePoints(player, amount);
+            boolean isRemoved = RoguelikeMCPointUtil.removeUpgradePoints(player, amount);
+            if(isRemoved)
+                player.sendMessage(Text.of("You have been removed " + amount + " upgrade points!"), false);
         });
         return Command.SINGLE_SUCCESS;
     }
