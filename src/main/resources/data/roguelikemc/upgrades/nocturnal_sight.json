@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/item/ender_eye.png",
+  "icon": "minecraft:textures/mob_effect/night_vision.png",
   "actions": [
     {
       "type": "effect",

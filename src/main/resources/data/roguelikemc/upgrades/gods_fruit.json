@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,
-  "icon": "minecraft:textures/item/golden_apple.png",
+  "icon": "roguelikemc:textures/upgrades/gods_fruit.png",
   "actions": [
     {
       "type": "command",

@@ -5,7 +5,7 @@
   "tier": "legendary",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/item/totem_of_undying.png",
+  "icon": "roguelikemc:textures/upgrades/undying_will.png",
   "actions": [
     {
       "type": "event",

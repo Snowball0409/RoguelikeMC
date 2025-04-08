@@ -70,7 +70,7 @@ public class RoguelikeMCDatagenUtil {
                 "common",
                 true,
                 false,
-                "minecraft:textures/item/iron_chestplate.png",
+                "roguelikemc:textures/upgrades/adamant_guard.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.armor", "1", "add_value")))
         );
 
@@ -105,7 +105,7 @@ public class RoguelikeMCDatagenUtil {
                 "legendary",
                 false,
                 true,
-                "minecraft:textures/item/elytra.png",
+                "roguelikemc:textures/upgrades/skyborn.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.max_health", "-0.5", "add_multiplied_base")),
                         new RoguelikeMCUpgradeData.ActionData("event", List.of("allow_creative_flying")))
         );
@@ -117,7 +117,7 @@ public class RoguelikeMCDatagenUtil {
                 "legendary",
                 false,
                 true,
-                "minecraft:textures/item/totem_of_undying.png",
+                "roguelikemc:textures/upgrades/undying_will.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("keep_equipment_after_death")))
         );
 
@@ -197,7 +197,7 @@ public class RoguelikeMCDatagenUtil {
                 "epic",
                 false,
                 true,
-                "minecraft:textures/item/golden_apple.png",
+                "minecraft:textures/mob_effect/regeneration.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:regeneration", "-1", "0")))
         );
 
@@ -220,7 +220,7 @@ public class RoguelikeMCDatagenUtil {
                 "rare",
                 false,
                 true,
-                "minecraft:textures/block/stone.png",
+                "roguelikemc:textures/upgrades/stonebound.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.max_health", "-2", "add_value")),
                         new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:resistance", "-1", "0")))
         );
@@ -232,7 +232,7 @@ public class RoguelikeMCDatagenUtil {
                 "rare",
                 false,
                 true,
-                "minecraft:textures/item/iron_chestplate.png",
+                "roguelikemc:textures/upgrades/tank_mode.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.max_health", "4", "add_value")),
                         new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:resistance", "-1", "1")),
                         new RoguelikeMCUpgradeData.ActionData("event", List.of("set_equipment", "1", "")))
@@ -291,7 +291,7 @@ public class RoguelikeMCDatagenUtil {
                 "rare",
                 false,
                 false,
-                "minecraft:textures/item/feather.png",
+                "roguelikemc:textures/upgrades/pixie_form.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.scale", "-0.5", "add_multiplied_total")),
                         new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.movement_speed", "0.2", "add_multiplied_base")),
                         new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.attack_damage", "-0.2", "add_multiplied_base")))
@@ -327,7 +327,7 @@ public class RoguelikeMCDatagenUtil {
                 "common",
                 false,
                 true,
-                "minecraft:textures/item/ender_eye.png",
+                "minecraft:textures/mob_effect/night_vision.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:night_vision", "-1", "0")))
         );
 
@@ -371,7 +371,7 @@ public class RoguelikeMCDatagenUtil {
                 "common",
                 false,
                 true,
-                "minecraft:textures/item/feather.png",
+                "minecraft:textures/mob_effect/slow_falling.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:slow_falling", "-1", "0")))
         );
 
@@ -415,7 +415,7 @@ public class RoguelikeMCDatagenUtil {
                 "common",
                 false,
                 false,
-                "minecraft:textures/item/golden_apple.png",
+                "roguelikemc:textures/upgrades/gods_fruit.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("command", List.of("give @s enchanted_golden_apple 1")))
         );
 
@@ -514,7 +514,7 @@ public class RoguelikeMCDatagenUtil {
                 "common",
                 true,
                 false,
-                "minecraft:textures/item/iron_chestplate.png",
+                "roguelikemc:textures/upgrades/steel_hide.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.armor_toughness", "0.5", "add_value")))
         );
 

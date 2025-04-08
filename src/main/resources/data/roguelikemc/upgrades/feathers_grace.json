@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/item/feather.png",
+  "icon": "minecraft:textures/mob_effect/slow_falling.png",
   "actions": [
     {
       "type": "effect",

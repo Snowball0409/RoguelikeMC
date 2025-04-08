@@ -5,7 +5,7 @@
   "tier": "legendary",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/item/elytra.png",
+  "icon": "roguelikemc:textures/upgrades/skyborn.png",
   "actions": [
     {
       "type": "attribute",

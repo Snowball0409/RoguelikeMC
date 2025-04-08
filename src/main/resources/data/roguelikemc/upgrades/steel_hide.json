@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,
-  "icon": "minecraft:textures/item/iron_chestplate.png",
+  "icon": "roguelikemc:textures/upgrades/steel_hide.png",
   "actions": [
     {
       "type": "attribute",

@@ -5,7 +5,7 @@
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/item/golden_apple.png",
+  "icon": "minecraft:textures/mob_effect/regeneration.png",
   "actions": [
     {
       "type": "effect",
