@@ -135,6 +135,23 @@ public class RoguelikeMCCommands {
         return Command.SINGLE_SUCCESS;
     }
 
+    public static int setPoint(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) throws CommandSyntaxException {
+        List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(serverCommandSourceCommandContext, "player").stream().toList();
+        int amount = IntegerArgumentType.getInteger(serverCommandSourceCommandContext, "amount");
+
+        players.forEach(player -> {
+            RoguelikeMCPointUtil.setUpgradePoints(player, amount);
+        });
+        return Command.SINGLE_SUCCESS;
+    }
+
+    public static int getPoint(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) throws CommandSyntaxException {
+        List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(serverCommandSourceCommandContext, "player").stream().toList();
+
+        players.forEach(RoguelikeMCPointUtil::getUpgradePoints);
+        return Command.SINGLE_SUCCESS;
+    }
+
     public static class UpgradeSuggestionProvider implements SuggestionProvider<ServerCommandSource> {
         @Override
         public CompletableFuture<Suggestions> getSuggestions(CommandContext commandContext, SuggestionsBuilder suggestionsBuilder){

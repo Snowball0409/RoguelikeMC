@@ -30,8 +30,16 @@ public class RoguelikeMCPointUtil {
         ServerPlayNetworking.send(player, new SendUpgradePointsS2CPayload(playerData.upgradePoints));
         return true;
     }
-    public static void getUpgradePoints(ServerPlayerEntity player, int point){
+    public static void getUpgradePoints(ServerPlayerEntity player){
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+        player.sendMessage(Text.literal("You have " + playerData.upgradePoints + " upgrade points!"), false);
         ServerPlayNetworking.send(player, new SendUpgradePointsS2CPayload(playerData.upgradePoints));
+    }
+
+    public static void setUpgradePoints(ServerPlayerEntity player, int amount) {
+        RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+        playerData.upgradePoints = amount;
+        ServerPlayNetworking.send(player, new SendUpgradePointsS2CPayload(playerData.upgradePoints));
+        player.sendMessage(Text.literal("You have been set to " + amount + " upgrade points!"), false);
     }
 }

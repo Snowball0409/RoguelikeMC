@@ -29,12 +29,17 @@ public class RoguelikeMC implements ModInitializer {
 		// Init Config Support
 		RoguelikeMCCommonConfig.loadConfig();
 
-		// Handle Network Packet
-		PayloadTypeRegistry.playC2S().register(RefreshUpgradeOptionC2SPayload.ID, RefreshUpgradeOptionC2SPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(UpgradeOptionS2CPayload.ID, UpgradeOptionS2CPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(SelectUpgradeOptionC2SPayload.ID, SelectUpgradeOptionC2SPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(RefreshCurrentUpgradeS2CPayload.ID, RefreshCurrentUpgradeS2CPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(SendUpgradePointsS2CPayload.ID, SendUpgradePointsS2CPayload.CODEC);
+		// Network Packet Register
+		RoguelikeMCRegisterUtil.networkPacketRegister();
+
+		// Command Register
+		CommandRegistrationCallback.EVENT.register(RoguelikeMCRegisterUtil::commandRegister);
+
+		// Item Register
+		RoguelikeMCRegisterUtil.ItemRegister();
+
+		// Item Group Register
+		RoguelikeMCRegisterUtil.ItemGroupRegister();
 
 		// Init Network Handler
         ServerPlayNetworking.registerGlobalReceiver(RefreshUpgradeOptionC2SPayload.ID, RefreshUpgradeOptionHandler::handle);
@@ -48,9 +53,6 @@ public class RoguelikeMC implements ModInitializer {
 
 		// Upgrade Point Handler
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(RoguelikeMCRegisterUtil::onKillEntityEventRegister);
-
-		// Command Register
-		CommandRegistrationCallback.EVENT.register(RoguelikeMCRegisterUtil::commandRegister);
 
 		// Compat Check
 		ServerLifecycleEvents.SERVER_STARTED.register(RoguelikeMCRegisterUtil::onServerLoadEventRegister);

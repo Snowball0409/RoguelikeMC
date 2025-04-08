@@ -3,27 +3,57 @@ package snowball049.roguelikemc.util;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
+import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.command.RoguelikeMCCommands;
 import snowball049.roguelikemc.compat.RoguelikeMCCompat;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
-import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
+import snowball049.roguelikemc.item.RoguelikeMCItemGroup;
+import snowball049.roguelikemc.item.RoguelikeMCItems;
+import snowball049.roguelikemc.item.UpgradePointOrbItem;
+import snowball049.roguelikemc.network.packet.*;
 
 public class RoguelikeMCRegisterUtil {
+
+    public static void networkPacketRegister() {
+        // Register network packets here
+        PayloadTypeRegistry.playC2S().register(RefreshUpgradeOptionC2SPayload.ID, RefreshUpgradeOptionC2SPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(UpgradeOptionS2CPayload.ID, UpgradeOptionS2CPayload.CODEC);
+        PayloadTypeRegistry.playC2S().register(SelectUpgradeOptionC2SPayload.ID, SelectUpgradeOptionC2SPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(RefreshCurrentUpgradeS2CPayload.ID, RefreshCurrentUpgradeS2CPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(SendUpgradePointsS2CPayload.ID, SendUpgradePointsS2CPayload.CODEC);
+    }
+
+    public static void ItemRegister() {
+        // Register items here
+        RoguelikeMCItems.initailize();
+    }
+
+    public static void ItemGroupRegister() {
+        // Register item groups here
+        Registry.register(Registries.ITEM_GROUP, Identifier.tryParse(RoguelikeMC.MOD_ID, "item_group"), RoguelikeMCItemGroup.INSTANCE);
+    }
+
     public static void onDeathEventRegister(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive) {
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(oldPlayer);
 
@@ -86,7 +116,15 @@ public class RoguelikeMCRegisterUtil {
                                                 .executes(RoguelikeMCCommands::removePoint)
                                         )
                                 )
+                                .then(CommandManager.literal("set")
+                                        .then(CommandManager.argument("amount", IntegerArgumentType.integer(1))
+                                                .executes(RoguelikeMCCommands::setPoint)
+                                        )
+                                )
+                                .then(CommandManager.literal("get")
+                                        .executes(RoguelikeMCCommands::getPoint))
                         )
+
                 )
         );
     }
