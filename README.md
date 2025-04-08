@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="https://raw.githubusercontent.com/Snowball0409/RoguelikeMC/refs/heads/main/src/main/resources/assets/roguelikemc/icon.png?token=GHSAT0AAAAAAC75HTUEMZAUBLMWOUJZHCBUZ7VMXTA">
+    <img src="https://github.com/user-attachments/assets/d6cd113d-66aa-4de0-a4db-1c3da1f0d4f1">
     <br> RoguelikeMC
 </h1>
 

@@ -3,15 +3,16 @@
 	"id": "roguelikemc",
 	"version": "${version}",
 	"name": "RoguelikeMC",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Roguelike Upgrade System offers special upgrades, item decay, boss progression, and full customization for casual or hardcore play.",
 	"authors": [
 		"snowball049"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/Snowball0409/RoguelikeMC/wiki",
+		"sources": "https://github.com/Snowball0409/RoguelikeMC",
+		"issues": "https://github.com/Snowball0409/RoguelikeMC/issues"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/roguelikemc/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -42,6 +43,7 @@
 		"fabric-api": "*"
 	},
 	"suggests": {
-		"another-mod": "*"
+		"trinkets": "*",
+		"accessories": "*"
 	}
 }
