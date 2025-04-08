@@ -12,6 +12,6 @@ public record UpgradeOptionS2CPayload(RoguelikeMCUpgradeData upgrade) implements
 
     @Override
     public CustomPayload.Id<? extends CustomPayload> getId() {
-        return new CustomPayload.Id<>(RoguelikeMCNetworkConstants.SEND_UPGRADE_OPTION_PACKET_ID);
+        return ID;
     }
 }

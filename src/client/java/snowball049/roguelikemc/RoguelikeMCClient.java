@@ -10,6 +10,7 @@ import org.lwjgl.glfw.GLFW;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.gui.RoguelikeMCScreen;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
+import snowball049.roguelikemc.network.packet.SendUpgradePointsS2CPayload;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
 
 public class RoguelikeMCClient implements ClientModInitializer {
@@ -41,6 +42,10 @@ public class RoguelikeMCClient implements ClientModInitializer {
 		// Refresh Current Upgrades
 		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentUpgradeS2CPayload.ID, (payload, context) -> {
 			currentScreen.refreshUpgradeDisplay(payload.is_permanent(), payload.upgrades());
+		});
+		// Refresh Upgrade Points
+		ClientPlayNetworking.registerGlobalReceiver(SendUpgradePointsS2CPayload.ID, (payload, context) -> {
+			currentScreen.refreshPointDisplay(payload.point());
 		});
 	}
 }

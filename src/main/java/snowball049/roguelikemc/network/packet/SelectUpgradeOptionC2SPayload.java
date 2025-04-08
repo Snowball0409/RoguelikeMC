@@ -12,6 +12,6 @@ public record SelectUpgradeOptionC2SPayload(RoguelikeMCUpgradeData option) imple
 
     @Override
     public Id<? extends CustomPayload> getId() {
-        return new CustomPayload.Id<>(RoguelikeMCNetworkConstants.SEND_SELECTED_UPGRADE_PACKET_ID);
+        return ID;
     }
 }

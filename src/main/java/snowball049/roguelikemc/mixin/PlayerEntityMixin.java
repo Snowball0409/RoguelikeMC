@@ -25,6 +25,7 @@ import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.util.RoguelikeMCDeathUtil;
+import snowball049.roguelikemc.util.RoguelikeMCPointUtil;
 import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
 import java.util.ArrayList;
@@ -44,8 +45,7 @@ public abstract class PlayerEntityMixin {
                 playerData.currentLevelGain += level;
                 if(playerData.currentLevelGain >= RoguelikeMCCommonConfig.INSTANCE.amountOfLevelUpgrade) {
                     playerData.currentLevelGain -= RoguelikeMCCommonConfig.INSTANCE.amountOfLevelUpgrade;
-                    playerData.upgradePoints++;
-                    RoguelikeMCUpgradeUtil.sendPointMessage(serverPlayer, 1);
+                    RoguelikeMCPointUtil.addUpgradePoints(serverPlayer, 1);
                 }
             }
         }

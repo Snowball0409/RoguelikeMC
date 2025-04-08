@@ -9,6 +9,7 @@ import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
+import snowball049.roguelikemc.util.RoguelikeMCPointUtil;
 import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
 import java.util.ArrayList;
@@ -25,15 +26,11 @@ public class RefreshUpgradeOptionHandler {
             return;
         }
 
-        RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(context.player());
+        boolean isRemove = RoguelikeMCPointUtil.removeUpgradePoints(context.player(), 1);
+        if (!isRemove) return;
 
-        if (playerData.upgradePoints <= 0) {
-            context.player().sendMessage(Text.literal("You don't have enough upgrade points!"));
-            return;
-        }
-
-        playerData.upgradePoints --;
-        List<RoguelikeMCUpgradeData> currentUpgrades = RoguelikeMCUpgradeUtil.getRandomUpgrades(playerData);
+        List<RoguelikeMCUpgradeData> currentUpgrades = RoguelikeMCUpgradeUtil
+                .getRandomUpgrades(RoguelikeMCStateSaverAndLoader.getPlayerState(context.player()));
         for (RoguelikeMCUpgradeData upgrade : currentUpgrades) {
             ServerPlayNetworking.send(context.player(), new UpgradeOptionS2CPayload(upgrade));
         }

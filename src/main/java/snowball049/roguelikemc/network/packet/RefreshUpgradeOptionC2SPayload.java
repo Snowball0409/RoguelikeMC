@@ -14,6 +14,6 @@ public record RefreshUpgradeOptionC2SPayload() implements CustomPayload {
 
     @Override
     public Id<? extends CustomPayload> getId() {
-        return new CustomPayload.Id<>(RoguelikeMCNetworkConstants.SEND_UPGRADE_OPTION_REQUEST_PACKET_ID);
+        return ID;
     }
 }

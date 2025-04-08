@@ -96,13 +96,12 @@ public class RoguelikeMCRegisterUtil {
                 RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState((ServerPlayerEntity) entity);
                 playerData.currentKillHostile++;
                 while (playerData.currentKillHostile >= playerData.currentKillHostileRequirement) {
-                    playerData.upgradePoints++;
                     playerData.currentKillHostile -= playerData.currentKillHostileRequirement;
                     playerData.currentKillHostileRequirement = Math.min(
                             playerData.currentKillHostileRequirement + RoguelikeMCCommonConfig.INSTANCE.amountBetweenKillHostileEntityUpgrade,
                             RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirementMinMax.getLast()
                     );
-                    RoguelikeMCUpgradeUtil.sendPointMessage((ServerPlayerEntity) entity, 1);
+                    RoguelikeMCPointUtil.addUpgradePoints((ServerPlayerEntity) entity, 1);
                 }
             }
         }

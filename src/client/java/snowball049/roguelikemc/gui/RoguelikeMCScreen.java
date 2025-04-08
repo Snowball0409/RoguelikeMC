@@ -29,6 +29,7 @@ public class RoguelikeMCScreen extends Screen {
     private List<RoguelikeMCUpgradeData> TEMPORARY_EFFECTS = new ArrayList<>();
     private List<RoguelikeMCUpgradeData> PERMANENT_EFFECTS = new ArrayList<>();
     public final List<RoguelikeMCUpgradeData> currentOptions = new ArrayList<>(3);
+    private int currentPoints = 0;
 
     // 自定義 GUI 背景圖
     private static final Identifier BACKGROUND_TEXTURE = Identifier.tryParse("roguelikemc", "textures/gui/upgrade_bg.png");
@@ -149,6 +150,10 @@ public class RoguelikeMCScreen extends Screen {
         }
     }
 
+    public void refreshPointDisplay(int point) {
+        currentPoints = point;
+    }
+
     private Formatting getColorByRarity(String rarity) {
         return switch (rarity) {
             case "common" -> Formatting.WHITE;
@@ -181,9 +186,31 @@ public class RoguelikeMCScreen extends Screen {
         // 右側功能區域
         renderUtilitySection(context, x + 2 * (SECTION_WIDTH + SECTION_SPACING), y, mouseX, mouseY);
 
+        // Upgrade Points area
+        renderPointSection(context, x, y + GUI_HEIGHT - CONTENT_PADDING - 30, mouseX, mouseY);
+
         // 刷新按鈕渲染
-//        renderRefreshButton(context, x, y, mouseX, mouseY);
         refreshButton.render(context, mouseX, mouseY, 0);
+    }
+
+    private void renderPointSection(DrawContext context, int x, int y, int mouseX, int mouseY) {
+        // Background color
+         context.fill(x, y, x + SECTION_WIDTH, y + 20, 0x80303030);
+
+        // Draw experience orb texture
+        context.drawTexture(
+                Identifier.tryParse("roguelikemc", "textures/gui/points_icon.png"),
+                x + 2, y + 5, 0, 0, 10, 10, 10, 10
+        );
+
+        // Draw text
+        context.getMatrices().scale(0.85f, 0.85f, 1.0f);
+        context.drawText(
+                textRenderer,
+                Text.literal("Upgrade Points: " + currentPoints),
+                Math.round((x + 13)/0.85f), Math.round((y + 7)/0.85f), 0x00BB00, true
+        );
+        context.getMatrices().scale(1.0f / 0.85f, 1.0f / 0.85f, 1.0f);
     }
 
     private void renderEffectsSection(DrawContext context, int x, int y, String title, List<RoguelikeMCUpgradeData> effects, int mouseX, int mouseY) {
@@ -284,4 +311,5 @@ public class RoguelikeMCScreen extends Screen {
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
+
 }

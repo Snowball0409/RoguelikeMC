@@ -103,9 +103,6 @@ public class RoguelikeMCUpgradeUtil {
             player.addStatusEffect(new StatusEffectInstance(effectEntry, Integer.parseInt(value.get(1)), Integer.parseInt(value.get(2)), false, false, true));
         }
     }
-    public static void sendPointMessage(ServerPlayerEntity player, int amount) {
-        player.sendMessage(Text.of("You have been granted "+ amount +" upgrade point!"));
-    }
 
     public static void tickInfiniteEffects(MinecraftServer minecraftServer) {
         minecraftServer.getPlayerManager().getPlayerList().forEach(player -> {

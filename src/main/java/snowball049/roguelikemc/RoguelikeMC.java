@@ -16,10 +16,7 @@ import org.slf4j.LoggerFactory;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.network.handler.RefreshUpgradeOptionHandler;
 import snowball049.roguelikemc.network.handler.SelectUpgradeOptionHandler;
-import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
-import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
-import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
-import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
+import snowball049.roguelikemc.network.packet.*;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
 import snowball049.roguelikemc.util.RoguelikeMCRegisterUtil;
 
@@ -37,6 +34,7 @@ public class RoguelikeMC implements ModInitializer {
 		PayloadTypeRegistry.playS2C().register(UpgradeOptionS2CPayload.ID, UpgradeOptionS2CPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(SelectUpgradeOptionC2SPayload.ID, SelectUpgradeOptionC2SPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(RefreshCurrentUpgradeS2CPayload.ID, RefreshCurrentUpgradeS2CPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(SendUpgradePointsS2CPayload.ID, SendUpgradePointsS2CPayload.CODEC);
 
 		// Init Network Handler
         ServerPlayNetworking.registerGlobalReceiver(RefreshUpgradeOptionC2SPayload.ID, RefreshUpgradeOptionHandler::handle);

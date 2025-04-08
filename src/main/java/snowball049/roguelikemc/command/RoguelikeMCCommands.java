@@ -21,6 +21,7 @@ import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
+import snowball049.roguelikemc.util.RoguelikeMCPointUtil;
 import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
 import java.util.List;
@@ -116,9 +117,7 @@ public class RoguelikeMCCommands {
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
         players.forEach(player -> {
-            RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-            playerData.upgradePoints += amount;
-            player.sendMessage(Text.of("You have been granted "+ amount +" upgrade point!"));
+            RoguelikeMCPointUtil.addUpgradePoints(player, amount);
         });
 
         return Command.SINGLE_SUCCESS;
@@ -129,9 +128,7 @@ public class RoguelikeMCCommands {
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
         players.forEach(player -> {
-            RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-            playerData.upgradePoints = Integer.max(playerData.upgradePoints - amount, 0);
-            player.sendMessage(Text.of("You have been removed "+ amount +" upgrade point!"));
+            RoguelikeMCPointUtil.removeUpgradePoints(player, amount);
         });
         return Command.SINGLE_SUCCESS;
     }
