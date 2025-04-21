@@ -14,13 +14,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloadListener {
     private static final Gson GSON = new Gson();
-    private static final Map<String, RoguelikeMCUpgradeData> UPGRADES = new HashMap<>();
+    private static final Map<Identifier, RoguelikeMCUpgradeData> UPGRADES = new HashMap<>();
 
     public static void loadUpgrades(ResourceManager resourceManager) {
-        Map<String, RoguelikeMCUpgradeData> allUpgrades = new HashMap<>();
+        Map<Identifier, RoguelikeMCUpgradeData> allUpgrades = new HashMap<>();
         String dataType = "upgrades";
 
         for (Identifier id: resourceManager.findAllResources(dataType, path -> path.getPath().endsWith(".json")).keySet()) {
@@ -32,7 +33,7 @@ public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloa
                         .orElse(null);
 
                 if (upgrade != null) {
-                    allUpgrades.put(upgrade.id(), upgrade); // Add upgrade to the map
+                    allUpgrades.put(Identifier.of(id.getNamespace(), upgrade.id()), upgrade); // Add upgrade to the map
                 } else {
                     RoguelikeMC.LOGGER.error("Failed to parse upgrade: {}", id);
                 }
@@ -46,8 +47,25 @@ public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloa
     }
 
 
+    public static RoguelikeMCUpgradeData getUpgrade(Identifier id) {
+        return UPGRADES.getOrDefault(id, null);
+    }
+
     public static Collection<RoguelikeMCUpgradeData> getUpgrades() {
         return UPGRADES.values();
+    }
+
+    public static Set<Identifier> getUpgradeIds() {
+        return UPGRADES.keySet();
+    }
+
+    public static Identifier getUpgradeId(RoguelikeMCUpgradeData upgrade) {
+        for (Map.Entry<Identifier, RoguelikeMCUpgradeData> entry : UPGRADES.entrySet()) {
+            if (entry.getValue().equals(upgrade)) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     @Override

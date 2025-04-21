@@ -127,14 +127,14 @@ public class RoguelikeMCUpgradeUtil {
     public static void removeUpgradeEffect(ServerPlayerEntity player, List<String> value) {
         player.removeStatusEffect(Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(value.getFirst())).orElseThrow());
     }
-    public static void removeUpgradeAttribute(ServerPlayerEntity player, String id, List<String> value) {
+    public static void removeUpgradeAttribute(ServerPlayerEntity player, Identifier id, List<String> value) {
         Identifier attributeIdentifier = Identifier.tryParse(value.getFirst());
         RegistryEntry.Reference<EntityAttribute> attributeEntry = Registries.ATTRIBUTE.getEntry(attributeIdentifier)
                 .orElseThrow();//(() -> new IllegalStateException("Attribute not found: " + attributeIdentifier));
 
         for (EntityAttributeModifier modifier : Objects.requireNonNull(player.getAttributeInstance(attributeEntry)).getModifiers()) {
             RoguelikeMC.LOGGER.debug("Removing attribute " + modifier.id() + " from upgrade effect");
-            if (modifier.id().toString().startsWith(RoguelikeMC.MOD_ID + ":" + id)) {
+            if (modifier.id().toString().startsWith(id.toString())) {
                 Objects.requireNonNull(player.getAttributeInstance(attributeEntry)).removeModifier(modifier);
             }
         }
@@ -200,7 +200,7 @@ public class RoguelikeMCUpgradeUtil {
         return chosen;
     }
 
-    public static void removeUpgrade(ServerPlayerEntity player, String id, RoguelikeMCUpgradeData.ActionData upgradeAction) {
+    public static void removeUpgrade(ServerPlayerEntity player, Identifier id, RoguelikeMCUpgradeData.ActionData upgradeAction) {
         switch(upgradeAction.type()){
             case "attribute" -> RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player, id, upgradeAction.value());
             case "effect" -> RoguelikeMCUpgradeUtil.removeUpgradeEffect(player, upgradeAction.value());

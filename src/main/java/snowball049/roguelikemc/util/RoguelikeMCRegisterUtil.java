@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
@@ -92,12 +93,12 @@ public class RoguelikeMCRegisterUtil {
                 .then(CommandManager.argument("player", EntityArgumentType.players())
                         .then(CommandManager.literal("upgrade")
                                 .then(CommandManager.literal("grant")
-                                        .then(CommandManager.argument("upgradeOption", StringArgumentType.string()).suggests(new RoguelikeMCCommands.UpgradeSuggestionProvider())
+                                        .then(CommandManager.argument("upgradeOption", IdentifierArgumentType.identifier()).suggests(new RoguelikeMCCommands.UpgradeSuggestionProvider())
                                                 .executes(RoguelikeMCCommands::grantUpgrade)
                                         )
                                 )
                                 .then(CommandManager.literal("remove")
-                                        .then(CommandManager.argument("upgradeOption", StringArgumentType.string()).suggests(new RoguelikeMCCommands.UpgradeSuggestionProvider())
+                                        .then(CommandManager.argument("upgradeOption", IdentifierArgumentType.identifier()).suggests(new RoguelikeMCCommands.UpgradeSuggestionProvider())
                                                 .executes(RoguelikeMCCommands::removeUpgrade)
                                         )
                                 )
