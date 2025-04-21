@@ -9,6 +9,7 @@ import java.util.List;
 public class RoguelikeMCPlayerData {
     public List<RoguelikeMCUpgradeData> temporaryUpgrades = new ArrayList<>();
     public List<RoguelikeMCUpgradeData> permanentUpgrades = new ArrayList<>();
+    public List<RoguelikeMCUpgradeData> currentOptions = new ArrayList<>(3);
     public int upgradePoints = 0;
 
     public int currentKillHostile = 0;

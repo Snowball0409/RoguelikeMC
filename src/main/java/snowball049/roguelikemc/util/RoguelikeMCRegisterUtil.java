@@ -29,6 +29,7 @@ import snowball049.roguelikemc.command.RoguelikeMCCommands;
 import snowball049.roguelikemc.compat.RoguelikeMCCompat;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
+import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.item.RoguelikeMCItemGroup;
 import snowball049.roguelikemc.item.RoguelikeMCItems;
 import snowball049.roguelikemc.item.UpgradePointOrbItem;
@@ -80,6 +81,9 @@ public class RoguelikeMCRegisterUtil {
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
         ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(true, playerData.permanentUpgrades));
         ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(false, playerData.temporaryUpgrades));
+        for (RoguelikeMCUpgradeData upgrade : playerData.currentOptions) {
+            ServerPlayNetworking.send(player, new UpgradeOptionS2CPayload(upgrade));
+        }
         playerData.permanentUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyUpgrade(player, upgrade));
         playerData.temporaryUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyUpgrade(player, upgrade));
     }

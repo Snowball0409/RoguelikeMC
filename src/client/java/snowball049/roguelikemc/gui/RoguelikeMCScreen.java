@@ -14,6 +14,7 @@ import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import snowball049.roguelikemc.data.RoguelikeMCClientData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
@@ -25,11 +26,6 @@ import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class RoguelikeMCScreen extends Screen {
-
-    private List<RoguelikeMCUpgradeData> TEMPORARY_EFFECTS = new ArrayList<>();
-    private List<RoguelikeMCUpgradeData> PERMANENT_EFFECTS = new ArrayList<>();
-    public final List<RoguelikeMCUpgradeData> currentOptions = new ArrayList<>(3);
-    private int currentPoints = 0;
 
     // 自定義 GUI 背景圖
     private static final Identifier BACKGROUND_TEXTURE = Identifier.tryParse("roguelikemc", "textures/gui/upgrade_bg.png");
@@ -72,10 +68,10 @@ public class RoguelikeMCScreen extends Screen {
         for(int i=0; i<3; i++) {
             final int index = i;
             optionButtons[i] = ButtonWidget.builder(Text.empty(), button -> {
-                        if (currentOptions.size() > index) {
-                            RoguelikeMCUpgradeData selected = currentOptions.get(index);
+                        if (RoguelikeMCClientData.INSTANCE.currentOptions.size() > index) {
+                            RoguelikeMCUpgradeData selected = RoguelikeMCClientData.INSTANCE.currentOptions.get(index);
                             ClientPlayNetworking.send(new SelectUpgradeOptionC2SPayload(selected));
-                            currentOptions.clear();
+                            RoguelikeMCClientData.INSTANCE.currentOptions.clear();
                             refreshOptionsDisplay();
                         }
                     })
@@ -90,7 +86,7 @@ public class RoguelikeMCScreen extends Screen {
         }
 
         refreshButton = ButtonWidget.builder(Text.literal("Draw Upgrades"), button -> {
-                    if(currentOptions.isEmpty()){
+                    if(RoguelikeMCClientData.INSTANCE.currentOptions.isEmpty()){
                         ClientPlayNetworking.send(new RefreshUpgradeOptionC2SPayload());
                         refreshOptionsDisplay();
                     }
@@ -140,18 +136,14 @@ public class RoguelikeMCScreen extends Screen {
 
     private void refreshOptionsDisplay(){
         for(int i=0; i<optionButtons.length; i++){
-            if(i < currentOptions.size()){
-                RoguelikeMCUpgradeData effect = currentOptions.get(i);
+            if(i < RoguelikeMCClientData.INSTANCE.currentOptions.size()){
+                RoguelikeMCUpgradeData effect = RoguelikeMCClientData.INSTANCE.currentOptions.get(i);
                 optionButtons[i].setMessage(Text.literal(effect.name()).formatted(getColorByRarity(effect.tier())));
                 optionButtons[i].setTooltip(Tooltip.of(Text.literal(effect.description()).formatted(Formatting.GRAY)));
             }else{
                 optionButtons[i].setMessage(Text.empty());
             }
         }
-    }
-
-    public void refreshPointDisplay(int point) {
-        currentPoints = point;
     }
 
     private Formatting getColorByRarity(String rarity) {
@@ -164,24 +156,13 @@ public class RoguelikeMCScreen extends Screen {
         };
     }
 
-    public void refreshUpgradeDisplay(boolean is_permanent, List<RoguelikeMCUpgradeData> upgrades){
-        if(this.client != null){
-            if(!is_permanent){
-                TEMPORARY_EFFECTS = upgrades;
-            }
-            else{
-                PERMANENT_EFFECTS = upgrades;
-            }
-        }
-    }
-
     private void renderContent(DrawContext context, int x, int y, int mouseX, int mouseY) {
 
         // 暫時效果區域
-        renderEffectsSection(context, x, y, "Temporary Effects", TEMPORARY_EFFECTS, mouseX, mouseY);
+        renderEffectsSection(context, x, y, "Temporary Effects", RoguelikeMCClientData.INSTANCE.temporaryUpgrades, mouseX, mouseY);
 
         // 永久效果區域
-        renderEffectsSection(context, x + SECTION_WIDTH + SECTION_SPACING, y, "Permanent Effects", PERMANENT_EFFECTS, mouseX, mouseY);
+        renderEffectsSection(context, x + SECTION_WIDTH + SECTION_SPACING, y, "Permanent Effects", RoguelikeMCClientData.INSTANCE.permanentUpgrades, mouseX, mouseY);
 
         // 右側功能區域
         renderUtilitySection(context, x + 2 * (SECTION_WIDTH + SECTION_SPACING), y, mouseX, mouseY);
@@ -207,7 +188,7 @@ public class RoguelikeMCScreen extends Screen {
         context.getMatrices().scale(0.85f, 0.85f, 1.0f);
         context.drawText(
                 textRenderer,
-                Text.literal("Upgrade Points: " + currentPoints),
+                Text.literal("Upgrade Points: " + RoguelikeMCClientData.INSTANCE.currentPoints),
                 Math.round((x + 13)/0.85f), Math.round((y + 7)/0.85f), 0xd397fe, true
         );
         context.getMatrices().scale(1.0f / 0.85f, 1.0f / 0.85f, 1.0f);
@@ -253,8 +234,8 @@ public class RoguelikeMCScreen extends Screen {
         for(int i=0; i<3; i++){
             optionButtons[i].render(context, mouseX, mouseY, i);
 
-            if(i < currentOptions.size()) {
-                RoguelikeMCUpgradeData effect = currentOptions.get(i);
+            if(i < RoguelikeMCClientData.INSTANCE.currentOptions.size()) {
+                RoguelikeMCUpgradeData effect = RoguelikeMCClientData.INSTANCE.currentOptions.get(i);
                 // Render icon
                 context.drawTexture(
                         Identifier.tryParse(effect.icon()),

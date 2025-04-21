@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
+import snowball049.roguelikemc.data.RoguelikeMCClientData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.gui.RoguelikeMCScreen;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
@@ -37,15 +38,21 @@ public class RoguelikeMCClient implements ClientModInitializer {
 		// Refresh Upgrade Options
 		ClientPlayNetworking.registerGlobalReceiver(UpgradeOptionS2CPayload.ID, (payload, context) -> {
 			RoguelikeMCUpgradeData upgrade = payload.upgrade();
-			if(upgrade != null) currentScreen.currentOptions.add(upgrade);
+			if(upgrade != null) RoguelikeMCClientData.INSTANCE.currentOptions.add(upgrade);
 		});
 		// Refresh Current Upgrades
 		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentUpgradeS2CPayload.ID, (payload, context) -> {
-			currentScreen.refreshUpgradeDisplay(payload.is_permanent(), payload.upgrades());
+			if(payload.is_permanent()){
+				RoguelikeMCClientData.INSTANCE.permanentUpgrades.clear();
+				RoguelikeMCClientData.INSTANCE.permanentUpgrades.addAll(payload.upgrades());
+			} else {
+				RoguelikeMCClientData.INSTANCE.temporaryUpgrades.clear();
+				RoguelikeMCClientData.INSTANCE.temporaryUpgrades.addAll(payload.upgrades());
+			}
 		});
 		// Refresh Upgrade Points
 		ClientPlayNetworking.registerGlobalReceiver(SendUpgradePointsS2CPayload.ID, (payload, context) -> {
-			currentScreen.refreshPointDisplay(payload.point());
+			RoguelikeMCClientData.INSTANCE.currentPoints = payload.point();
 		});
 	}
 }
