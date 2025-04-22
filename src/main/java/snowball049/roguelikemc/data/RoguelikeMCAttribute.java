@@ -1,0 +1,79 @@
+package snowball049.roguelikemc.data;
+
+import net.minecraft.entity.attribute.ClampedEntityAttribute;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.Identifier;
+import snowball049.roguelikemc.RoguelikeMC;
+
+public class RoguelikeMCAttribute {
+
+    // Attribute IDs
+    public static final Identifier EXPERIENCE_GAIN_ID = Identifier.of(RoguelikeMC.MOD_ID, "experience_gain");
+    public static final Identifier DAMAGE_RATIO_ID = Identifier.of(RoguelikeMC.MOD_ID, "damage_ratio");
+    public static final Identifier CRITICAL_CHANCE_ID = Identifier.of(RoguelikeMC.MOD_ID, "critical_chance");
+    public static final Identifier CRITICAL_DAMAGE_ID = Identifier.of(RoguelikeMC.MOD_ID, "critical_damage");
+    public static final Identifier CREATIVE_FLY_ID = Identifier.of(RoguelikeMC.MOD_ID, "creative_fly");
+
+    // Attribute Instances
+    public static final EntityAttribute EXPERIENCE_GAIN = new ClampedEntityAttribute(
+            "attribute.name.roguelikemc.experience_gain",
+            0.0D,
+            0.0D,
+            100.0D
+    ).setTracked(true);
+    public static final EntityAttribute DAMAGE_RATIO = new ClampedEntityAttribute(
+            "attribute.name.roguelikemc.damage_ratio",
+            0.0D,
+            0.0D,
+            100.0D
+    ).setTracked(true);
+    public static final EntityAttribute CRITICAL_CHANCE = new ClampedEntityAttribute(
+            "attribute.name.roguelikemc.critical_chance",
+            0.0D,
+            0.0D,
+            1.0D
+    ).setTracked(true);
+    public static final EntityAttribute CRITICAL_DAMAGE = new ClampedEntityAttribute(
+            "attribute.name.roguelikemc.critical_damage",
+            0.0D,
+            0.0D,
+            100.0D
+    ).setTracked(true);
+    public static final EntityAttribute CREATIVE_FLY = new ClampedEntityAttribute(
+            "attribute.name.roguelikemc.creative_fly",
+            0.0D,
+            0.0D,
+            1.0D
+    ).setTracked(true);
+
+    // Registry Entry for attributes
+    public static final RegistryEntry<EntityAttribute> EXPERIENCE_GAIN_ENTRY = Registry.registerReference(
+            Registries.ATTRIBUTE,
+            EXPERIENCE_GAIN_ID,
+            EXPERIENCE_GAIN
+    );
+    public static final RegistryEntry<EntityAttribute> DAMAGE_RATIO_ENTRY = Registry.registerReference(
+            Registries.ATTRIBUTE,
+            DAMAGE_RATIO_ID,
+            DAMAGE_RATIO
+    );
+    public static final RegistryEntry<EntityAttribute> CRITICAL_CHANCE_ENTRY = Registry.registerReference(
+            Registries.ATTRIBUTE,
+            CRITICAL_CHANCE_ID,
+            CRITICAL_CHANCE
+    );
+    public static final RegistryEntry<EntityAttribute> CRITICAL_DAMAGE_ENTRY = Registry.registerReference(
+            Registries.ATTRIBUTE,
+            CRITICAL_DAMAGE_ID,
+            CRITICAL_DAMAGE
+    );
+    public static final RegistryEntry<EntityAttribute> CREATIVE_FLY_ENTRY = Registry.registerReference(
+            Registries.ATTRIBUTE,
+            CREATIVE_FLY_ID,
+            CREATIVE_FLY
+    );
+
+}

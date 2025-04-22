@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -34,6 +33,9 @@ public class RoguelikeMC implements ModInitializer {
 
 		// Command Register
 		CommandRegistrationCallback.EVENT.register(RoguelikeMCRegisterUtil::commandRegister);
+
+		// Attribute Register
+		RoguelikeMCRegisterUtil.AttributeRegister();
 
 		// Item Register
 		RoguelikeMCRegisterUtil.ItemRegister();

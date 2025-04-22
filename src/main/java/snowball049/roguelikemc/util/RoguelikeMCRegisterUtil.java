@@ -2,20 +2,22 @@ package snowball049.roguelikemc.util;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.item.Item;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -28,11 +30,11 @@ import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.command.RoguelikeMCCommands;
 import snowball049.roguelikemc.compat.RoguelikeMCCompat;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
+import snowball049.roguelikemc.data.RoguelikeMCAttribute;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.item.RoguelikeMCItemGroup;
 import snowball049.roguelikemc.item.RoguelikeMCItems;
-import snowball049.roguelikemc.item.UpgradePointOrbItem;
 import snowball049.roguelikemc.network.packet.*;
 
 public class RoguelikeMCRegisterUtil {
@@ -163,5 +165,22 @@ public class RoguelikeMCRegisterUtil {
         if (minecraftServer.getTicks() % 20 == 0) {
             RoguelikeMCUpgradeUtil.tickEffectToMobEntity(minecraftServer);
         }
+    }
+
+    public static void AttributeRegister() {
+        // Register attributes here
+        Registry.register(Registries.ATTRIBUTE, RoguelikeMCAttribute.EXPERIENCE_GAIN_ID, RoguelikeMCAttribute.EXPERIENCE_GAIN);
+        Registry.register(Registries.ATTRIBUTE, RoguelikeMCAttribute.DAMAGE_RATIO_ID, RoguelikeMCAttribute.DAMAGE_RATIO);
+        Registry.register(Registries.ATTRIBUTE, RoguelikeMCAttribute.CRITICAL_CHANCE_ID, RoguelikeMCAttribute.CRITICAL_CHANCE);
+        Registry.register(Registries.ATTRIBUTE, RoguelikeMCAttribute.CRITICAL_DAMAGE_ID, RoguelikeMCAttribute.CRITICAL_DAMAGE);
+        Registry.register(Registries.ATTRIBUTE, RoguelikeMCAttribute.CREATIVE_FLY_ID, RoguelikeMCAttribute.CREATIVE_FLY);
+
+        // Register attribute to player
+        FabricDefaultAttributeRegistry.register(EntityType.PLAYER, PlayerEntity.createPlayerAttributes()
+                .add(RoguelikeMCAttribute.EXPERIENCE_GAIN_ENTRY)
+                .add(RoguelikeMCAttribute.DAMAGE_RATIO_ENTRY)
+                .add(RoguelikeMCAttribute.CRITICAL_CHANCE_ENTRY)
+                .add(RoguelikeMCAttribute.CRITICAL_DAMAGE_ENTRY)
+                .add(RoguelikeMCAttribute.CREATIVE_FLY_ENTRY));
     }
 }
