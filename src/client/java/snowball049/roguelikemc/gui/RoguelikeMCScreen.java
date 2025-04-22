@@ -19,10 +19,7 @@ import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class RoguelikeMCScreen extends Screen {
@@ -203,23 +200,43 @@ public class RoguelikeMCScreen extends Screen {
         int itemWidth = 20; // 方塊寬度
         int itemPadding = 2;
 
-        for (int i = 0; i < effects.size(); i++) {
-            int itemY = y + CONTENT_PADDING + itemPadding + Math.floorMod(i,6) * (itemHeight+itemPadding);
-            int itemX = x + Math.divideExact(i, 6)*(itemWidth+itemPadding);
+        Map<String, Pair<RoguelikeMCUpgradeData, Integer>> collapsed = collapseUpgrades(effects);
+        int i = 0;
 
-            // 繪製顏色方塊
-            RoguelikeMCUpgradeData effect = effects.get(i);
-            context.drawTexture(Identifier.tryParse(effect.icon()),itemX, itemY, 0, 0, itemWidth, itemHeight, itemWidth, itemHeight); // 設置透明度
+        for (Pair<RoguelikeMCUpgradeData, Integer> pair : collapsed.values()) {
+            RoguelikeMCUpgradeData effect = pair.getFirst();
+            int count = pair.getSecond();
 
-            // 檢查滑鼠懸停
+            int itemY = y + CONTENT_PADDING + Math.floorMod(i, 6) * (itemHeight + itemPadding);
+            int itemX = x + Math.floorDiv(i, 6) * (itemWidth + itemPadding);
+
+            context.fill(itemX, itemY, itemX + itemWidth, itemY + itemHeight, 0xFF545454);
+            context.drawBorder(itemX, itemY, itemWidth, itemHeight, 0xFFFFFFFF);
+            context.drawTexture(Identifier.tryParse(effect.icon()), itemX, itemY, 0, 0, itemWidth, itemHeight, itemWidth, itemHeight);
+
+            // 如果疊加大於 1，顯示數量
+            if (count > 1) {
+                context.drawText(
+                        textRenderer,
+                        Text.literal(String.valueOf(count)).formatted(Formatting.WHITE),
+                        itemX + itemWidth - 7,
+                        itemY + itemHeight - 8,
+                        0xFFFFFF,
+                        true
+                );
+            }
+
+            // Hover Tooltip
             if (isMouseOver(mouseX, mouseY, itemX, itemY, itemWidth, itemHeight)) {
-                // 繪製懸停提示
-                List<Text> tooltip = Arrays.asList(
-                        Text.literal(effect.name()).formatted(getColorByRarity(effect.tier())),
+                List<Text> tooltip = List.of(
+                        count>1?Text.literal(effect.name()).formatted(getColorByRarity(effect.tier())).append(Text.literal(" x" + count).formatted(Formatting.WHITE)):
+                                Text.literal(effect.name()).formatted(getColorByRarity(effect.tier())),
                         Text.literal(effect.description()).formatted(Formatting.GRAY)
                 );
                 context.drawTooltip(textRenderer, tooltip, mouseX, mouseY);
             }
+
+            i++;
         }
     }
 
@@ -268,17 +285,20 @@ public class RoguelikeMCScreen extends Screen {
         }
     }
 
-    private void renderRefreshButton(DrawContext context, int x, int y, int mouseX, int mouseY) {
-        // 刷新按鈕渲染修正
-        context.fill(
-                refreshButton.getX(),
-                refreshButton.getY(),
-                refreshButton.getX() + refreshButton.getWidth(),
-                refreshButton.getY() + refreshButton.getHeight(),
-                0xFF606060
-        );
-        refreshButton.render(context, mouseX, mouseY, 0);
+    private Map<String, Pair<RoguelikeMCUpgradeData, Integer>> collapseUpgrades(List<RoguelikeMCUpgradeData> upgrades) {
+        Map<String, Pair<RoguelikeMCUpgradeData, Integer>> collapsed = new HashMap<>();
+
+        for (RoguelikeMCUpgradeData upgrade : upgrades) {
+            String id = upgrade.id();
+            if (collapsed.containsKey(id)) {
+                collapsed.computeIfPresent(id, (k, entry) -> Pair.of(entry.getFirst(), entry.getSecond() + 1));
+            } else {
+                collapsed.put(id, Pair.of(upgrade, 1));
+            }
+        }
+        return collapsed;
     }
+
 
     private boolean isMouseOver(int mouseX, int mouseY, int x, int y, int width, int height) {
         return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
