@@ -11,6 +11,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +36,6 @@ import java.util.List;
 // MixinPlayerEntity.java
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin {
-    @Shadow public abstract boolean addShoulderEntity(NbtCompound entityNbt);
 
     @Inject(method="addExperienceLevels", at=@At("TAIL"))
     private void addExperienceLevel(int level, CallbackInfo ci) {

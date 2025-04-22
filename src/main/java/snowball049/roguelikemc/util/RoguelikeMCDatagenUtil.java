@@ -85,16 +85,16 @@ public class RoguelikeMCDatagenUtil {
 //                List.of()
 //        );
 
-//        final RoguelikeMCUpgradeData wisdoms_bounty = new RoguelikeMCUpgradeData(
-//                "wisdoms_bounty",
-//                "Wisdom's Bounty",
-//                "Experience Gain +6%",
-//                "common",
-//                true,
-//                false,
-//                "minecraft:textures/item/experience_bottle.png",
-//                List.of()
-//        );
+        final RoguelikeMCUpgradeData wisdoms_bounty = new RoguelikeMCUpgradeData(
+                "wisdoms_bounty",
+                "Wisdom's Bounty",
+                "Experience Gain +6%",
+                "common",
+                true,
+                false,
+                "minecraft:textures/item/experience_bottle.png",
+                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("roguelikemc:experience_gain", "0.06", "add_value")))
+        );
 
         //temporary upgrades
         // Legendary tier upgrades
@@ -583,7 +583,7 @@ public class RoguelikeMCDatagenUtil {
         upgradeProvider.addUpgrade(eternal_guardian);
 
 //        upgradeProvider.addUpgrade(sharpshooters_aim);
-//        upgradeProvider.addUpgrade(wisdoms_bounty);
+        upgradeProvider.addUpgrade(wisdoms_bounty);
 //        upgradeProvider.addUpgrade(glass_cannon);
 //        upgradeProvider.addUpgrade(villager_slayer);
 //        upgradeProvider.addUpgrade(spicy_feast);
