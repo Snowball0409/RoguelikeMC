@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/item/rabbit_foot.png",
+  "icon": "roguelikemc:textures/upgrades/leap_of_faith.png",
   "actions": [
     {
       "type": "effect",

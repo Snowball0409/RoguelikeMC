@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/mob_effect/night_vision.png",
+  "icon": "roguelikemc:textures/upgrades/nocturnal_sight.png",
   "actions": [
     {
       "type": "effect",

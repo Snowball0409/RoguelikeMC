@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,
-  "icon": "minecraft:textures/item/pufferfish.png",
+  "icon": "roguelikemc:textures/upgrades/tide_glider.png",
   "actions": [
     {
       "type": "attribute",

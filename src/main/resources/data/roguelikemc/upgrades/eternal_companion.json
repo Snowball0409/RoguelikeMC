@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,
-  "icon": "minecraft:textures/item/cod.png",
+  "icon": "roguelikemc:textures/upgrades/eternal_companion.png",
   "actions": [
     {
       "type": "command",

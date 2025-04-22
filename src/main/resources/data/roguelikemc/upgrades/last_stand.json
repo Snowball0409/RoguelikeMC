@@ -5,7 +5,7 @@
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/mob_effect/regeneration.png",
+  "icon": "roguelikemc:textures/upgrades/last_stand.png",
   "actions": [
     {
       "type": "effect",

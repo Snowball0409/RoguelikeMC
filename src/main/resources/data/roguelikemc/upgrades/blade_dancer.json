@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,
-  "icon": "minecraft:textures/item/iron_sword.png",
+  "icon": "roguelikemc:textures/upgrades/blade_dancer.png",
   "actions": [
     {
       "type": "attribute",

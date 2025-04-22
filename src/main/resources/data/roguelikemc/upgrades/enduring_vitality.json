@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,
-  "icon": "minecraft:textures/mob_effect/health_boost.png",
+  "icon": "roguelikemc:textures/upgrades/enduring_vitality.png",
   "actions": [
     {
       "type": "attribute",

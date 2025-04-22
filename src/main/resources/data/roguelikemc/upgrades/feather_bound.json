@@ -5,7 +5,7 @@
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/item/feather.png",
+  "icon": "roguelikemc:textures/upgrades/feather_bound.png",
   "actions": [
     {
       "type": "attribute",

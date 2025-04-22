@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/mob_effect/strength.png",
+  "icon": "roguelikemc:textures/upgrades/brutes_strength.png",
   "actions": [
     {
       "type": "effect",

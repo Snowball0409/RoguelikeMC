@@ -5,7 +5,7 @@
   "tier": "rare",
   "isPermanent": true,
   "isUnique": false,
-  "icon": "minecraft:textures/mob_effect/luck.png",
+  "icon": "roguelikemc:textures/upgrades/fortunes_favor.png",
   "actions": [
     {
       "type": "attribute",

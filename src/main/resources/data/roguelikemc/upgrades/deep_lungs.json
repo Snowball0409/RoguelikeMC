@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,
-  "icon": "minecraft:textures/mob_effect/water_breathing.png",
+  "icon": "roguelikemc:textures/upgrades/deep_lungs.png",
   "actions": [
     {
       "type": "attribute",

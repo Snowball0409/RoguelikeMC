@@ -5,7 +5,7 @@
   "tier": "rare",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/item/spider_eye.png",
+  "icon": "roguelikemc:textures/upgrades/toxic_presence.png",
   "actions": [
     {
       "type": "event",

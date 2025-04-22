@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,
-  "icon": "minecraft:textures/item/saddle.png",
+  "icon": "roguelikemc:textures/upgrades/equestrian_gift.png",
   "actions": [
     {
       "type": "command",

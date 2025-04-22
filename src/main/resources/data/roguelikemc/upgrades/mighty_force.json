@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,
-  "icon": "minecraft:textures/mob_effect/strength.png",
+  "icon": "roguelikemc:textures/upgrades/mighty_force.png",
   "actions": [
     {
       "type": "attribute",

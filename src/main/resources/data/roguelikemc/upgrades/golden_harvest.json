@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,
-  "icon": "minecraft:textures/item/golden_carrot.png",
+  "icon": "roguelikemc:textures/upgrades/golden_harvest.png",
   "actions": [
     {
       "type": "command",

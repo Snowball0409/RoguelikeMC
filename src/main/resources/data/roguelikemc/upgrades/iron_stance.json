@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,
-  "icon": "minecraft:textures/item/armor_stand.png",
+  "icon": "roguelikemc:textures/upgrades/iron_stance.png",
   "actions": [
     {
       "type": "attribute",

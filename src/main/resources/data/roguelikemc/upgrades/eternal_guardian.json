@@ -5,7 +5,7 @@
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/mob_effect/resistance.png",
+  "icon": "roguelikemc:textures/upgrades/eternal_guardian.png",
   "actions": [
     {
       "type": "command",

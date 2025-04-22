@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,
-  "icon": "minecraft:textures/item/sugar.png",
+  "icon": "roguelikemc:textures/upgrades/swift_stride.png",
   "actions": [
     {
       "type": "attribute",

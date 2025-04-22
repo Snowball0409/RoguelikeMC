@@ -5,7 +5,7 @@
   "tier": "rare",
   "isPermanent": false,
   "isUnique": false,
-  "icon": "minecraft:textures/item/golden_horse_armor.png",
+  "icon": "roguelikemc:textures/upgrades/mystic_steed.png",
   "actions": [
     {
       "type": "command",

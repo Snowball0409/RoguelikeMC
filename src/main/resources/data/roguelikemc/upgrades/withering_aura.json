@@ -5,7 +5,7 @@
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/block/wither_rose.png",
+  "icon": "roguelikemc:textures/upgrades/withering_aura.png",
   "actions": [
     {
       "type": "event",

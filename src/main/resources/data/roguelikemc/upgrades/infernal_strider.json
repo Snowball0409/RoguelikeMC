@@ -5,7 +5,7 @@
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/item/netherite_boots.png",
+  "icon": "roguelikemc:textures/upgrades/infernal_strider.png",
   "actions": [
     {
       "type": "event",

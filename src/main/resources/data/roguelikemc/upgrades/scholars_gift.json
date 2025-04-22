@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,
-  "icon": "minecraft:textures/item/enchanted_book.png",
+  "icon": "roguelikemc:textures/upgrades/scholars_gift.png",
   "actions": [
     {
       "type": "command",

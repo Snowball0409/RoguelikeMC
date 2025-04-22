@@ -5,7 +5,7 @@
   "tier": "rare",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/mob_effect/speed.png",
+  "icon": "roguelikemc:textures/upgrades/wind_swiftness.png",
   "actions": [
     {
       "type": "effect",

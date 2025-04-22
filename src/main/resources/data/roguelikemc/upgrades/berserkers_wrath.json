@@ -5,7 +5,7 @@
   "tier": "epic",
   "isPermanent": false,
   "isUnique": false,
-  "icon": "minecraft:textures/item/netherite_axe.png",
+  "icon": "roguelikemc:textures/upgrades/berserkers_wrath.png",
   "actions": [
     {
       "type": "attribute",

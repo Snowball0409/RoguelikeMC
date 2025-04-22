@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "minecraft:textures/mob_effect/haste.png",
+  "icon": "roguelikemc:textures/upgrades/miners_frenzy.png",
   "actions": [
     {
       "type": "effect",
