@@ -142,7 +142,7 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 "minecraft:textures/item/netherite_axe.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.attack_damage", "0.5", "add_multiplied_base")),
-                        new RoguelikeMCUpgradeData.ActionData("event", List.of("damage_gain_multiplier", "0.5")))
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("roguelikemc:damage_ratio", "0.5", "add_value")))
         );
 
 //        final RoguelikeMCUpgradeData glass_cannon = new RoguelikeMCUpgradeData(

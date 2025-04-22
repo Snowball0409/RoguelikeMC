@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
+import snowball049.roguelikemc.data.RoguelikeMCAttribute;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.util.RoguelikeMCDeathUtil;
 import snowball049.roguelikemc.util.RoguelikeMCPointUtil;
@@ -123,12 +124,8 @@ public abstract class PlayerEntityMixin {
         PlayerEntity player = (PlayerEntity) (Object) this;
         if (!(player instanceof ServerPlayerEntity)) return amount;
 
-        RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-        // Damage Gain Multiplier
-        if (playerData.damageGainMultiplier != 1.0f) {
-            return amount * playerData.damageGainMultiplier;
-        }
-        return amount;
+        // Damage Ratio Attribute
+        double damageRatio = player.getAttributeValue(RoguelikeMCAttribute.DAMAGE_RATIO);
+        return (float) (amount * (1.0D + damageRatio));
     }
-
 }

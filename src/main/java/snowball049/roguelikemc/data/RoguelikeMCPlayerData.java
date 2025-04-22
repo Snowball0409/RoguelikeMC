@@ -20,7 +20,6 @@ public class RoguelikeMCPlayerData {
     // Event Upgrade
     public boolean keepEquipmentAfterDeath = false;
     public boolean revive = false;
-    public float damageGainMultiplier = 1.0f;
 
     public RoguelikeMCPlayerData() {
         this.currentKillHostileRequirement = RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirementMinMax.getFirst();
@@ -40,6 +39,5 @@ public class RoguelikeMCPlayerData {
         this.currentGameStage = 0;
         this.keepEquipmentAfterDeath = false;
         this.revive = false;
-        this.damageGainMultiplier = 1.0f;
     }
 }

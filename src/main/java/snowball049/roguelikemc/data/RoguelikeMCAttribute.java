@@ -15,7 +15,6 @@ public class RoguelikeMCAttribute {
     public static final Identifier DAMAGE_RATIO_ID = Identifier.of(RoguelikeMC.MOD_ID, "damage_ratio");
     public static final Identifier CRITICAL_CHANCE_ID = Identifier.of(RoguelikeMC.MOD_ID, "critical_chance");
     public static final Identifier CRITICAL_DAMAGE_ID = Identifier.of(RoguelikeMC.MOD_ID, "critical_damage");
-    public static final Identifier CREATIVE_FLY_ID = Identifier.of(RoguelikeMC.MOD_ID, "creative_fly");
 
     // Registry Entry for attributes
     public static final RegistryEntry<EntityAttribute> EXPERIENCE_GAIN = Registry.registerReference(
@@ -56,16 +55,6 @@ public class RoguelikeMCAttribute {
                     0.0D,
                     0.0D,
                     100.0D
-            ).setTracked(true)
-    );
-    public static final RegistryEntry<EntityAttribute> CREATIVE_FLY= Registry.registerReference(
-            Registries.ATTRIBUTE,
-            CREATIVE_FLY_ID,
-            new ClampedEntityAttribute(
-                    "attribute.name.roguelikemc.creative_fly",
-                    0.0D,
-                    0.0D,
-                    1.0D
             ).setTracked(true)
     );
 }

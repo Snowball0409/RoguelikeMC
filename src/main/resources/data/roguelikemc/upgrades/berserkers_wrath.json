@@ -16,10 +16,11 @@
       ]
     },
     {
-      "type": "event",
+      "type": "attribute",
       "value": [
-        "damage_gain_multiplier",
-        "0.5"
+        "roguelikemc:damage_ratio",
+        "0.5",
+        "add_value"
       ]
     }
   ]

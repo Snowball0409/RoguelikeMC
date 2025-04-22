@@ -228,10 +228,6 @@ public class RoguelikeMCUpgradeUtil {
                 RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
                 playerData.revive = true;
             }
-            case "damage_gain_multiplier" -> {
-                RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-                playerData.damageGainMultiplier += Float.parseFloat(value.get(1));
-            }
             case "set_equipment" -> {
                 try {
                     int slotIndex = Integer.parseInt(value.get(1));
@@ -282,10 +278,6 @@ public class RoguelikeMCUpgradeUtil {
                 RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
                 playerData.revive = false;
             }
-            case "damage_gain_multiplier" -> {
-                RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-                playerData.damageGainMultiplier = 1.0f;
-            }
             case "set_equipment" -> {
                 int slotIndex = Integer.parseInt(value.get(1));
                 player.getInventory().armor.set(slotIndex, ItemStack.EMPTY);
@@ -331,6 +323,26 @@ public class RoguelikeMCUpgradeUtil {
             playerData.permanentUpgrades.forEach(upgrade -> {
                 upgrade.actions().forEach(action -> {
                     if (action.type().equals("event") && action.value().getFirst().equals("effect_mobs")) {
+                        RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), true);
+                    }
+                });
+            });
+        });
+    }
+
+    public static void tickEnableCreativeFly(MinecraftServer minecraftServer) {
+        minecraftServer.getPlayerManager().getPlayerList().forEach(player -> {
+            RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+            playerData.temporaryUpgrades.forEach(upgrade -> {
+                upgrade.actions().forEach(action -> {
+                    if (action.type().equals("event") && action.value().getFirst().equals("allow_creative_flying")) {
+                        RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), false);
+                    }
+                });
+            });
+            playerData.permanentUpgrades.forEach(upgrade -> {
+                upgrade.actions().forEach(action -> {
+                    if (action.type().equals("event") && action.value().getFirst().equals("allow_creative_flying")) {
                         RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), true);
                     }
                 });

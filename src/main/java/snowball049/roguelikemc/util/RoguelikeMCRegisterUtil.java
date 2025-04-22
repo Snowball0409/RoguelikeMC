@@ -160,10 +160,8 @@ public class RoguelikeMCRegisterUtil {
         // Handle empty set_equipment upgrade every second
         if (minecraftServer.getTicks() % 20 == 0) {
             RoguelikeMCUpgradeUtil.tickSetEquipment(minecraftServer);
-        }
-        // Handle effect to mob entity
-        if (minecraftServer.getTicks() % 20 == 0) {
             RoguelikeMCUpgradeUtil.tickEffectToMobEntity(minecraftServer);
+            RoguelikeMCUpgradeUtil.tickEnableCreativeFly(minecraftServer);
         }
     }
 
@@ -173,7 +171,6 @@ public class RoguelikeMCRegisterUtil {
                 .add(RoguelikeMCAttribute.EXPERIENCE_GAIN)
                 .add(RoguelikeMCAttribute.DAMAGE_RATIO)
                 .add(RoguelikeMCAttribute.CRITICAL_CHANCE)
-                .add(RoguelikeMCAttribute.CRITICAL_DAMAGE)
-                .add(RoguelikeMCAttribute.CREATIVE_FLY));
+                .add(RoguelikeMCAttribute.CRITICAL_DAMAGE));
     }
 }
