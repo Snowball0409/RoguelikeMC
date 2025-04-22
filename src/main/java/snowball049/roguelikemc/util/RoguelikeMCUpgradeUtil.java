@@ -234,8 +234,10 @@ public class RoguelikeMCUpgradeUtil {
                     String nbtString = value.get(2);
                     NbtCompound nbt = !nbtString.isEmpty()?StringNbtReader.parse(nbtString):new NbtCompound();
                     if (!player.getInventory().armor.get(slotIndex).isEmpty()) {
-                        player.dropItem(player.getInventory().armor.get(slotIndex), false);
-                        player.sendMessage(Text.literal("You have been dropped your equipment!"), false);
+                        if(!player.getInventory().armor.get(slotIndex).getItem().equals(ItemStack.fromNbtOrEmpty(player.getWorld().getRegistryManager(), nbt).getItem())){
+                            player.dropItem(player.getInventory().armor.get(slotIndex), false);
+                            player.sendMessage(Text.literal("You have been dropped your equipment!"), false);
+                        }
                     }
                     player.getInventory().armor.set(slotIndex, ItemStack.fromNbtOrEmpty(player.getWorld().getRegistryManager(), nbt));
                 } catch (CommandSyntaxException e) {
