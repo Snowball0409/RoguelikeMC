@@ -168,19 +168,12 @@ public class RoguelikeMCRegisterUtil {
     }
 
     public static void AttributeRegister() {
-        // Register attributes here
-        Registry.register(Registries.ATTRIBUTE, RoguelikeMCAttribute.EXPERIENCE_GAIN_ID, RoguelikeMCAttribute.EXPERIENCE_GAIN);
-        Registry.register(Registries.ATTRIBUTE, RoguelikeMCAttribute.DAMAGE_RATIO_ID, RoguelikeMCAttribute.DAMAGE_RATIO);
-        Registry.register(Registries.ATTRIBUTE, RoguelikeMCAttribute.CRITICAL_CHANCE_ID, RoguelikeMCAttribute.CRITICAL_CHANCE);
-        Registry.register(Registries.ATTRIBUTE, RoguelikeMCAttribute.CRITICAL_DAMAGE_ID, RoguelikeMCAttribute.CRITICAL_DAMAGE);
-        Registry.register(Registries.ATTRIBUTE, RoguelikeMCAttribute.CREATIVE_FLY_ID, RoguelikeMCAttribute.CREATIVE_FLY);
-
         // Register attribute to player
         FabricDefaultAttributeRegistry.register(EntityType.PLAYER, PlayerEntity.createPlayerAttributes()
-                .add(RoguelikeMCAttribute.EXPERIENCE_GAIN_ENTRY)
-                .add(RoguelikeMCAttribute.DAMAGE_RATIO_ENTRY)
-                .add(RoguelikeMCAttribute.CRITICAL_CHANCE_ENTRY)
-                .add(RoguelikeMCAttribute.CRITICAL_DAMAGE_ENTRY)
-                .add(RoguelikeMCAttribute.CREATIVE_FLY_ENTRY));
+                .add(RoguelikeMCAttribute.EXPERIENCE_GAIN)
+                .add(RoguelikeMCAttribute.DAMAGE_RATIO)
+                .add(RoguelikeMCAttribute.CRITICAL_CHANCE)
+                .add(RoguelikeMCAttribute.CRITICAL_DAMAGE)
+                .add(RoguelikeMCAttribute.CREATIVE_FLY));
     }
 }
