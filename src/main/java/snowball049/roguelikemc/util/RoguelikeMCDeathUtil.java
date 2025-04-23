@@ -1,8 +1,8 @@
 package snowball049.roguelikemc.util;
 
 import dev.emi.trinkets.api.TrinketsApi;
-import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.Accessory;
+//import io.wispforest.accessories.api.AccessoriesCapability;
+//import io.wispforest.accessories.api.Accessory;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
@@ -48,16 +48,16 @@ public class RoguelikeMCDeathUtil {
         }
 
         // accessories compatibility
-        if(RoguelikeMCCompat.isAccessoriesLoaded) {
-            if(serverPlayer instanceof AccessoriesCapability accessoriedPlayer) {
-                accessoriedPlayer.getAllEquipped().forEach((slot) -> {
-                    double rand = Math.random();
-                    if(rand < RoguelikeMCCommonConfig.INSTANCE.decayInventoryPercentage) {
-                        slot.reference().setStack(getDecayedItemStack());
-                    }
-                });
-            }
-        }
+//        if(RoguelikeMCCompat.isAccessoriesLoaded) {
+//            if(serverPlayer instanceof AccessoriesCapability accessoriedPlayer) {
+//                accessoriedPlayer.getAllEquipped().forEach((slot) -> {
+//                    double rand = Math.random();
+//                    if(rand < RoguelikeMCCommonConfig.INSTANCE.decayInventoryPercentage) {
+//                        slot.reference().setStack(getDecayedItemStack());
+//                    }
+//                });
+//            }
+//        }
 
         // trinkets compatibility
         if(RoguelikeMCCompat.isTrinketsLoaded) {
@@ -104,12 +104,12 @@ public class RoguelikeMCDeathUtil {
         }
 
         // accessories compatibility
-        if(RoguelikeMCCompat.isAccessoriesLoaded) {
-            if(player instanceof AccessoriesCapability accessoriedPlayer) {
-                accessoriedPlayer.getAllEquipped().forEach((slot) ->
-                        slot.reference().setStack(ItemStack.EMPTY));
-            }
-        }
+//        if(RoguelikeMCCompat.isAccessoriesLoaded) {
+//            if(player instanceof AccessoriesCapability accessoriedPlayer) {
+//                accessoriedPlayer.getAllEquipped().forEach((slot) ->
+//                        slot.reference().setStack(ItemStack.EMPTY));
+//            }
+//        }
 
         // trinkets compatibility
         if(RoguelikeMCCompat.isTrinketsLoaded) {
@@ -129,7 +129,6 @@ public class RoguelikeMCDeathUtil {
                 item instanceof RangedWeaponItem ||
                 item instanceof TridentItem ||
                 item instanceof ShieldItem ||
-                item instanceof ToolItem ||
-                (RoguelikeMCCompat.isAccessoriesLoaded && item instanceof Accessory);
+                item instanceof ToolItem;
     }
 }

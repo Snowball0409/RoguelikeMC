@@ -181,23 +181,4 @@ public class RoguelikeMCRegisterUtil {
                 .add(RoguelikeMCAttribute.CRITICAL_CHANCE)
                 .add(RoguelikeMCAttribute.CRITICAL_DAMAGE));
     }
-
-    public static ActionResult onAttackEntityEventRegister(PlayerEntity playerEntity, World world, Hand hand, Entity entity, @Nullable EntityHitResult entityHitResult) {
-        if (!(entity instanceof LivingEntity target)) return ActionResult.PASS;
-
-        double critChance = playerEntity.getAttributeValue(RoguelikeMCAttribute.CRITICAL_CHANCE);
-        double critDamage = playerEntity.getAttributeValue(RoguelikeMCAttribute.CRITICAL_DAMAGE);
-
-        if (world.getRandom().nextFloat() < critChance) {
-            float baseDamage = (float) playerEntity.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-            float extraDamage = baseDamage * (float) critDamage;
-
-            target.damage(world.getDamageSources().playerAttack(playerEntity), extraDamage);
-
-            world.playSound(null, target.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1f, 1f);
-            playerEntity.addCritParticles(target);
-        }
-
-        return ActionResult.SUCCESS;
-    }
 }

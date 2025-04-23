@@ -66,9 +66,6 @@ public class RoguelikeMC implements ModInitializer {
 		// Server tick event
 		ServerTickEvents.END_SERVER_TICK.register(RoguelikeMCRegisterUtil::onServerTick);
 
-		// Crit Event
-		AttackEntityCallback.EVENT.register(RoguelikeMCRegisterUtil::onAttackEntityEventRegister);
-
 		LOGGER.info("RoguelikeMC Initialized");
 	}
 }

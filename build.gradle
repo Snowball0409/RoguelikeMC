@@ -27,8 +27,8 @@ repositories {
 		}
 	}
 	// accessories
-	maven { url 'https://maven.wispforest.io/releases' }
-	maven { url 'https://maven.su5ed.dev/releases' }
+//	maven { url 'https://maven.wispforest.io/releases' }
+//	maven { url 'https://maven.su5ed.dev/releases' }
 
 	// trinkets
 	maven {
@@ -69,8 +69,8 @@ dependencies {
 	modRuntimeOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
 
 	// accessories
-	modCompileOnly("io.wispforest:accessories-fabric:${project.accessories_version}")
-	modRuntimeOnly("io.wispforest:accessories-fabric:${project.accessories_version}")
+//	modCompileOnly("io.wispforest:accessories-fabric:${project.accessories_version}")
+//	modRuntimeOnly("io.wispforest:accessories-fabric:${project.accessories_version}")
 
 	// trinkets
 	modCompileOnly("dev.emi:trinkets:${project.trinkets_version}")

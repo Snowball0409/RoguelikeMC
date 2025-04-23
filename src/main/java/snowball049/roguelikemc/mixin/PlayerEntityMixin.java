@@ -1,5 +1,9 @@
 package snowball049.roguelikemc.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -16,11 +20,11 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.gen.Invoker;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
@@ -127,5 +131,31 @@ public abstract class PlayerEntityMixin {
         // Damage Ratio Attribute
         double damageRatio = player.getAttributeValue(RoguelikeMCAttribute.DAMAGE_RATIO);
         return (float) (amount * (1.0D + damageRatio));
+    }
+
+    @ModifyVariable(
+            method = "attack",
+            at = @At("STORE"),
+            name = "bl3"
+    )
+    private boolean modifyCriticalFlag(boolean original, Entity target) {
+        if (!(target instanceof LivingEntity)) return original;
+        if (original) return true; // 保留原生條件下的爆擊
+
+        PlayerEntity player = (PlayerEntity)(Object) this;
+        double critChance = player.getAttributeValue(RoguelikeMCAttribute.CRITICAL_CHANCE);
+        return player.getRandom().nextFloat() < critChance;
+    }
+
+
+
+    @ModifyConstant(method = "attack", constant = @Constant(floatValue = 1.5F, ordinal = 0))
+    private float modifyCritDamage(float critDamage) {
+        PlayerEntity player = (PlayerEntity) (Object) this;
+        if (!(player instanceof ServerPlayerEntity)) return critDamage;
+
+        // Critical Damage Attribute
+        double criticalDamage = player.getAttributeValue(RoguelikeMCAttribute.CRITICAL_DAMAGE);
+        return (float) (1.0D + criticalDamage);
     }
 }

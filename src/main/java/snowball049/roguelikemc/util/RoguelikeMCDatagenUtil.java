@@ -216,16 +216,16 @@ public class RoguelikeMCDatagenUtil {
                         new RoguelikeMCUpgradeData.ActionData("event", List.of("set_equipment", "1", "")))
         );
 
-//        final RoguelikeMCUpgradeData villager_slayer = new RoguelikeMCUpgradeData(
-//                "villager_slayer",
-//                "Villager Slayer",
-//                "Killing villagers drops emeralds, but Iron Golems will permanently be hostile",
-//                "rare",
-//                false,
-//                true,
-//                "minecraft:textures/item/emerald.png",
-//                List.of()
-//        );
+        final RoguelikeMCUpgradeData villager_slayer = new RoguelikeMCUpgradeData(
+                "villager_slayer",
+                "Villager Slayer",
+                "Killing villagers drops emeralds, but Iron Golems will permanently be hostile",
+                "rare",
+                false,
+                true,
+                "minecraft:textures/item/emerald.png",
+                List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("add_loot_table", "minecraft:villager", "roguelikemc:entities/villager_slayer")))
+        );
 
 
         final RoguelikeMCUpgradeData mystic_steed = new RoguelikeMCUpgradeData(
@@ -664,7 +664,6 @@ public class RoguelikeMCDatagenUtil {
         upgradeProvider.addUpgrade(cursed_shield);
         upgradeProvider.addUpgrade(hardened_instinct);
         upgradeProvider.addUpgrade(fortune_infused);
-
-//        upgradeProvider.addUpgrade(villager_slayer);
+        upgradeProvider.addUpgrade(villager_slayer);
     }
 }
