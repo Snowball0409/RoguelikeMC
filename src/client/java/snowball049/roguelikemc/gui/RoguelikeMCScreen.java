@@ -118,8 +118,8 @@ public class RoguelikeMCScreen extends Screen {
                 BACKGROUND_TEXTURE,
                 guiLeft,
                 guiTop,
-                0, 0, GUI_WIDTH, GUI_HEIGHT,
-                GUI_WIDTH, GUI_HEIGHT
+                0, 0, GUI_WIDTH, GUI_WIDTH,
+                GUI_WIDTH, GUI_WIDTH
         );
 
         // 渲染內容區域
@@ -174,6 +174,7 @@ public class RoguelikeMCScreen extends Screen {
     private void renderPointSection(DrawContext context, int x, int y, int mouseX, int mouseY) {
         // Background color
          context.fill(x, y, x + SECTION_WIDTH, y + 20, 0x80303030);
+         context.drawBorder(x, y, SECTION_WIDTH, 20, 0xFF000000);
 
         // Draw experience orb texture
         context.drawTexture(
