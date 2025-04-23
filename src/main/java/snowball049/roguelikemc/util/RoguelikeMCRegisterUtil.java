@@ -171,6 +171,10 @@ public class RoguelikeMCRegisterUtil {
             RoguelikeMCUpgradeUtil.tickEffectToMobEntity(minecraftServer);
             RoguelikeMCUpgradeUtil.tickEnableCreativeFly(minecraftServer);
         }
+        //Handle particle effect every 5 seconds
+        if (minecraftServer.getTicks() % 100 == 0) {
+            RoguelikeMCEventUtil.tickPlayerEvent(minecraftServer);
+        }
     }
 
     public static void AttributeRegister() {

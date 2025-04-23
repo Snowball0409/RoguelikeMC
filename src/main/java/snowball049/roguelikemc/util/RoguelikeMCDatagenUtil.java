@@ -223,7 +223,7 @@ public class RoguelikeMCDatagenUtil {
                 "rare",
                 false,
                 true,
-                "minecraft:textures/item/emerald.png",
+                "roguelikemc:textures/upgrades/villager_slayer.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("add_loot_table", "minecraft:villager", "roguelikemc:villager_slayer")),
                         new RoguelikeMCUpgradeData.ActionData("event", List.of("provoked", "minecraft:iron_golem")))
         );
