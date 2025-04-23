@@ -5,12 +5,25 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
+          "type": "minecraft:item",
           "name": "minecraft:emerald",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": 1
+            },
+            {
+              "function": "minecraft:apply_bonus",
+              "enchantment": "minecraft:looting",
+              "formula": "minecraft:uniform_bonus_count",
+              "parameters": {
+                "bonusMultiplier": 1
+              },
+              "conditions": [
+                {
+                  "condition": "minecraft:killed_by_player"
+                }
+              ]
             }
           ]
         }

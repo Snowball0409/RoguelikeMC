@@ -12,7 +12,14 @@
       "value": [
         "add_loot_table",
         "minecraft:villager",
-        "roguelikemc:entities/villager_slayer"
+        "roguelikemc:villager_slayer"
+      ]
+    },
+    {
+      "type": "event",
+      "value": [
+        "provoked",
+        "minecraft:iron_golem"
       ]
     }
   ]

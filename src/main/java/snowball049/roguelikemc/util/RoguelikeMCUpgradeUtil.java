@@ -259,8 +259,7 @@ public class RoguelikeMCUpgradeUtil {
                     RoguelikeMC.LOGGER.warn(e.getClass() + ":" + e.getMessage());
                 }
             }
-            case "add_loot_table" -> {
-
+            case "add_loot_table", "provoked" -> {
             }
             default -> {
                 RoguelikeMC.LOGGER.warn("Unexpected eventType value: " + eventType);
@@ -287,7 +286,7 @@ public class RoguelikeMCUpgradeUtil {
                 int slotIndex = Integer.parseInt(value.get(1));
                 player.getInventory().armor.set(slotIndex, ItemStack.EMPTY);
             }
-            case "effect_mobs", "add_loot_table" -> {
+            case "effect_mobs", "add_loot_table", "provoked" -> {
             }
             default -> {
                 RoguelikeMC.LOGGER.warn("Unexpected eventType value: " + eventType);
