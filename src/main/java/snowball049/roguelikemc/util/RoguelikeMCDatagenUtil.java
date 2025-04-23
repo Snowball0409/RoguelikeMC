@@ -33,7 +33,7 @@ public class RoguelikeMCDatagenUtil {
         final RoguelikeMCUpgradeData enduring_vitality = new RoguelikeMCUpgradeData(
                 "enduring_vitality",
                 "Enduring Vitality",
-                "Maximum Health add a Heart",
+                "Maximum Health + 2",
                 "common",
                 true,
                 false,
@@ -227,16 +227,6 @@ public class RoguelikeMCDatagenUtil {
 //                List.of()
 //        );
 
-//        final RoguelikeMCUpgradeData spicy_feast = new RoguelikeMCUpgradeData(
-//                "spicy_feast",
-//                "Spicy Feast",
-//                "Eating cooked chicken sets you on fire, but fully restores hunger",
-//                "rare",
-//                false,
-//                true,
-//                "minecraft:textures/item/cooked_chicken.png",
-//                List.of()
-//        );
 
         final RoguelikeMCUpgradeData mystic_steed = new RoguelikeMCUpgradeData(
                 "mystic_steed",
@@ -319,17 +309,6 @@ public class RoguelikeMCDatagenUtil {
                 "roguelikemc:textures/upgrades/eternal_companion.png",
                 List.of(new RoguelikeMCUpgradeData.ActionData("command", List.of("summon cat ~ ~ ~ {Invulnerable:1b}")))
         );
-
-//        final RoguelikeMCUpgradeData grass_grazer = new RoguelikeMCUpgradeData(
-//                "grass_grazer",
-//                "Grass Grazer",
-//                "Sneaking allows you to eat grass",
-//                "common",
-//                false,
-//                true,
-//                "minecraft:textures/block/grass_block_top.png",
-//                List.of()
-//        );
 
         final RoguelikeMCUpgradeData leap_of_faith = new RoguelikeMCUpgradeData(
                 "leap_of_faith",
@@ -518,6 +497,122 @@ public class RoguelikeMCDatagenUtil {
                 List.of(new RoguelikeMCUpgradeData.ActionData("command", List.of("give @s shield[unbreakable={}] 1")))
         );
 
+        final RoguelikeMCUpgradeData sharpened_edge = new RoguelikeMCUpgradeData(
+                "sharpened_edge",
+                "Sharpened Edge",
+                "Increase Critical Hit Chance by 1%",
+                "common",
+                true,
+                false,
+                "roguelikemc:textures/upgrades/sharpened_edge.png",
+                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("roguelikemc:critical_chance", "0.01", "add_value")))
+        );
+
+        final RoguelikeMCUpgradeData fatal_precision = new RoguelikeMCUpgradeData(
+                "fatal_precision",
+                "Fatal Precision",
+                "Increase Critical Damage by 3%",
+                "common",
+                true,
+                false,
+                "roguelikemc:textures/upgrades/fatal_precision.png",
+                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("roguelikemc:critical_damage", "0.03", "add_value")))
+        );
+
+        final RoguelikeMCUpgradeData desperate_strike = new RoguelikeMCUpgradeData(
+                "desperate_strike",
+                "Desperate Strike",
+                "Decrease Base Attack Damage by 10%, Increase Critical Damage by 60%",
+                "rare",
+                false,
+                true,
+                "roguelikemc:textures/upgrades/desperate_strike.png",
+                List.of(
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.attack_damage", "-0.1", "add_multiplied_base")),
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("roguelikemc:critical_damage", "0.6", "add_value"))
+                )
+        );
+
+        final RoguelikeMCUpgradeData glass_blade = new RoguelikeMCUpgradeData(
+                "glass_blade",
+                "Glass Blade",
+                "Increase Critical Hit Chance by 15%, Take 50% More Damage",
+                "rare",
+                false,
+                false,
+                "roguelikemc:textures/upgrades/glass_blade.png",
+                List.of(
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("roguelikemc:critical_chance", "0.15", "add_value")),
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("roguelikemc:damage_ratio", "0.5", "add_value"))
+                )
+        );
+
+        final RoguelikeMCUpgradeData precision_chain = new RoguelikeMCUpgradeData(
+                "precision_chain",
+                "Precision Chain",
+                "Increase Critical Hit Chance by 3% and Critical Damage by 8%",
+                "rare",
+                false,
+                false,
+                "roguelikemc:textures/upgrades/precision_chain.png",
+                List.of(
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("roguelikemc:critical_chance", "0.03", "add_value")),
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("roguelikemc:critical_damage", "0.08", "add_value"))
+                )
+        );
+
+        final RoguelikeMCUpgradeData chilling_aura = new RoguelikeMCUpgradeData(
+                "chilling_aura",
+                "Chilling Aura",
+                "Hostile mobs around you are slowed",
+                "rare",
+                false,
+                true,
+                "roguelikemc:textures/upgrades/chilling_aura.png",
+                List.of(new RoguelikeMCUpgradeData.ActionData("event", List.of("effect_mobs", "minecraft:slowness", "0", "8.0")))
+        );
+
+        final RoguelikeMCUpgradeData cursed_shield = new RoguelikeMCUpgradeData(
+                "cursed_shield",
+                "Cursed Shield",
+                "Take 10% less damage, but nearby hostile mobs gain speed",
+                "rare",
+                false,
+                true,
+                "roguelikemc:textures/upgrades/cursed_shield.png",
+                List.of(
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("roguelikemc:damage_ratio", "-0.1", "add_value")),
+                        new RoguelikeMCUpgradeData.ActionData("event", List.of("effect_mobs", "minecraft:speed", "0", "8.0"))
+                )
+        );
+
+        final RoguelikeMCUpgradeData hardened_instinct = new RoguelikeMCUpgradeData(
+                "hardened_instinct",
+                "Hardened Instinct",
+                "Take 1% less damage",
+                "epic",
+                true,
+                false,
+                "roguelikemc:textures/upgrades/hardened_instinct.png",
+                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("roguelikemc:damage_ratio", "-0.01", "add_value")))
+        );
+
+        final RoguelikeMCUpgradeData fortune_infused = new RoguelikeMCUpgradeData(
+                "fortune_infused",
+                "Fortune Infused",
+                "Gain Luck 30 min and 10% more experience",
+                "epic",
+                false,
+                false,
+                "roguelikemc:textures/upgrades/fortune_infused.png",
+                List.of(
+                        new RoguelikeMCUpgradeData.ActionData("effect", List.of("minecraft:luck", "36000", "0")),
+                        new RoguelikeMCUpgradeData.ActionData("attribute", List.of("roguelikemc:experience_gain", "0.1", "add_value"))
+                )
+        );
+
+
+
         upgradeProvider.addUpgrade(fortunes_favor);
         upgradeProvider.addUpgrade(swift_stride);
         upgradeProvider.addUpgrade(enduring_vitality);
@@ -560,11 +655,16 @@ public class RoguelikeMCDatagenUtil {
         upgradeProvider.addUpgrade(wind_swiftness);
         upgradeProvider.addUpgrade(eternal_guardian);
         upgradeProvider.addUpgrade(wisdoms_bounty);
+        upgradeProvider.addUpgrade(sharpened_edge);
+        upgradeProvider.addUpgrade(fatal_precision);
+        upgradeProvider.addUpgrade(desperate_strike);
+        upgradeProvider.addUpgrade(glass_blade);
+        upgradeProvider.addUpgrade(precision_chain);
+        upgradeProvider.addUpgrade(chilling_aura);
+        upgradeProvider.addUpgrade(cursed_shield);
+        upgradeProvider.addUpgrade(hardened_instinct);
+        upgradeProvider.addUpgrade(fortune_infused);
 
-//        upgradeProvider.addUpgrade(sharpshooters_aim);
-//        upgradeProvider.addUpgrade(glass_cannon);
 //        upgradeProvider.addUpgrade(villager_slayer);
-//        upgradeProvider.addUpgrade(spicy_feast);
-//        upgradeProvider.addUpgrade(grass_grazer);
     }
 }

@@ -1,0 +1,27 @@
+{
+  "id": "desperate_strike",
+  "name": "Desperate Strike",
+  "description": "Decrease Base Attack Damage by 10%, Increase Critical Damage by 60%",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/desperate_strike.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "minecraft:generic.attack_damage",
+        "-0.1",
+        "add_multiplied_base"
+      ]
+    },
+    {
+      "type": "attribute",
+      "value": [
+        "roguelikemc:critical_damage",
+        "0.6",
+        "add_value"
+      ]
+    }
+  ]
+}

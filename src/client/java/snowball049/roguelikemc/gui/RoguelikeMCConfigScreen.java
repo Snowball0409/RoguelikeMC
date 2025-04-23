@@ -223,7 +223,7 @@ public class RoguelikeMCConfigScreen extends Screen {
         if (button == 0 && isDragging) {
             // Handle dragging the scrollbar
             if (mouseX > width - 20) {
-                float scrollRatio = (float) deltaY / (scrollableAreaHeight - (scrollableAreaHeight * scrollableAreaHeight / contentHeight));
+                float scrollRatio = (float) deltaY / (scrollableAreaHeight - ((float) (scrollableAreaHeight * scrollableAreaHeight) / contentHeight));
                 scrollPosition = MathHelper.clamp(scrollPosition + (int)(scrollRatio * maxScrollPosition), 0, maxScrollPosition);
                 updateButtonPositions();
                 return true;

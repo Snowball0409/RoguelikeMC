@@ -16,6 +16,5 @@ public class RoguelikeMCItems {
 
     public static void initailize() {
         register(UPGRADE_POINT_ORB, "upgrade_point_orb");
-        RoguelikeMC.LOGGER.info("RoguelikeMC Items Initialized");
     }
 }

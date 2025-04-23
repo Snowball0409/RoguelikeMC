@@ -1,0 +1,27 @@
+{
+  "id": "fortune_infused",
+  "name": "Fortune Infused",
+  "description": "Gain Luck 30 min and 10% more experience",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "roguelikemc:textures/upgrades/fortune_infused.png",
+  "actions": [
+    {
+      "type": "effect",
+      "value": [
+        "minecraft:luck",
+        "36000",
+        "0"
+      ]
+    },
+    {
+      "type": "attribute",
+      "value": [
+        "roguelikemc:experience_gain",
+        "0.1",
+        "add_value"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "glass_blade",
+  "name": "Glass Blade",
+  "description": "Increase Critical Hit Chance by 15%, Take 50% More Damage",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "roguelikemc:textures/upgrades/glass_blade.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "roguelikemc:critical_chance",
+        "0.15",
+        "add_value"
+      ]
+    },
+    {
+      "type": "attribute",
+      "value": [
+        "roguelikemc:damage_ratio",
+        "0.5",
+        "add_value"
+      ]
+    }
+  ]
+}

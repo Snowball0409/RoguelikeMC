@@ -1,0 +1,19 @@
+{
+  "id": "fatal_precision",
+  "name": "Fatal Precision",
+  "description": "Increase Critical Damage by 3%",
+  "tier": "common",
+  "isPermanent": true,
+  "isUnique": false,
+  "icon": "roguelikemc:textures/upgrades/fatal_precision.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "roguelikemc:critical_damage",
+        "0.03",
+        "add_value"
+      ]
+    }
+  ]
+}

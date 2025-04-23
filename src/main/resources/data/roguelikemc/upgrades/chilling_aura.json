@@ -1,0 +1,20 @@
+{
+  "id": "chilling_aura",
+  "name": "Chilling Aura",
+  "description": "Hostile mobs around you are slowed",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/chilling_aura.png",
+  "actions": [
+    {
+      "type": "event",
+      "value": [
+        "effect_mobs",
+        "minecraft:slowness",
+        "0",
+        "8.0"
+      ]
+    }
+  ]
+}

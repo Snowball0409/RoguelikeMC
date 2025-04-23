@@ -1,0 +1,28 @@
+{
+  "id": "cursed_shield",
+  "name": "Cursed Shield",
+  "description": "Take 10% less damage, but nearby hostile mobs gain speed",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/cursed_shield.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "roguelikemc:damage_ratio",
+        "-0.1",
+        "add_value"
+      ]
+    },
+    {
+      "type": "event",
+      "value": [
+        "effect_mobs",
+        "minecraft:speed",
+        "0",
+        "8.0"
+      ]
+    }
+  ]
+}

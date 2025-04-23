@@ -52,9 +52,9 @@ public class RoguelikeMCAttribute {
             CRITICAL_DAMAGE_ID,
             new ClampedEntityAttribute(
                     "attribute.name.roguelikemc.critical_damage",
+                    0.5D,
                     0.0D,
-                    0.0D,
-                    100.0D
+                    10.0D
             ).setTracked(true)
     );
 }

@@ -1,7 +1,7 @@
 {
   "id": "enduring_vitality",
   "name": "Enduring Vitality",
-  "description": "Maximum Health add a Heart",
+  "description": "Maximum Health + 2",
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,

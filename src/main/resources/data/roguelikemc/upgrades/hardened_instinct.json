@@ -1,0 +1,19 @@
+{
+  "id": "hardened_instinct",
+  "name": "Hardened Instinct",
+  "description": "Take 1% less damage",
+  "tier": "epic",
+  "isPermanent": true,
+  "isUnique": false,
+  "icon": "roguelikemc:textures/upgrades/hardened_instinct.png",
+  "actions": [
+    {
+      "type": "attribute",
+      "value": [
+        "roguelikemc:damage_ratio",
+        "-0.01",
+        "add_value"
+      ]
+    }
+  ]
+}
