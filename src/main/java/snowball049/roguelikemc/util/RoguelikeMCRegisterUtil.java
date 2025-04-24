@@ -138,9 +138,20 @@ public class RoguelikeMCRegisterUtil {
                                 .then(CommandManager.literal("get")
                                         .executes(RoguelikeMCCommands::getPoint))
                         )
-
-                )
-        );
+                        .then(CommandManager.literal("upgrade_pool")
+                                .then(CommandManager.literal("add")
+                                    .then(CommandManager.argument("upgradePoolOption", IdentifierArgumentType.identifier()).suggests(new RoguelikeMCCommands.UpgradePoolSuggestionProvider())
+                                                .executes(RoguelikeMCCommands::addUpgradePool))
+                                )
+                                .then(CommandManager.literal("remove")
+                                        .then(CommandManager.argument("upgradePoolOption", IdentifierArgumentType.identifier()).suggests(new RoguelikeMCCommands.UpgradePoolSuggestionProvider())
+                                                .executes(RoguelikeMCCommands::removeUpgradePool))
+                                )
+                                .then(CommandManager.literal("get")
+                                        .executes(RoguelikeMCCommands::getUpgradePool))
+                                )
+                        )
+                );
     }
 
     public static void onKillEntityEventRegister(ServerWorld server, Entity entity, LivingEntity context) {
@@ -150,10 +161,6 @@ public class RoguelikeMCRegisterUtil {
                 playerData.currentKillHostile++;
                 while (playerData.currentKillHostile >= playerData.currentKillHostileRequirement) {
                     playerData.currentKillHostile -= playerData.currentKillHostileRequirement;
-                    playerData.currentKillHostileRequirement = Math.min(
-                            playerData.currentKillHostileRequirement + RoguelikeMCCommonConfig.INSTANCE.amountBetweenKillHostileEntityUpgrade,
-                            RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirementMinMax.getLast()
-                    );
                     RoguelikeMCPointUtil.addUpgradePoints((ServerPlayerEntity) entity, 1);
                 }
             }

@@ -18,6 +18,7 @@ import snowball049.roguelikemc.network.handler.RefreshUpgradeOptionHandler;
 import snowball049.roguelikemc.network.handler.SelectUpgradeOptionHandler;
 import snowball049.roguelikemc.network.packet.*;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
+import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradePoolManager;
 import snowball049.roguelikemc.util.RoguelikeMCRegisterUtil;
 
 public class RoguelikeMC implements ModInitializer {
@@ -62,6 +63,7 @@ public class RoguelikeMC implements ModInitializer {
 
 		// Datapack Reload
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new RoguelikeMCUpgradeManager());
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new RoguelikeMCUpgradePoolManager());
 
 		// Server tick event
 		ServerTickEvents.END_SERVER_TICK.register(RoguelikeMCRegisterUtil::onServerTick);

@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.RoguelikeMC;
+import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 
 import java.io.InputStreamReader;
@@ -33,7 +34,8 @@ public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloa
                         .orElse(null);
 
                 if (upgrade != null) {
-                    allUpgrades.put(Identifier.of(id.getNamespace(), upgrade.id()), upgrade); // Add upgrade to the map
+                    if (!RoguelikeMCCommonConfig.INSTANCE.bannedUpgrades.contains(Identifier.of(id.getNamespace(), upgrade.id()).toString()))
+                        allUpgrades.put(Identifier.of(id.getNamespace(), upgrade.id()), upgrade); // Add upgrade to the map
                 } else {
                     RoguelikeMC.LOGGER.error("Failed to parse upgrade: {}", id);
                 }
