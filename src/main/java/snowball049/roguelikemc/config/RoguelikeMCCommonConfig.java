@@ -26,15 +26,16 @@ public class RoguelikeMCCommonConfig {
     public boolean enableKillHostileEntityUpgrade = true;
     public boolean enableAdvancementUpgrade = false;
     public boolean enableLevelUpgrade = false;
+
     public boolean enableClearInventoryAfterDeath = false;
     public boolean enableClearEquipmentAfterDeath = false;
     public boolean enableDecayInventoryAfterDeath = true;
     public boolean enableDecayEquipmentAfterDeath = true;
     public boolean enableLinearGameStage = true;
 
-    public List<Integer> killHostileEntityRequirementMinMax = List.of(10, 30);
-    public Integer amountBetweenKillHostileEntityUpgrade = 5;
+    public Integer killHostileEntityRequirement = 10;
     public Integer amountOfLevelUpgrade = 5;
+    public Integer amountOfAdvancementUpgrade = 1;
     public double decayInventoryPercentage = 0.6;
     public String decayItem = "minecraft:rotten_flesh";
     public List<Integer> decayItemAmountMinMax = List.of(1, 3);
@@ -53,19 +54,34 @@ public class RoguelikeMCCommonConfig {
             return;
         }
 
+        boolean shouldRewrite = false;
+
         if (file.exists()) {
             try (FileReader reader = new FileReader(file)) {
                 try (JsonReader jsonReader = new JsonReader(reader)) {
                     INSTANCE = gson.fromJson(jsonReader, RoguelikeMCCommonConfig.class);
-                    writeConfig(gson, file, INSTANCE);
+                    if (INSTANCE == null) {
+                        RoguelikeMC.LOGGER.warn("Config file is invalid (parsed as null), resetting...");
+                        INSTANCE = new RoguelikeMCCommonConfig(); // 預設值
+                        shouldRewrite = true;
+                    }
                 }
-            } catch (IOException e) {
-                RoguelikeMC.LOGGER.error("Failed to load config file", e);
+            } catch (Exception e) {
+                RoguelikeMC.LOGGER.warn("Failed to parse config file, resetting to default", e);
+                INSTANCE = new RoguelikeMCCommonConfig(); // 預設值
+                shouldRewrite = true;
             }
         } else {
+            RoguelikeMC.LOGGER.info("No config file found, generating default config");
+            INSTANCE = new RoguelikeMCCommonConfig();
+            shouldRewrite = true;
+        }
+
+        if (shouldRewrite) {
             writeConfig(gson, file, INSTANCE);
         }
     }
+
 
     public static void writeConfig(Gson gson, File file, RoguelikeMCCommonConfig config) {
         try (FileWriter writer = new FileWriter(file)) {

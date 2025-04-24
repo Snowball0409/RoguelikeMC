@@ -33,7 +33,13 @@ public class PlayerAdvancementTrackerMixin {
                 && !advancement.value().isRoot()
                 && progress.isDone()
                 ) {
-            RoguelikeMCPointUtil.addUpgradePoints(player, 1);
+            RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+            playerData.currentAdvancementGain ++;
+            if (playerData.currentAdvancementGain >= RoguelikeMCCommonConfig.INSTANCE.amountOfAdvancementUpgrade) {
+                RoguelikeMCPointUtil.addUpgradePoints(player, 1);
+                playerData.currentAdvancementGain -= RoguelikeMCCommonConfig.INSTANCE.amountOfAdvancementUpgrade;
+            }
+
         }
     }
 }

@@ -150,10 +150,6 @@ public class RoguelikeMCRegisterUtil {
                 playerData.currentKillHostile++;
                 while (playerData.currentKillHostile >= playerData.currentKillHostileRequirement) {
                     playerData.currentKillHostile -= playerData.currentKillHostileRequirement;
-                    playerData.currentKillHostileRequirement = Math.min(
-                            playerData.currentKillHostileRequirement + RoguelikeMCCommonConfig.INSTANCE.amountBetweenKillHostileEntityUpgrade,
-                            RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirementMinMax.getLast()
-                    );
                     RoguelikeMCPointUtil.addUpgradePoints((ServerPlayerEntity) entity, 1);
                 }
             }
