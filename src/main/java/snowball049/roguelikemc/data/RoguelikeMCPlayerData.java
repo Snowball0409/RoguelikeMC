@@ -20,9 +20,7 @@ public class RoguelikeMCPlayerData {
     public int currentAdvancementGain = 0;
     public int currentGameStage = 0;
 
-    public List<Identifier> activeUpgradePools = List.of(
-            Identifier.of(RoguelikeMC.MOD_ID, "default_pool")
-    );
+    public List<Identifier> activeUpgradePools = new ArrayList<>();
 
     // Event Upgrade
     public boolean keepEquipmentAfterDeath = false;
@@ -30,6 +28,7 @@ public class RoguelikeMCPlayerData {
 
     public RoguelikeMCPlayerData() {
         this.currentKillHostileRequirement = RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirement;
+        this.activeUpgradePools.add(Identifier.of(RoguelikeMC.MOD_ID, "default_pool"));
     }
 
     public Collection<RoguelikeMCUpgradeData> getAllUpgrades() {
