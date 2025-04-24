@@ -136,11 +136,10 @@ public abstract class PlayerEntityMixin {
     @ModifyVariable(
             method = "attack",
             at = @At("STORE"),
-            name = "bl3"
+            ordinal = 2
     )
-    private boolean modifyCriticalFlag(boolean original, Entity target) {
-        if (!(target instanceof LivingEntity)) return original;
-        if (original) return true; // 保留原生條件下的爆擊
+    private boolean modifyCriticalFlag(boolean original) {
+        if (original) return true;
 
         PlayerEntity player = (PlayerEntity)(Object) this;
         double critChance = player.getAttributeValue(RoguelikeMCAttribute.CRITICAL_CHANCE);

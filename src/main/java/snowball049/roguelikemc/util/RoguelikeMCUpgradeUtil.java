@@ -28,6 +28,7 @@ import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
+import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradePoolManager;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -141,7 +142,13 @@ public class RoguelikeMCUpgradeUtil {
     }
 
     public static List<RoguelikeMCUpgradeData> getRandomUpgrades(RoguelikeMCPlayerData playerData) {
-        List<RoguelikeMCUpgradeData> allUpgrades = RoguelikeMCUpgradeManager.getUpgrades().stream().toList();
+        List<RoguelikeMCUpgradeData> allUpgrades = playerData.activeUpgradePools.stream()
+                .flatMap(poolId -> RoguelikeMCUpgradePoolManager.getUpgradesFromPool(poolId).stream())
+                .distinct()
+                .map(RoguelikeMCUpgradeManager::getUpgrade)
+                .filter(Objects::nonNull)
+                .toList();
+        if (allUpgrades.isEmpty()) allUpgrades = RoguelikeMCUpgradeManager.getUpgrades().stream().toList();
 
         // Filter Unique Upgrades which player already owns
         Set<String> ownedUniqueIds = playerData.getAllUpgrades().stream()

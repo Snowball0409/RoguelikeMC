@@ -1,5 +1,7 @@
 package snowball049.roguelikemc.data;
 
+import net.minecraft.util.Identifier;
+import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 
 import java.util.ArrayList;
@@ -17,6 +19,10 @@ public class RoguelikeMCPlayerData {
     public int currentLevelGain = 0;
     public int currentAdvancementGain = 0;
     public int currentGameStage = 0;
+
+    public List<Identifier> activeUpgradePools = List.of(
+            Identifier.of(RoguelikeMC.MOD_ID, "default_pool")
+    );
 
     // Event Upgrade
     public boolean keepEquipmentAfterDeath = false;
