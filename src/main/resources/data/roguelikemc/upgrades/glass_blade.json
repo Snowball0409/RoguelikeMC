@@ -1,7 +1,7 @@
 {
   "id": "glass_blade",
-  "name": "Glass Blade",
-  "description": "Increase Critical Hit Chance by 15%, Take 50% More Damage",
+  "name": "upgrade.roguelikemc.name.glass_blade",
+  "description": "upgrade.roguelikemc.description.glass_blade",
   "tier": "rare",
   "isPermanent": false,
   "isUnique": false,

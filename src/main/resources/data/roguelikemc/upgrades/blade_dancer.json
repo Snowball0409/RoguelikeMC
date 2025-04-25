@@ -1,7 +1,7 @@
 {
   "id": "blade_dancer",
-  "name": "Blade Dancer",
-  "description": "Attack Speed +5%",
+  "name": "upgrade.roguelikemc.name.blade_dancer",
+  "description": "upgrade.roguelikemc.description.blade_dancer",
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,

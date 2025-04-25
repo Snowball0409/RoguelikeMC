@@ -1,7 +1,7 @@
 {
   "id": "withering_aura",
-  "name": "Withering Aura",
-  "description": "Hostile mobs around you are inflicted with Wither",
+  "name": "upgrade.roguelikemc.name.withering_aura",
+  "description": "upgrade.roguelikemc.description.withering_aura",
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,

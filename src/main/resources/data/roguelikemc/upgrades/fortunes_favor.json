@@ -1,7 +1,7 @@
 {
   "id": "fortunes_favor",
-  "name": "Fortune\u0027s Favor",
-  "description": "Luck +1",
+  "name": "upgrade.roguelikemc.name.fortunes_favor",
+  "description": "upgrade.roguelikemc.description.fortunes_favor",
   "tier": "rare",
   "isPermanent": true,
   "isUnique": false,

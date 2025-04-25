@@ -1,7 +1,7 @@
 {
   "id": "deep_lungs",
-  "name": "Deep Lungs",
-  "description": "Breath underwater time + 50%",
+  "name": "upgrade.roguelikemc.name.deep_lungs",
+  "description": "upgrade.roguelikemc.description.deep_lungs",
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,

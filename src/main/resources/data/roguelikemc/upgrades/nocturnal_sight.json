@@ -1,7 +1,7 @@
 {
   "id": "nocturnal_sight",
-  "name": "Nocturnal Sight",
-  "description": "Gain night vision",
+  "name": "upgrade.roguelikemc.name.nocturnal_sight",
+  "description": "upgrade.roguelikemc.description.nocturnal_sight",
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,

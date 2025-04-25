@@ -1,7 +1,7 @@
 {
   "id": "scholars_gift",
-  "name": "Scholar\u0027s Gift",
-  "description": "Receive a Mending book",
+  "name": "upgrade.roguelikemc.name.scholars_gift",
+  "description": "upgrade.roguelikemc.description.scholars_gift",
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,

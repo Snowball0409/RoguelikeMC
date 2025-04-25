@@ -1,7 +1,7 @@
 {
   "id": "stonebound",
-  "name": "Stonebound",
-  "description": "Gain Resistance I, but maximum health -1 heart",
+  "name": "upgrade.roguelikemc.name.stonebound",
+  "description": "upgrade.roguelikemc.description.stonebound",
   "tier": "rare",
   "isPermanent": false,
   "isUnique": true,

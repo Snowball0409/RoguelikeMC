@@ -1,7 +1,7 @@
 {
   "id": "golden_harvest",
-  "name": "Golden Harvest",
-  "description": "Receive a stack of golden carrots",
+  "name": "upgrade.roguelikemc.name.golden_harvest",
+  "description": "upgrade.roguelikemc.description.golden_harvest",
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,

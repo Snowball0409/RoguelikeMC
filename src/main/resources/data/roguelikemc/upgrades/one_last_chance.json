@@ -1,7 +1,7 @@
 {
   "id": "one_last_chance",
-  "name": "One Last Chance",
-  "description": "One-time Totem of Undying",
+  "name": "upgrade.roguelikemc.name.one_last_chance",
+  "description": "upgrade.roguelikemc.description.one_last_chance",
   "tier": "legendary",
   "isPermanent": false,
   "isUnique": true,

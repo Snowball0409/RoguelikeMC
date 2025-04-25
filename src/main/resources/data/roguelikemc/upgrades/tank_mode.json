@@ -1,7 +1,7 @@
 {
   "id": "tank_mode",
-  "name": "Tank Mode",
-  "description": "Gain Resistance II and +2 max health, but cannot wear pants",
+  "name": "upgrade.roguelikemc.name.tank_mode",
+  "description": "upgrade.roguelikemc.description.tank_mode",
   "tier": "rare",
   "isPermanent": false,
   "isUnique": true,

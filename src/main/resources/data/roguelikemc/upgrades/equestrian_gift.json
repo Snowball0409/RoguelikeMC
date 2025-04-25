@@ -1,7 +1,7 @@
 {
   "id": "equestrian_gift",
-  "name": "Equestrian Gift",
-  "description": "Receive a horse",
+  "name": "upgrade.roguelikemc.name.equestrian_gift",
+  "description": "upgrade.roguelikemc.description.equestrian_gift",
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,

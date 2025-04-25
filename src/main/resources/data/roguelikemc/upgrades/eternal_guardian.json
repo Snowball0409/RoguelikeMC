@@ -1,7 +1,7 @@
 {
   "id": "eternal_guardian",
-  "name": "Eternal Guardian",
-  "description": "Gain an unbreakable shield",
+  "name": "upgrade.roguelikemc.name.eternal_guardian",
+  "description": "upgrade.roguelikemc.description.eternal_guardian",
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,

@@ -1,7 +1,7 @@
 {
   "id": "titans_bulk",
-  "name": "Titan\u0027s Bulk",
-  "description": "Size doubled, movement speed -20%, attack +20%",
+  "name": "upgrade.roguelikemc.name.titans_bulk",
+  "description": "upgrade.roguelikemc.description.titans_bulk",
   "tier": "rare",
   "isPermanent": false,
   "isUnique": false,

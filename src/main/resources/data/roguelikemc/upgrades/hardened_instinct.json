@@ -1,7 +1,7 @@
 {
   "id": "hardened_instinct",
-  "name": "Hardened Instinct",
-  "description": "Take 1% less damage",
+  "name": "upgrade.roguelikemc.name.hardened_instinct",
+  "description": "upgrade.roguelikemc.description.hardened_instinct",
   "tier": "epic",
   "isPermanent": true,
   "isUnique": false,

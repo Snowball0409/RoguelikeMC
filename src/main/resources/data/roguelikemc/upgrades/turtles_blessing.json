@@ -1,7 +1,7 @@
 {
   "id": "turtles_blessing",
-  "name": "Turtle\u0027s Blessing",
-  "description": "Your helmet becomes an unbreakable binding Turtle Helmet",
+  "name": "upgrade.roguelikemc.name.turtles_blessing",
+  "description": "upgrade.roguelikemc.description.turtles_blessing",
   "tier": "rare",
   "isPermanent": false,
   "isUnique": true,

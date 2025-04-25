@@ -1,7 +1,7 @@
 {
   "id": "tide_glider",
-  "name": "Tide Glider",
-  "description": "Water movement speed + 30%",
+  "name": "upgrade.roguelikemc.name.tide_glider",
+  "description": "upgrade.roguelikemc.description.tide_glider",
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,

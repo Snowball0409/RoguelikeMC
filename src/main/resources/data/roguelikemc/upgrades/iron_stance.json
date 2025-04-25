@@ -1,7 +1,7 @@
 {
   "id": "iron_stance",
-  "name": "Iron Stance",
-  "description": "Knockback resistance + 1",
+  "name": "upgrade.roguelikemc.name.iron_stance",
+  "description": "upgrade.roguelikemc.description.iron_stance",
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,

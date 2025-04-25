@@ -1,7 +1,7 @@
 {
   "id": "berserkers_wrath",
-  "name": "Berserker\u0027s Wrath",
-  "description": "Strength +50%, but takes 50% more damage",
+  "name": "upgrade.roguelikemc.name.berserkers_wrath",
+  "description": "upgrade.roguelikemc.description.berserkers_wrath",
   "tier": "epic",
   "isPermanent": false,
   "isUnique": false,

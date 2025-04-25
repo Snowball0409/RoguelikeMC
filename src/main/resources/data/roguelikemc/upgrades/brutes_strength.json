@@ -1,7 +1,7 @@
 {
   "id": "brutes_strength",
-  "name": "Brute\u0027s Strength",
-  "description": "Gain Strength",
+  "name": "upgrade.roguelikemc.name.brutes_strength",
+  "description": "upgrade.roguelikemc.description.brutes_strength",
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,

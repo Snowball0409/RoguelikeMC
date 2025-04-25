@@ -39,7 +39,7 @@ public class LivingEntityMixin {
         if (stageIndex >= 0) {
             RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
             playerData.currentGameStage = Math.max(playerData.currentGameStage, stageIndex + 1);
-            player.sendMessage(Text.literal("§aYou have complete the stage " + stageIndex), false);
+            player.sendMessage(Text.translatable("message.roguelikemc.pass_game_stage").append(entity.getType().getName()), false);
         }
     }
 
@@ -60,7 +60,7 @@ public class LivingEntityMixin {
                 double reduction = RoguelikeMCCommonConfig.INSTANCE.gameStageDecayPercentage;
                 float reducedDamage = (float) (amount * (1 - reduction));
                 cir.setReturnValue(reducedDamage);
-                player.sendMessage(Text.literal("§cYour damage is reduced by " + (reduction * 100) + "%.§cYou haven't defeated the previous boss!"), true);
+                player.sendMessage(Text.translatable("message.roguelikemc.damage_reduce", reduction * 100), true);
             }
         }
     }

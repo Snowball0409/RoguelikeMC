@@ -22,7 +22,7 @@ public class RefreshUpgradeOptionHandler {
         if(context.player().getWorld().isClient()) return;
         if (!RoguelikeMCCommonConfig.INSTANCE.enableUpgradeSystem) return;
         if (RoguelikeMCUpgradeManager.getUpgrades().size() < 3) {
-            context.player().sendMessage(Text.literal("No enough upgrades available!"));
+            context.player().sendMessage(Text.translatable("message.roguelikemc.warn_no_upgrade"));
             return;
         }
 

@@ -10,8 +10,8 @@ public class RoguelikeMCDatagenUtil {
         //permanent upgrades
         final RoguelikeMCUpgradeData fortunes_favor = new RoguelikeMCUpgradeData(
                 "fortunes_favor",
-                "Fortune's Favor",
-                "Luck +1",
+                "upgrade.roguelikemc.name.fortunes_favor",
+                "upgrade.roguelikemc.description.fortunes_favor",
                 "rare",
                 true,
                 false,
@@ -21,8 +21,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData swift_stride = new RoguelikeMCUpgradeData(
                 "swift_stride",
-                "Swift Stride",
-                "Movement Speed +4%",
+                "upgrade.roguelikemc.name.swift_stride",
+                "upgrade.roguelikemc.description.swift_stride",
                 "common",
                 true,
                 false,
@@ -32,8 +32,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData enduring_vitality = new RoguelikeMCUpgradeData(
                 "enduring_vitality",
-                "Enduring Vitality",
-                "Maximum Health + 2",
+                "upgrade.roguelikemc.name.enduring_vitality",
+                "upgrade.roguelikemc.description.enduring_vitality",
                 "common",
                 true,
                 false,
@@ -43,8 +43,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData blade_dancer = new RoguelikeMCUpgradeData(
                 "blade_dancer",
-                "Blade Dancer",
-                "Attack Speed +5%",
+                "upgrade.roguelikemc.name.blade_dancer",
+                "upgrade.roguelikemc.description.blade_dancer",
                 "common",
                 true,
                 false,
@@ -54,8 +54,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData mighty_force = new RoguelikeMCUpgradeData(
                 "mighty_force",
-                "Mighty Force",
-                "Power +5%",
+                "upgrade.roguelikemc.name.mighty_force",
+                "upgrade.roguelikemc.description.mighty_force",
                 "common",
                 true,
                 false,
@@ -65,8 +65,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData adamant_guard = new RoguelikeMCUpgradeData(
                 "adamant_guard",
-                "Adamant Guard",
-                "Armor +1",
+                "upgrade.roguelikemc.name.adamant_guard",
+                "upgrade.roguelikemc.description.adamant_guard",
                 "common",
                 true,
                 false,
@@ -76,8 +76,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData wisdoms_bounty = new RoguelikeMCUpgradeData(
                 "wisdoms_bounty",
-                "Wisdom's Bounty",
-                "Experience Gain +6%",
+                "upgrade.roguelikemc.name.wisdoms_bounty",
+                "upgrade.roguelikemc.description.wisdoms_bounty",
                 "common",
                 true,
                 false,
@@ -89,8 +89,8 @@ public class RoguelikeMCDatagenUtil {
         // Legendary tier upgrades
         final RoguelikeMCUpgradeData skyborn = new RoguelikeMCUpgradeData(
                 "skyborn",
-                "Skyborn",
-                "Allows creative flight, but maximum health is halved",
+                "upgrade.roguelikemc.name.skyborn",
+                "upgrade.roguelikemc.description.skyborn",
                 "legendary",
                 false,
                 true,
@@ -101,8 +101,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData undying_will = new RoguelikeMCUpgradeData(
                 "undying_will",
-                "Undying Will",
-                "Retain equipment after death",
+                "upgrade.roguelikemc.name.undying_will",
+                "upgrade.roguelikemc.description.undying_will",
                 "legendary",
                 false,
                 true,
@@ -112,8 +112,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData one_last_chance = new RoguelikeMCUpgradeData(
                 "one_last_chance",
-                "One Last Chance",
-                "One-time Totem of Undying",
+                "upgrade.roguelikemc.name.one_last_chance",
+                "upgrade.roguelikemc.description.one_last_chance",
                 "legendary",
                 false,
                 true,
@@ -124,8 +124,8 @@ public class RoguelikeMCDatagenUtil {
         // Epic tier upgrades
         final RoguelikeMCUpgradeData berserkers_wrath = new RoguelikeMCUpgradeData(
                 "berserkers_wrath",
-                "Berserker's Wrath",
-                "Strength +50%, but takes 50% more damage",
+                "upgrade.roguelikemc.name.berserkers_wrath",
+                "upgrade.roguelikemc.description.berserkers_wrath",
                 "epic",
                 false,
                 false,
@@ -136,8 +136,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData winged_warrior = new RoguelikeMCUpgradeData(
                 "winged_warrior",
-                "Winged Warrior",
-                "Your chestplate becomes an unbreakable and binding Elytra",
+                "upgrade.roguelikemc.name.winged_warrior",
+                "upgrade.roguelikemc.description.winged_warrior",
                 "epic",
                 false,
                 true,
@@ -147,8 +147,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData infernal_strider = new RoguelikeMCUpgradeData(
                 "infernal_strider",
-                "Infernal Strider",
-                "Wear unbreakable binding strong Netherite Boots",
+                "upgrade.roguelikemc.name.infernal_strider",
+                "upgrade.roguelikemc.description.infernal_strider",
                 "epic",
                 false,
                 true,
@@ -158,8 +158,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData heavy_appetite = new RoguelikeMCUpgradeData(
                 "heavy_appetite",
-                "Heavy Appetite",
-                "Gain Saturation, movement speed -50%",
+                "upgrade.roguelikemc.name.heavy_appetite",
+                "upgrade.roguelikemc.description.heavy_appetite",
                 "epic",
                 false,
                 true,
@@ -170,8 +170,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData last_stand = new RoguelikeMCUpgradeData(
                 "last_stand",
-                "Last Stand",
-                "Gain Regeneration I",
+                "upgrade.roguelikemc.name.last_stand",
+                "upgrade.roguelikemc.description.last_stand",
                 "epic",
                 false,
                 true,
@@ -182,8 +182,8 @@ public class RoguelikeMCDatagenUtil {
         // Rare tier upgrades
         final RoguelikeMCUpgradeData turtles_blessing = new RoguelikeMCUpgradeData(
                 "turtles_blessing",
-                "Turtle's Blessing",
-                "Your helmet becomes an unbreakable binding Turtle Helmet",
+                "upgrade.roguelikemc.name.turtles_blessing",
+                "upgrade.roguelikemc.description.turtles_blessing",
                 "rare",
                 false,
                 true,
@@ -193,8 +193,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData stonebound = new RoguelikeMCUpgradeData(
                 "stonebound",
-                "Stonebound",
-                "Gain Resistance I, but maximum health -1 heart",
+                "upgrade.roguelikemc.name.stonebound",
+                "upgrade.roguelikemc.description.stonebound",
                 "rare",
                 false,
                 true,
@@ -205,8 +205,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData tank_mode = new RoguelikeMCUpgradeData(
                 "tank_mode",
-                "Tank Mode",
-                "Gain Resistance II and +2 max health, but cannot wear pants",
+                "upgrade.roguelikemc.name.tank_mode",
+                "upgrade.roguelikemc.description.tank_mode",
                 "rare",
                 false,
                 true,
@@ -218,8 +218,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData villager_slayer = new RoguelikeMCUpgradeData(
                 "villager_slayer",
-                "Villager Slayer",
-                "Killing villagers drops emeralds, but Iron Golems will permanently be hostile",
+                "upgrade.roguelikemc.name.villager_slayer",
+                "upgrade.roguelikemc.description.villager_slayer",
                 "rare",
                 false,
                 true,
@@ -231,8 +231,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData mystic_steed = new RoguelikeMCUpgradeData(
                 "mystic_steed",
-                "Mystic Steed",
-                "Receive a SPECIAL horse",
+                "upgrade.roguelikemc.name.mystic_steed",
+                "upgrade.roguelikemc.description.mystic_steed",
                 "rare",
                 false,
                 false,
@@ -242,8 +242,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData titans_bulk = new RoguelikeMCUpgradeData(
                 "titans_bulk",
-                "Titan's Bulk",
-                "Size doubled, movement speed -20%, attack +20%",
+                "upgrade.roguelikemc.name.titans_bulk",
+                "upgrade.roguelikemc.description.titans_bulk",
                 "rare",
                 false,
                 false,
@@ -255,8 +255,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData pixie_form = new RoguelikeMCUpgradeData(
                 "pixie_form",
-                "Pixie Form",
-                "Size halved, movement speed +20%, attack -20%",
+                "upgrade.roguelikemc.name.pixie_form",
+                "upgrade.roguelikemc.description.pixie_form",
                 "rare",
                 false,
                 false,
@@ -269,8 +269,8 @@ public class RoguelikeMCDatagenUtil {
         // Common tier upgrades
         final RoguelikeMCUpgradeData toxic_presence = new RoguelikeMCUpgradeData(
                 "toxic_presence",
-                "Toxic Presence",
-                "Hostile mobs around you are poisoned",
+                "upgrade.roguelikemc.name.toxic_presence",
+                "upgrade.roguelikemc.description.toxic_presence",
                 "rare",
                 false,
                 true,
@@ -280,8 +280,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData withering_aura = new RoguelikeMCUpgradeData(
                 "withering_aura",
-                "Withering Aura",
-                "Hostile mobs around you are inflicted with Wither",
+                "upgrade.roguelikemc.name.withering_aura",
+                "upgrade.roguelikemc.description.withering_aura",
                 "epic",
                 false,
                 true,
@@ -291,8 +291,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData nocturnal_sight = new RoguelikeMCUpgradeData(
                 "nocturnal_sight",
-                "Nocturnal Sight",
-                "Gain night vision",
+                "upgrade.roguelikemc.name.nocturnal_sight",
+                "upgrade.roguelikemc.description.nocturnal_sight",
                 "common",
                 false,
                 true,
@@ -302,8 +302,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData eternal_companion = new RoguelikeMCUpgradeData(
                 "eternal_companion",
-                "Eternal Companion",
-                "Receive a tamed cat",
+                "upgrade.roguelikemc.name.eternal_companion",
+                "upgrade.roguelikemc.description.eternal_companion",
                 "common",
                 false,
                 false,
@@ -313,8 +313,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData leap_of_faith = new RoguelikeMCUpgradeData(
                 "leap_of_faith",
-                "Leap of Faith",
-                "Gain Jump Boost",
+                "upgrade.roguelikemc.name.leap_of_faith",
+                "upgrade.roguelikemc.description.leap_of_faith",
                 "common",
                 false,
                 true,
@@ -324,8 +324,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData feathers_grace = new RoguelikeMCUpgradeData(
                 "feathers_grace",
-                "Feather's Grace",
-                "Gain Slow Falling",
+                "upgrade.roguelikemc.name.feathers_grace",
+                "upgrade.roguelikemc.description.feathers_grace",
                 "common",
                 false,
                 true,
@@ -335,8 +335,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData equestrian_gift = new RoguelikeMCUpgradeData(
                 "equestrian_gift",
-                "Equestrian Gift",
-                "Receive a horse",
+                "upgrade.roguelikemc.name.equestrian_gift",
+                "upgrade.roguelikemc.description.equestrian_gift",
                 "common",
                 false,
                 false,
@@ -346,8 +346,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData golden_fortune = new RoguelikeMCUpgradeData(
                 "golden_fortune",
-                "Golden Fortune",
-                "Receive 16 of golden apple",
+                "upgrade.roguelikemc.name.golden_fortune",
+                "upgrade.roguelikemc.description.golden_fortune",
                 "common",
                 false,
                 false,
@@ -357,8 +357,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData golden_harvest = new RoguelikeMCUpgradeData(
                 "golden_harvest",
-                "Golden Harvest",
-                "Receive a stack of golden carrots",
+                "upgrade.roguelikemc.name.golden_harvest",
+                "upgrade.roguelikemc.description.golden_harvest",
                 "common",
                 false,
                 false,
@@ -368,8 +368,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData gods_fruit = new RoguelikeMCUpgradeData(
                 "gods_fruit",
-                "God's Fruit",
-                "Receive 1 enchanted golden apple",
+                "upgrade.roguelikemc.name.gods_fruit",
+                "upgrade.roguelikemc.description.gods_fruit",
                 "common",
                 false,
                 false,
@@ -379,8 +379,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData miners_frenzy = new RoguelikeMCUpgradeData(
                 "miners_frenzy",
-                "Miner's Frenzy",
-                "Gain Haste",
+                "upgrade.roguelikemc.name.miners_frenzy",
+                "upgrade.roguelikemc.description.miners_frenzy",
                 "common",
                 false,
                 true,
@@ -390,8 +390,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData scholars_gift = new RoguelikeMCUpgradeData(
                 "scholars_gift",
-                "Scholar's Gift",
-                "Receive a Mending book",
+                "upgrade.roguelikemc.name.scholars_gift",
+                "upgrade.roguelikemc.description.scholars_gift",
                 "common",
                 false,
                 false,
@@ -401,8 +401,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData prospectors_luck = new RoguelikeMCUpgradeData(
                 "prospectors_luck",
-                "Prospector's Luck",
-                "Receive some random ores",
+                "upgrade.roguelikemc.name.prospectors_luck",
+                "upgrade.roguelikemc.description.prospectors_luck",
                 "common",
                 false,
                 false,
@@ -412,8 +412,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData brutes_strength = new RoguelikeMCUpgradeData(
                 "brutes_strength",
-                "Brute's Strength",
-                "Gain Strength",
+                "upgrade.roguelikemc.name.brutes_strength",
+                "upgrade.roguelikemc.description.brutes_strength",
                 "common",
                 false,
                 true,
@@ -423,8 +423,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData feather_bound = new RoguelikeMCUpgradeData(
                 "feather_bound",
-                "Feather Bound",
-                "Immune to fall damage",
+                "upgrade.roguelikemc.name.feather_bound",
+                "upgrade.roguelikemc.description.feather_bound",
                 "epic",
                 false,
                 true,
@@ -434,8 +434,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData tide_glider = new RoguelikeMCUpgradeData(
                 "tide_glider",
-                "Tide Glider",
-                "Water movement speed + 30%",
+                "upgrade.roguelikemc.name.tide_glider",
+                "upgrade.roguelikemc.description.tide_glider",
                 "common",
                 true,
                 false,
@@ -445,8 +445,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData iron_stance = new RoguelikeMCUpgradeData(
                 "iron_stance",
-                "Iron Stance",
-                "Knockback resistance + 1",
+                "upgrade.roguelikemc.name.iron_stance",
+                "upgrade.roguelikemc.description.iron_stance",
                 "common",
                 true,
                 false,
@@ -456,8 +456,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData deep_lungs = new RoguelikeMCUpgradeData(
                 "deep_lungs",
-                "Deep Lungs",
-                "Breath underwater time + 50%",
+                "upgrade.roguelikemc.name.deep_lungs",
+                "upgrade.roguelikemc.description.deep_lungs",
                 "common",
                 true,
                 false,
@@ -467,8 +467,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData steel_hide = new RoguelikeMCUpgradeData(
                 "steel_hide",
-                "Steel Hide",
-                "Armor toughness + 0.5",
+                "upgrade.roguelikemc.name.steel_hide",
+                "upgrade.roguelikemc.description.steel_hide",
                 "common",
                 true,
                 false,
@@ -478,8 +478,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData wind_swiftness = new RoguelikeMCUpgradeData(
                 "wind_swiftness",
-                "Wind Swiftness",
-                "Gain Speed I",
+                "upgrade.roguelikemc.name.wind_swiftness",
+                "upgrade.roguelikemc.description.wind_swiftness",
                 "rare",
                 false,
                 true,
@@ -489,8 +489,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData eternal_guardian = new RoguelikeMCUpgradeData(
                 "eternal_guardian",
-                "Eternal Guardian",
-                "Gain an unbreakable shield",
+                "upgrade.roguelikemc.name.eternal_guardian",
+                "upgrade.roguelikemc.description.eternal_guardian",
                 "epic",
                 false,
                 true,
@@ -500,8 +500,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData sharpened_edge = new RoguelikeMCUpgradeData(
                 "sharpened_edge",
-                "Sharpened Edge",
-                "Increase Critical Hit Chance by 1%",
+                "upgrade.roguelikemc.name.sharpened_edge",
+                "upgrade.roguelikemc.description.sharpened_edge",
                 "common",
                 true,
                 false,
@@ -511,8 +511,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData fatal_precision = new RoguelikeMCUpgradeData(
                 "fatal_precision",
-                "Fatal Precision",
-                "Increase Critical Damage by 3%",
+                "upgrade.roguelikemc.name.fatal_precision",
+                "upgrade.roguelikemc.description.fatal_precision",
                 "common",
                 true,
                 false,
@@ -522,8 +522,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData desperate_strike = new RoguelikeMCUpgradeData(
                 "desperate_strike",
-                "Desperate Strike",
-                "Decrease Base Attack Damage by 10%, Increase Critical Damage by 60%",
+                "upgrade.roguelikemc.name.desperate_strike",
+                "upgrade.roguelikemc.description.desperate_strike",
                 "rare",
                 false,
                 true,
@@ -536,8 +536,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData glass_blade = new RoguelikeMCUpgradeData(
                 "glass_blade",
-                "Glass Blade",
-                "Increase Critical Hit Chance by 15%, Take 50% More Damage",
+                "upgrade.roguelikemc.name.glass_blade",
+                "upgrade.roguelikemc.description.glass_blade",
                 "rare",
                 false,
                 false,
@@ -550,8 +550,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData precision_chain = new RoguelikeMCUpgradeData(
                 "precision_chain",
-                "Precision Chain",
-                "Increase Critical Hit Chance by 3% and Critical Damage by 8%",
+                "upgrade.roguelikemc.name.precision_chain",
+                "upgrade.roguelikemc.description.precision_chain",
                 "rare",
                 false,
                 false,
@@ -564,8 +564,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData chilling_aura = new RoguelikeMCUpgradeData(
                 "chilling_aura",
-                "Chilling Aura",
-                "Hostile mobs around you are slowed",
+                "upgrade.roguelikemc.name.chilling_aura",
+                "upgrade.roguelikemc.description.chilling_aura",
                 "rare",
                 false,
                 true,
@@ -575,8 +575,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData cursed_shield = new RoguelikeMCUpgradeData(
                 "cursed_shield",
-                "Cursed Shield",
-                "Take 10% less damage, but nearby hostile mobs gain speed",
+                "upgrade.roguelikemc.name.cursed_shield",
+                "upgrade.roguelikemc.description.cursed_shield",
                 "rare",
                 false,
                 true,
@@ -589,8 +589,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData hardened_instinct = new RoguelikeMCUpgradeData(
                 "hardened_instinct",
-                "Hardened Instinct",
-                "Take 1% less damage",
+                "upgrade.roguelikemc.name.hardened_instinct",
+                "upgrade.roguelikemc.description.hardened_instinct",
                 "epic",
                 true,
                 false,
@@ -600,8 +600,8 @@ public class RoguelikeMCDatagenUtil {
 
         final RoguelikeMCUpgradeData fortune_infused = new RoguelikeMCUpgradeData(
                 "fortune_infused",
-                "Fortune Infused",
-                "Gain Luck 30 min and 10% more experience",
+                "upgrade.roguelikemc.name.fortune_infused",
+                "upgrade.roguelikemc.description.fortune_infused",
                 "epic",
                 false,
                 false,
@@ -611,8 +611,6 @@ public class RoguelikeMCDatagenUtil {
                         new RoguelikeMCUpgradeData.ActionData("attribute", List.of("roguelikemc:experience_gain", "0.1", "add_value"))
                 )
         );
-
-
 
         upgradeProvider.addUpgrade(fortunes_favor);
         upgradeProvider.addUpgrade(swift_stride);

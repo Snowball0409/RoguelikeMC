@@ -1,7 +1,7 @@
 {
   "id": "leap_of_faith",
-  "name": "Leap of Faith",
-  "description": "Gain Jump Boost",
+  "name": "upgrade.roguelikemc.name.leap_of_faith",
+  "description": "upgrade.roguelikemc.description.leap_of_faith",
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,

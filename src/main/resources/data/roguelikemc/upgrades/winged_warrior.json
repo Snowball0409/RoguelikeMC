@@ -1,7 +1,7 @@
 {
   "id": "winged_warrior",
-  "name": "Winged Warrior",
-  "description": "Your chestplate becomes an unbreakable and binding Elytra",
+  "name": "upgrade.roguelikemc.name.winged_warrior",
+  "description": "upgrade.roguelikemc.description.winged_warrior",
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,

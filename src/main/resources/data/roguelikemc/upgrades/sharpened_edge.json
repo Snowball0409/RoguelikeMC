@@ -1,7 +1,7 @@
 {
   "id": "sharpened_edge",
-  "name": "Sharpened Edge",
-  "description": "Increase Critical Hit Chance by 1%",
+  "name": "upgrade.roguelikemc.name.sharpened_edge",
+  "description": "upgrade.roguelikemc.description.sharpened_edge",
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,

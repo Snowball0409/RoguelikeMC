@@ -1,7 +1,7 @@
 {
   "id": "prospectors_luck",
-  "name": "Prospector\u0027s Luck",
-  "description": "Receive some random ores",
+  "name": "upgrade.roguelikemc.name.prospectors_luck",
+  "description": "upgrade.roguelikemc.description.prospectors_luck",
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,

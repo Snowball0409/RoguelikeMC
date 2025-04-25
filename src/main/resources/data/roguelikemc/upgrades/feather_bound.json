@@ -1,7 +1,7 @@
 {
   "id": "feather_bound",
-  "name": "Feather Bound",
-  "description": "Immune to fall damage",
+  "name": "upgrade.roguelikemc.name.feather_bound",
+  "description": "upgrade.roguelikemc.description.feather_bound",
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,

@@ -1,7 +1,7 @@
 {
   "id": "desperate_strike",
-  "name": "Desperate Strike",
-  "description": "Decrease Base Attack Damage by 10%, Increase Critical Damage by 60%",
+  "name": "upgrade.roguelikemc.name.desperate_strike",
+  "description": "upgrade.roguelikemc.description.desperate_strike",
   "tier": "rare",
   "isPermanent": false,
   "isUnique": true,

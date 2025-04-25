@@ -1,7 +1,7 @@
 {
   "id": "pixie_form",
-  "name": "Pixie Form",
-  "description": "Size halved, movement speed +20%, attack -20%",
+  "name": "upgrade.roguelikemc.name.pixie_form",
+  "description": "upgrade.roguelikemc.description.pixie_form",
   "tier": "rare",
   "isPermanent": false,
   "isUnique": false,
