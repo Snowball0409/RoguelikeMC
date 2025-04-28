@@ -14,7 +14,6 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
@@ -40,7 +39,7 @@ public class RoguelikeMCCommands {
                 return 0;
             }
 
-            players.forEach(player -> RoguelikeMCUpgradeUtil.handleUpgrade(upgrade, player));
+            players.forEach(player -> RoguelikeMCUpgradeUtil.addUpgrade(upgrade, player));
             return Command.SINGLE_SUCCESS;
         } catch (CommandSyntaxException e) {
             context.getSource().sendError(Text.literal("Error parsing players: " + e.getMessage()));

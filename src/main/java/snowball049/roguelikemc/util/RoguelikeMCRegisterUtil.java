@@ -93,8 +93,8 @@ public class RoguelikeMCRegisterUtil {
         for (RoguelikeMCUpgradeData upgrade : playerData.currentOptions) {
             ServerPlayNetworking.send(player, new UpgradeOptionS2CPayload(upgrade));
         }
-        playerData.permanentUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyUpgrade(player, upgrade));
-        playerData.temporaryUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyUpgrade(player, upgrade));
+        playerData.permanentUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyJoinUpgrade(player, upgrade));
+        playerData.temporaryUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyJoinUpgrade(player, upgrade));
     }
 
     public static void onServerLoadEventRegister(MinecraftServer minecraftServer) {

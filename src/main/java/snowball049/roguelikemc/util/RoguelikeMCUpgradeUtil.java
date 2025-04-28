@@ -34,7 +34,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class RoguelikeMCUpgradeUtil {
-    public static void handleUpgrade(RoguelikeMCUpgradeData upgrade, ServerPlayerEntity player) {
+    public static void addUpgrade(RoguelikeMCUpgradeData upgrade, ServerPlayerEntity player) {
         RoguelikeMCPlayerData serverState = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
         if (upgrade.isPermanent()) {
             serverState.permanentUpgrades.add(upgrade);
@@ -56,6 +56,21 @@ public class RoguelikeMCUpgradeUtil {
                 case "effect" -> RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), upgrade.isPermanent());
                 case "command" -> RoguelikeMCUpgradeUtil.applyCommandEffect(player, action.value(), upgrade.isPermanent());
                 case "event" -> RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), upgrade.isPermanent());
+                default -> {
+                    RoguelikeMC.LOGGER.warn("Unknown action type: " + action.type());
+                }
+            }
+        });
+    }
+
+    public static void applyJoinUpgrade(ServerPlayerEntity player, RoguelikeMCUpgradeData upgrade) {
+        upgrade.actions().forEach(action -> {
+            switch (action.type()) {
+                case "attribute" -> RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, upgrade.id(), action.value(), upgrade.isPermanent());
+                case "effect" -> RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), upgrade.isPermanent());
+                case "event" -> RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), upgrade.isPermanent());
+                case "command" -> {// Do nothing}
+                }
                 default -> {
                     RoguelikeMC.LOGGER.warn("Unknown action type: " + action.type());
                 }
