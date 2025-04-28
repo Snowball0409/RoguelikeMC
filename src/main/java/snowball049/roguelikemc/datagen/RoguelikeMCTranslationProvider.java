@@ -138,9 +138,11 @@ public class RoguelikeMCTranslationProvider extends FabricLanguageProvider {
 
         // Message
         translationBuilder.add("message.roguelikemc.pass_game_stage", "§aYou have complete the stage: ");
-        translationBuilder.add("message.roguelikemc.damage_reduce", "§cYour damage is reduced by %f. You haven't defeated the previous boss!");
+        translationBuilder.add("message.roguelikemc.damage_reduce", "Your damage is reduced by %s %%. You haven't defeated the previous boss!");
         translationBuilder.add("message.roguelikemc.warn_no_upgrade", "§cNo enough upgrades available!");
         translationBuilder.add("message.roguelikemc.drop_equipment", "You have been dropped your equipment!");
+        translationBuilder.add("message.roguelikemc.grant_upgrade_point", "You have been granted %d upgrade points!");
+        translationBuilder.add("message.roguelikemc.not_enough_upgrade_point", "You don't have enough upgrade points!");
     }
 }
 

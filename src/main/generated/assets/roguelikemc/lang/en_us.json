@@ -1,7 +1,6 @@
 {
   "button.roguelikemc.draw_upgrades": "Draw Upgrades",
   "category.roguelikemc.gui": "RoguelikeMC",
-
   "gui.roguelikemc.permanent_upgrade": "Permanent Upgrades",
   "gui.roguelikemc.temporary_upgrade": "Temporary Upgrades",
   "gui.roguelikemc.upgrade_points": "Upgrade Points: ",
@@ -9,8 +8,10 @@
   "item.roguelikemc.upgrade_point_orb": "Orb of Upgrade Point",
   "itemGroup.roguelikemc.item_group": "RoguelikeMC",
   "key.roguelikemc.open_gui": "Open Upgrade Screen",
-  "message.roguelikemc.damage_reduce": "§cYour damage is reduced by %f. You haven't defeated the previous boss!",
+  "message.roguelikemc.damage_reduce": "Your damage is reduced by %s %%. You haven't defeated the previous boss!",
   "message.roguelikemc.drop_equipment": "You have been dropped your equipment!",
+  "message.roguelikemc.grant_upgrade_point": "You have been granted %d upgrade points!",
+  "message.roguelikemc.not_enough_upgrade_point": "You don't have enough upgrade points!",
   "message.roguelikemc.pass_game_stage": "§aYou have complete the stage: ",
   "message.roguelikemc.warn_no_upgrade": "§cNo enough upgrades available!",
   "upgrade.roguelikemc.description.adamant_guard": "Armor +1",

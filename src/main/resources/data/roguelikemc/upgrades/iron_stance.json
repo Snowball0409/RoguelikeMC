@@ -11,7 +11,7 @@
       "type": "attribute",
       "value": [
         "minecraft:generic.knockback_resistance",
-        "1",
+        "0.1",
         "add_value"
       ]
     }

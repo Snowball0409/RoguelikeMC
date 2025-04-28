@@ -16,6 +16,6 @@ public class SelectUpgradeOptionHandler {
         RoguelikeMCUpgradeData selected = packet.option();
         ServerPlayerEntity player = context.player();
         RoguelikeMCStateSaverAndLoader.getPlayerState(player).currentOptions.clear();
-        RoguelikeMCUpgradeUtil.handleUpgrade(selected, player);
+        RoguelikeMCUpgradeUtil.addUpgrade(selected, player);
     }
 }

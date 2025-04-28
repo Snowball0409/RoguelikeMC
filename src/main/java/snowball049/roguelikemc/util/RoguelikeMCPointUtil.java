@@ -16,14 +16,14 @@ public class RoguelikeMCPointUtil {
         if (playerData.upgradePoints < 0) {
             playerData.upgradePoints = 0;
         }
-        player.sendMessage(Text.literal("You have been granted " + point + " upgrade points!"), false);
+        player.sendMessage(Text.translatable("message.roguelikemc.grant_upgrade_point", point), false);
         ServerPlayNetworking.send(player, new SendUpgradePointsS2CPayload(playerData.upgradePoints));
     }
     public static boolean removeUpgradePoints(ServerPlayerEntity player, int point){
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
 
         if (playerData.upgradePoints <= 0) {
-            player.sendMessage(Text.literal("You don't have enough upgrade points!"), false);
+            player.sendMessage(Text.translatable("message.roguelikemc.not_enough_upgrade_point"), false);
             return false;
         }
         playerData.upgradePoints = Math.max(playerData.upgradePoints - point, 0);

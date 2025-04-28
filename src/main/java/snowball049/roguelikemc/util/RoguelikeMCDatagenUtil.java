@@ -451,7 +451,7 @@ public class RoguelikeMCDatagenUtil {
                 true,
                 false,
                 "roguelikemc:textures/upgrades/iron_stance.png",
-                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.knockback_resistance", "1", "add_value")))
+                List.of(new RoguelikeMCUpgradeData.ActionData("attribute", List.of("minecraft:generic.knockback_resistance", "0.1", "add_value")))
         );
 
         final RoguelikeMCUpgradeData deep_lungs = new RoguelikeMCUpgradeData(
