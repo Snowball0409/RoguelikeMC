@@ -1,7 +1,7 @@
 {
   "id": "chilling_aura",
-  "name": "Chilling Aura",
-  "description": "Hostile mobs around you are slowed",
+  "name": "upgrade.roguelikemc.name.chilling_aura",
+  "description": "upgrade.roguelikemc.description.chilling_aura",
   "tier": "rare",
   "isPermanent": false,
   "isUnique": true,

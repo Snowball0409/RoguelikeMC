@@ -13,6 +13,7 @@ import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
@@ -23,6 +24,7 @@ import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradePoolManager;
 import snowball049.roguelikemc.util.RoguelikeMCPointUtil;
 import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -180,9 +182,16 @@ public class RoguelikeMCCommands {
         players.forEach(player -> {
             RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
             context.getSource().sendMessage(Text.of(player.getName().getString() + " have " + playerData.activeUpgradePools.size() + " upgrade pools!"));
-            playerData.activeUpgradePools.forEach(upgradePool -> {
-                context.getSource().sendMessage(Text.of("Upgrade Pool: " + upgradePool));
-            });
+            Text upgradePoolText = Text.literal("Upgrade Pools: ").formatted(Formatting.GRAY);
+            for (Iterator<Identifier> it = playerData.activeUpgradePools.iterator(); it.hasNext(); ) {
+                Identifier upgradePool = it.next();
+                upgradePoolText = upgradePoolText.copy()
+                        .append(Text.literal(upgradePool.toString()).formatted(Formatting.GRAY, Formatting.ITALIC));
+                if (it.hasNext()) {
+                    upgradePoolText = upgradePoolText.copy().append(Text.literal(", ").formatted(Formatting.GRAY));
+                }
+            }
+            context.getSource().sendMessage(upgradePoolText);
         });
         return Command.SINGLE_SUCCESS;
     }

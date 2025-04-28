@@ -1,7 +1,7 @@
 {
   "id": "heavy_appetite",
-  "name": "Heavy Appetite",
-  "description": "Gain Saturation, movement speed -50%",
+  "name": "upgrade.roguelikemc.name.heavy_appetite",
+  "description": "upgrade.roguelikemc.description.heavy_appetite",
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,

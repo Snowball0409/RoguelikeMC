@@ -1,7 +1,7 @@
 {
   "id": "skyborn",
-  "name": "Skyborn",
-  "description": "Allows creative flight, but maximum health is halved",
+  "name": "upgrade.roguelikemc.name.skyborn",
+  "description": "upgrade.roguelikemc.description.skyborn",
   "tier": "legendary",
   "isPermanent": false,
   "isUnique": true,

@@ -14,6 +14,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,11 +36,11 @@ public class LivingEntityMixin {
 
         LivingEntity entity = (LivingEntity) (Object) this;
         int stageIndex = RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.indexOf(Registries.ENTITY_TYPE.getId(entity.getType()).toString());
+        RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
 
-        if (stageIndex >= 0) {
-            RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-            playerData.currentGameStage = Math.max(playerData.currentGameStage, stageIndex + 1);
-            player.sendMessage(Text.literal("§aYou have complete the stage " + stageIndex), false);
+        if (stageIndex >= 0 && playerData.currentGameStage < stageIndex + 1) {
+            playerData.currentGameStage = stageIndex + 1;
+            player.sendMessage(Text.translatable("message.roguelikemc.pass_game_stage").append(entity.getType().getName()), false);
         }
     }
 
@@ -60,7 +61,7 @@ public class LivingEntityMixin {
                 double reduction = RoguelikeMCCommonConfig.INSTANCE.gameStageDecayPercentage;
                 float reducedDamage = (float) (amount * (1 - reduction));
                 cir.setReturnValue(reducedDamage);
-                player.sendMessage(Text.literal("§cYour damage is reduced by " + (reduction * 100) + "%.§cYou haven't defeated the previous boss!"), true);
+                player.sendMessage(Text.translatable("message.roguelikemc.damage_reduce", String.valueOf(reduction * 100)).formatted(Formatting.RED), true);
             }
         }
     }

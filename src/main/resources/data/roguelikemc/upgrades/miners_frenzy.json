@@ -1,7 +1,7 @@
 {
   "id": "miners_frenzy",
-  "name": "Miner\u0027s Frenzy",
-  "description": "Gain Haste",
+  "name": "upgrade.roguelikemc.name.miners_frenzy",
+  "description": "upgrade.roguelikemc.description.miners_frenzy",
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,

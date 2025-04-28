@@ -28,7 +28,6 @@ public class RoguelikeMCPlayerData {
 
     public RoguelikeMCPlayerData() {
         this.currentKillHostileRequirement = RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirement;
-        this.activeUpgradePools.add(Identifier.of(RoguelikeMC.MOD_ID, "default_pool"));
     }
 
     public Collection<RoguelikeMCUpgradeData> getAllUpgrades() {

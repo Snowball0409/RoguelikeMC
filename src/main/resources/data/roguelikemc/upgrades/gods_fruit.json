@@ -1,7 +1,7 @@
 {
   "id": "gods_fruit",
-  "name": "God\u0027s Fruit",
-  "description": "Receive 1 enchanted golden apple",
+  "name": "upgrade.roguelikemc.name.gods_fruit",
+  "description": "upgrade.roguelikemc.description.gods_fruit",
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,

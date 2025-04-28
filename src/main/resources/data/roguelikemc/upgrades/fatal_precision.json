@@ -1,7 +1,7 @@
 {
   "id": "fatal_precision",
-  "name": "Fatal Precision",
-  "description": "Increase Critical Damage by 3%",
+  "name": "upgrade.roguelikemc.name.fatal_precision",
+  "description": "upgrade.roguelikemc.description.fatal_precision",
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,

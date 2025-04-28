@@ -1,7 +1,7 @@
 {
   "id": "adamant_guard",
-  "name": "Adamant Guard",
-  "description": "Armor +1",
+  "name": "upgrade.roguelikemc.name.adamant_guard",
+  "description": "upgrade.roguelikemc.description.adamant_guard",
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,

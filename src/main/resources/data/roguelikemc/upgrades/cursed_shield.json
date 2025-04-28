@@ -1,7 +1,7 @@
 {
   "id": "cursed_shield",
-  "name": "Cursed Shield",
-  "description": "Take 10% less damage, but nearby hostile mobs gain speed",
+  "name": "upgrade.roguelikemc.name.cursed_shield",
+  "description": "upgrade.roguelikemc.description.cursed_shield",
   "tier": "rare",
   "isPermanent": false,
   "isUnique": true,

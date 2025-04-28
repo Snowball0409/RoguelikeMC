@@ -1,7 +1,7 @@
 {
   "id": "golden_fortune",
-  "name": "Golden Fortune",
-  "description": "Receive 16 of golden apple",
+  "name": "upgrade.roguelikemc.name.golden_fortune",
+  "description": "upgrade.roguelikemc.description.golden_fortune",
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,

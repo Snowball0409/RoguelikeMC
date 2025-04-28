@@ -69,7 +69,8 @@ public class RoguelikeMCUpgradeUtil {
                 case "attribute" -> RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, upgrade.id(), action.value(), upgrade.isPermanent());
                 case "effect" -> RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), upgrade.isPermanent());
                 case "event" -> RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), upgrade.isPermanent());
-                case "command" -> {// Do nothing}
+                case "command" -> {
+                    // Do nothing
                 }
                 default -> {
                     RoguelikeMC.LOGGER.warn("Unknown action type: " + action.type());
@@ -258,7 +259,7 @@ public class RoguelikeMCUpgradeUtil {
                     if (!player.getInventory().armor.get(slotIndex).isEmpty()) {
                         if(!player.getInventory().armor.get(slotIndex).getItem().equals(ItemStack.fromNbtOrEmpty(player.getWorld().getRegistryManager(), nbt).getItem())){
                             player.dropItem(player.getInventory().armor.get(slotIndex), false);
-                            player.sendMessage(Text.literal("You have been dropped your equipment!"), false);
+                            player.sendMessage(Text.translatable("message.roguelikemc.drop_equipment"), false);
                         }
                     }
                     player.getInventory().armor.set(slotIndex, ItemStack.fromNbtOrEmpty(player.getWorld().getRegistryManager(), nbt));

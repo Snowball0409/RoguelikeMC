@@ -1,7 +1,7 @@
 {
   "id": "eternal_companion",
-  "name": "Eternal Companion",
-  "description": "Receive a tamed cat",
+  "name": "upgrade.roguelikemc.name.eternal_companion",
+  "description": "upgrade.roguelikemc.description.eternal_companion",
   "tier": "common",
   "isPermanent": false,
   "isUnique": false,

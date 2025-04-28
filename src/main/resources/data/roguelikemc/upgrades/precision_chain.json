@@ -1,7 +1,7 @@
 {
   "id": "precision_chain",
-  "name": "Precision Chain",
-  "description": "Increase Critical Hit Chance by 3% and Critical Damage by 8%",
+  "name": "upgrade.roguelikemc.name.precision_chain",
+  "description": "upgrade.roguelikemc.description.precision_chain",
   "tier": "rare",
   "isPermanent": false,
   "isUnique": false,

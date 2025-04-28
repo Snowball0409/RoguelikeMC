@@ -1,7 +1,7 @@
 {
   "id": "mighty_force",
-  "name": "Mighty Force",
-  "description": "Power +5%",
+  "name": "upgrade.roguelikemc.name.mighty_force",
+  "description": "upgrade.roguelikemc.description.mighty_force",
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,

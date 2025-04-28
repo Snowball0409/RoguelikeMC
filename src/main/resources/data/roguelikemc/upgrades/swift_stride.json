@@ -1,7 +1,7 @@
 {
   "id": "swift_stride",
-  "name": "Swift Stride",
-  "description": "Movement Speed +4%",
+  "name": "upgrade.roguelikemc.name.swift_stride",
+  "description": "upgrade.roguelikemc.description.swift_stride",
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,

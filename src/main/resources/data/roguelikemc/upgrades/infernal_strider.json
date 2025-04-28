@@ -1,7 +1,7 @@
 {
   "id": "infernal_strider",
-  "name": "Infernal Strider",
-  "description": "Wear unbreakable binding strong Netherite Boots",
+  "name": "upgrade.roguelikemc.name.infernal_strider",
+  "description": "upgrade.roguelikemc.description.infernal_strider",
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,

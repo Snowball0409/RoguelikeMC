@@ -1,7 +1,7 @@
 {
   "id": "wind_swiftness",
-  "name": "Wind Swiftness",
-  "description": "Gain Speed I",
+  "name": "upgrade.roguelikemc.name.wind_swiftness",
+  "description": "upgrade.roguelikemc.description.wind_swiftness",
   "tier": "rare",
   "isPermanent": false,
   "isUnique": true,

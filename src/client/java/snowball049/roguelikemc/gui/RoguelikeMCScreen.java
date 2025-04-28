@@ -14,6 +14,7 @@ import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.data.RoguelikeMCClientData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
@@ -82,7 +83,7 @@ public class RoguelikeMCScreen extends Screen {
             this.addDrawableChild(optionButtons[i]);
         }
 
-        refreshButton = ButtonWidget.builder(Text.literal("Draw Upgrades"), button -> {
+        refreshButton = ButtonWidget.builder(Text.translatable("button.roguelikemc.draw_upgrades"), button -> {
                     if(RoguelikeMCClientData.INSTANCE.currentOptions.isEmpty()){
                         ClientPlayNetworking.send(new RefreshUpgradeOptionC2SPayload());
                         refreshOptionsDisplay();
@@ -135,8 +136,8 @@ public class RoguelikeMCScreen extends Screen {
         for(int i=0; i<optionButtons.length; i++){
             if(i < RoguelikeMCClientData.INSTANCE.currentOptions.size()){
                 RoguelikeMCUpgradeData effect = RoguelikeMCClientData.INSTANCE.currentOptions.get(i);
-                optionButtons[i].setMessage(Text.literal(effect.name()).formatted(getColorByRarity(effect.tier())));
-                optionButtons[i].setTooltip(Tooltip.of(Text.literal(effect.description()).formatted(Formatting.GRAY)));
+                optionButtons[i].setMessage(Text.translatable(effect.name()).formatted(getColorByRarity(effect.tier())));
+                optionButtons[i].setTooltip(Tooltip.of(Text.translatable(effect.description()).formatted(Formatting.GRAY)));
             }else{
                 optionButtons[i].setMessage(Text.empty());
             }
@@ -156,10 +157,10 @@ public class RoguelikeMCScreen extends Screen {
     private void renderContent(DrawContext context, int x, int y, int mouseX, int mouseY) {
 
         // 暫時效果區域
-        renderEffectsSection(context, x, y, "Temporary Effects", RoguelikeMCClientData.INSTANCE.temporaryUpgrades, mouseX, mouseY);
+        renderEffectsSection(context, x, y, Text.translatable("gui.roguelikemc.temporary_upgrade"), RoguelikeMCClientData.INSTANCE.temporaryUpgrades, mouseX, mouseY);
 
         // 永久效果區域
-        renderEffectsSection(context, x + SECTION_WIDTH + SECTION_SPACING, y, "Permanent Effects", RoguelikeMCClientData.INSTANCE.permanentUpgrades, mouseX, mouseY);
+        renderEffectsSection(context, x + SECTION_WIDTH + SECTION_SPACING, y, Text.translatable("gui.roguelikemc.permanent_upgrade"), RoguelikeMCClientData.INSTANCE.permanentUpgrades, mouseX, mouseY);
 
         // 右側功能區域
         renderUtilitySection(context, x + 2 * (SECTION_WIDTH + SECTION_SPACING), y, mouseX, mouseY);
@@ -186,13 +187,13 @@ public class RoguelikeMCScreen extends Screen {
         context.getMatrices().scale(0.85f, 0.85f, 1.0f);
         context.drawText(
                 textRenderer,
-                Text.literal("Upgrade Points: " + RoguelikeMCClientData.INSTANCE.currentPoints),
+                Text.translatable("gui.roguelikemc.upgrade_points").append(Text.of(String.valueOf(RoguelikeMCClientData.INSTANCE.currentPoints))),
                 Math.round((x + 13)/0.85f), Math.round((y + 7)/0.85f), 0xd397fe, true
         );
         context.getMatrices().scale(1.0f / 0.85f, 1.0f / 0.85f, 1.0f);
     }
 
-    private void renderEffectsSection(DrawContext context, int x, int y, String title, List<RoguelikeMCUpgradeData> effects, int mouseX, int mouseY) {
+    private void renderEffectsSection(DrawContext context, int x, int y, Text title, List<RoguelikeMCUpgradeData> effects, int mouseX, int mouseY) {
         // 標題文字
         context.drawCenteredTextWithShadow(textRenderer, title, x+SECTION_WIDTH/2, y, 0xFFFFFF);
 
@@ -212,8 +213,8 @@ public class RoguelikeMCScreen extends Screen {
             int itemX = x + Math.floorDiv(i, 6) * (itemWidth + itemPadding);
 
             context.fill(itemX, itemY, itemX + itemWidth, itemY + itemHeight, 0xFF545454);
-            context.drawBorder(itemX, itemY, itemWidth, itemHeight, 0xFFFFFFFF);
             context.drawTexture(Identifier.tryParse(effect.icon()), itemX, itemY, 0, 0, itemWidth, itemHeight, itemWidth, itemHeight);
+            context.drawBorder(itemX, itemY, itemWidth, itemHeight, 0xFFFFFFFF);
 
             // 如果疊加大於 1，顯示數量
             if (count > 1) {
@@ -230,9 +231,9 @@ public class RoguelikeMCScreen extends Screen {
             // Hover Tooltip
             if (isMouseOver(mouseX, mouseY, itemX, itemY, itemWidth, itemHeight)) {
                 List<Text> tooltip = List.of(
-                        count>1?Text.literal(effect.name()).formatted(getColorByRarity(effect.tier())).append(Text.literal(" x" + count).formatted(Formatting.WHITE)):
-                                Text.literal(effect.name()).formatted(getColorByRarity(effect.tier())),
-                        Text.literal(effect.description()).formatted(Formatting.GRAY)
+                        count>1?Text.translatable(effect.name()).formatted(getColorByRarity(effect.tier())).append(Text.literal(" x" + count).formatted(Formatting.WHITE)):
+                                Text.translatable(effect.name()).formatted(getColorByRarity(effect.tier())),
+                        Text.translatable(effect.description()).formatted(Formatting.GRAY)
                 );
                 context.drawTooltip(textRenderer, tooltip, mouseX, mouseY);
             }
@@ -244,7 +245,7 @@ public class RoguelikeMCScreen extends Screen {
     private void renderUtilitySection(DrawContext context, int x, int y, int mouseX, int mouseY) {
         // 區域背景
         context.fill(x, y-5, x + SECTION_WIDTH, y + GUI_HEIGHT - 2*CONTENT_PADDING+5, 0x80303030);
-        context.drawCenteredTextWithShadow(textRenderer, "Effect Pool", x+SECTION_WIDTH/2, y, 0xFFFFFF);
+        context.drawCenteredTextWithShadow(textRenderer, Text.translatable("gui.roguelikemc.upgrade_pool"), x+SECTION_WIDTH/2, y, 0xFFFFFF);
 
         // 繪製三個按鈕的視覺元素
         int buttonX = x + BUTTON_PADDING;
@@ -266,7 +267,7 @@ public class RoguelikeMCScreen extends Screen {
                 // Render text
                 context.drawTextWrapped(
                         textRenderer,
-                        StringVisitable.plain(effect.name()),
+                        Text.translatable(effect.name()).formatted(getColorByRarity(effect.tier())).formatted(Formatting.BOLD),
                         buttonX + BUTTON_PADDING * 2 + 20, // 顏色方塊右側
                         buttonY + i * (BUTTON_HEIGHT + BUTTON_PADDING) + BUTTON_HEIGHT/2 - BUTTON_PADDING, // 垂直居中
                         BUTTON_WIDTH - BUTTON_PADDING * 3 - 20,
@@ -276,8 +277,8 @@ public class RoguelikeMCScreen extends Screen {
                 if (optionButtons[i].isMouseOver(mouseX, mouseY)) {
                     context.drawTooltip(textRenderer,
                             List.of(
-                                    Text.literal(effect.name()).formatted(getColorByRarity(effect.tier())),
-                                    Text.literal(effect.description()).formatted(Formatting.GRAY)
+                                    Text.translatable(effect.name()).formatted(getColorByRarity(effect.tier())),
+                                    Text.translatable(effect.description()).formatted(Formatting.GRAY)
                             ),
                             mouseX, mouseY
                     );

@@ -1,7 +1,7 @@
 {
   "id": "last_stand",
-  "name": "Last Stand",
-  "description": "Gain Regeneration I",
+  "name": "upgrade.roguelikemc.name.last_stand",
+  "description": "upgrade.roguelikemc.description.last_stand",
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,

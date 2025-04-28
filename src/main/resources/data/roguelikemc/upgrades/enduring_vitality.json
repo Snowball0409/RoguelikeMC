@@ -1,7 +1,7 @@
 {
   "id": "enduring_vitality",
-  "name": "Enduring Vitality",
-  "description": "Maximum Health + 2",
+  "name": "upgrade.roguelikemc.name.enduring_vitality",
+  "description": "upgrade.roguelikemc.description.enduring_vitality",
   "tier": "common",
   "isPermanent": true,
   "isUnique": false,

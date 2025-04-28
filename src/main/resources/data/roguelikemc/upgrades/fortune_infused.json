@@ -1,7 +1,7 @@
 {
   "id": "fortune_infused",
-  "name": "Fortune Infused",
-  "description": "Gain Luck 30 min and 10% more experience",
+  "name": "upgrade.roguelikemc.name.fortune_infused",
+  "description": "upgrade.roguelikemc.description.fortune_infused",
   "tier": "epic",
   "isPermanent": false,
   "isUnique": false,

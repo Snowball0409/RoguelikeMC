@@ -1,7 +1,7 @@
 {
   "id": "feathers_grace",
-  "name": "Feather\u0027s Grace",
-  "description": "Gain Slow Falling",
+  "name": "upgrade.roguelikemc.name.feathers_grace",
+  "description": "upgrade.roguelikemc.description.feathers_grace",
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,

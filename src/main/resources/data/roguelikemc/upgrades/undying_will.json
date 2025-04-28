@@ -1,7 +1,7 @@
 {
   "id": "undying_will",
-  "name": "Undying Will",
-  "description": "Retain equipment after death",
+  "name": "upgrade.roguelikemc.name.undying_will",
+  "description": "upgrade.roguelikemc.description.undying_will",
   "tier": "legendary",
   "isPermanent": false,
   "isUnique": true,

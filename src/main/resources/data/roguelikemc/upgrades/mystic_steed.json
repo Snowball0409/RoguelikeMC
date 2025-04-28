@@ -1,7 +1,7 @@
 {
   "id": "mystic_steed",
-  "name": "Mystic Steed",
-  "description": "Receive a SPECIAL horse",
+  "name": "upgrade.roguelikemc.name.mystic_steed",
+  "description": "upgrade.roguelikemc.description.mystic_steed",
   "tier": "rare",
   "isPermanent": false,
   "isUnique": false,
