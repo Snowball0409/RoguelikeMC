@@ -5,13 +5,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.data.RoguelikeMCAttribute;
 
 @Mixin(ExperienceOrbEntity.class)
 public abstract class ExperienceOrbEntityMixin {
-    @Inject(method = "onPlayerCollision", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "onPlayerCollision", at = @At("HEAD"))
     private void modifyXpPickup(PlayerEntity player, CallbackInfo ci) {
         if (player.getWorld().isClient) return;
 
@@ -19,10 +20,8 @@ public abstract class ExperienceOrbEntityMixin {
         int base = orb.getExperienceAmount();
 
         double gain = player.getAttributeValue(RoguelikeMCAttribute.EXPERIENCE_GAIN);
-        int modified = (int)(base * (1.0D + gain));
+        int modified = (int)(base * gain);
 
         player.addExperience(modified);
-        orb.discard();
-        ci.cancel();
     }
 }

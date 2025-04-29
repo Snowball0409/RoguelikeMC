@@ -308,7 +308,7 @@ public class RoguelikeMCDatagenUtil {
                 false,
                 false,
                 "roguelikemc:textures/upgrades/eternal_companion.png",
-                List.of(new RoguelikeMCUpgradeData.ActionData("command", List.of("summon cat ~ ~ ~ {Invulnerable:1b}")))
+                List.of(new RoguelikeMCUpgradeData.ActionData("command", List.of("summon cat ~ ~ ~ {Invulnerable:1b}", "true")))
         );
 
         final RoguelikeMCUpgradeData leap_of_faith = new RoguelikeMCUpgradeData(

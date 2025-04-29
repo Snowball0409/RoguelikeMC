@@ -10,6 +10,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.passive.CatVariant;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
@@ -79,11 +80,77 @@ public class RoguelikeMCUpgradeUtil {
         });
     }
 
+    private static int[] uuidToIntArray(UUID uuid) {
+        long most = uuid.getMostSignificantBits();
+        long least = uuid.getLeastSignificantBits();
+        return new int[] {
+                (int)(most >> 32),
+                (int)most,
+                (int)(least >> 32),
+                (int)least
+        };
+    }
+
     private static void applyCommandEffect(ServerPlayerEntity player, List<String> value, boolean isPermanent) {
         String command = value.getFirst();
         MinecraftServer server = player.getServer();
 
         if (server != null) {
+            if(Boolean.parseBoolean(value.getLast()) && command.startsWith("summon")){
+                // 取得 UUID 並轉換為 int[]
+                int[] uuidInts = uuidToIntArray(player.getUuid());
+
+                // 插入 Owner NBT
+                int nbtStart = command.indexOf('{');
+                if (nbtStart != -1) {
+                    // 有 NBT -> 插入 Owner 到內部
+                    String beforeNBT = command.substring(0, nbtStart + 1);
+                    String afterNBT = command.substring(nbtStart + 1);
+                    String ownerTag = String.format("Owner:[I;%d,%d,%d,%d],", uuidInts[0], uuidInts[1], uuidInts[2], uuidInts[3]);
+                    command = beforeNBT + ownerTag + afterNBT;
+                } else {
+                    // 沒有 NBT -> 補整個 NBT 區塊
+                    String ownerTag = String.format("{Owner:[I;%d,%d,%d,%d]}", uuidInts[0], uuidInts[1], uuidInts[2], uuidInts[3]);
+                    command = command + " " + ownerTag;
+                }
+            }
+
+            String[] parts = command.split(" ");
+            if(command.split(" ")[1].equals("cat")){
+                Optional<RegistryEntry.Reference<CatVariant>> variantEntry = Registries.CAT_VARIANT.getRandom(server.getOverworld().getRandom());
+                if(variantEntry.isPresent()) {
+                    String variant = Objects.requireNonNull(Registries.CAT_VARIANT.getId(variantEntry.get().value())).toString();
+                    int nbtStart = command.indexOf('{');
+                    if (nbtStart != -1) {
+                        // 有 NBT -> 插入 Owner 到內部
+                        String beforeNBT = command.substring(0, nbtStart + 1);
+                        String afterNBT = command.substring(nbtStart + 1);
+                        String variantTag = String.format("variant:\"%s\",", variant);
+                        command = beforeNBT + variantTag + afterNBT;
+                    } else {
+                        // 沒有 NBT -> 補整個 NBT 區塊
+                        String variantTag = String.format("{variant:\"%s\"}", variant);
+                        command = command + " " + variantTag;
+                    }
+                }
+            } else if (command.split(" ")[1].equals("horse")) {
+                int color = player.getRandom().nextInt(7); // 0–6
+                int style = player.getRandom().nextInt(5); // 0–4
+                int variant = color | (style << 8);
+
+                int nbtStart = command.indexOf('{');
+                if (nbtStart != -1) {
+                    // 有 NBT -> 插入 Owner 到內部
+                    String beforeNBT = command.substring(0, nbtStart + 1);
+                    String afterNBT = command.substring(nbtStart + 1);
+                    String variantTag = String.format("Variant:%d,", variant);
+                    command = beforeNBT + variantTag + afterNBT;
+                } else {
+                    // 沒有 NBT -> 補整個 NBT 區塊
+                    String variantTag = String.format("{Variant:%d}", variant);
+                    command = command + " " + variantTag;
+                }
+            }
             server.getCommandManager().executeWithPrefix(player.getCommandSource().withLevel(4).withSilent(), command);
         } else {
             RoguelikeMC.LOGGER.warn("Server is null");

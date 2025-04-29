@@ -46,7 +46,6 @@ public class RoguelikeMCUpgradePoolManager implements SimpleSynchronousResourceR
         }
 
         RoguelikeMC.LOGGER.info("Loaded {} upgrade pools", POOLS.size());
-        RoguelikeMC.LOGGER.info(POOLS.toString());
     }
 
     @Override

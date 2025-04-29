@@ -10,7 +10,8 @@
     {
       "type": "command",
       "value": [
-        "summon cat ~ ~ ~ {Invulnerable:1b}"
+        "summon cat ~ ~ ~ {Invulnerable:1b}",
+        "true"
       ]
     }
   ]
