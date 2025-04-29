@@ -1,7 +1,12 @@
 <h1 align="center">
     <img src="https://github.com/user-attachments/assets/d6cd113d-66aa-4de0-a4db-1c3da1f0d4f1">
-    <br> RoguelikeMC
+    <br> RoguelikeMC </br>
+    <a href="https://www.curseforge.com/minecraft/mc-mods/roguelike-mc">
+      <img src="https://img.shields.io/badge/-curseforge-gray?style=for-the-badge&labelColor=f16436&labelWidth=15&logo=curseforge&logoColor=white">
+    </a>
 </h1>
+
+
 
 ---
 
