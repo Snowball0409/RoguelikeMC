@@ -112,7 +112,7 @@ public class RoguelikeMCRegisterUtil {
         }
 
         // Send boss stage to client
-        if (RoguelikeMCCommonConfig.INSTANCE.enableLinearGameStage) {
+        if (RoguelikeMCCommonConfig.INSTANCE.enableLinearGameStage && playerData.currentGameStage < RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.size()) {
             ServerPlayNetworking.send(player, new RefreshCurrentBossStageS2CPayload(RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.get(playerData.currentGameStage)));
             RoguelikeMC.LOGGER.info(String.valueOf(playerData.currentGameStage));
         }
