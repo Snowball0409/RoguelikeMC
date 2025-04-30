@@ -1,5 +1,6 @@
 package snowball049.roguelikemc.mixin;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -26,6 +27,7 @@ import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
+import snowball049.roguelikemc.network.packet.RefreshCurrentBossStageS2CPayload;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
@@ -41,6 +43,7 @@ public class LivingEntityMixin {
         if (stageIndex >= 0 && playerData.currentGameStage < stageIndex + 1) {
             playerData.currentGameStage = stageIndex + 1;
             player.sendMessage(Text.translatable("message.roguelikemc.pass_game_stage").append(entity.getType().getName()), false);
+            ServerPlayNetworking.send(player, new RefreshCurrentBossStageS2CPayload(RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.get(playerData.currentGameStage)));
         }
     }
 

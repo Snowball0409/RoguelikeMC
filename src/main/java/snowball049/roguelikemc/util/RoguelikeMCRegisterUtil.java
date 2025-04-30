@@ -26,7 +26,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
@@ -53,6 +55,7 @@ public class RoguelikeMCRegisterUtil {
         PayloadTypeRegistry.playC2S().register(SelectUpgradeOptionC2SPayload.ID, SelectUpgradeOptionC2SPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(RefreshCurrentUpgradeS2CPayload.ID, RefreshCurrentUpgradeS2CPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(SendUpgradePointsS2CPayload.ID, SendUpgradePointsS2CPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(RefreshCurrentBossStageS2CPayload.ID, RefreshCurrentBossStageS2CPayload.CODEC);
     }
 
     public static void ItemRegister() {
@@ -66,6 +69,7 @@ public class RoguelikeMCRegisterUtil {
     }
 
     public static void onDeathEventRegister(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive) {
+        if (alive) return;
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(oldPlayer);
 
         playerData.reset();
@@ -83,18 +87,38 @@ public class RoguelikeMCRegisterUtil {
 
         ServerPlayNetworking.send(newPlayer, new RefreshCurrentUpgradeS2CPayload(true, playerData.permanentUpgrades));
         ServerPlayNetworking.send(newPlayer, new RefreshCurrentUpgradeS2CPayload(false, playerData.temporaryUpgrades));
+        if (RoguelikeMCCommonConfig.INSTANCE.enableLinearGameStage){
+            ServerPlayNetworking.send(newPlayer, new RefreshCurrentBossStageS2CPayload(RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.get(playerData.currentGameStage)));
+            newPlayer.sendMessage(Text.translatable("message.roguelikemc.game_stage_reset").formatted(Formatting.RED));
+        }
     }
 
-    public static void onJoinEventRegister(ServerPlayNetworkHandler serverPlayNetworkHandler, PacketSender packetSender, MinecraftServer minecraftServer){
+    public static void onJoinEventRegister(ServerPlayNetworkHandler serverPlayNetworkHandler, PacketSender packetSender, MinecraftServer minecraftServer) {
         ServerPlayerEntity player = serverPlayNetworkHandler.getPlayer();
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-        ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(true, playerData.permanentUpgrades));
-        ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(false, playerData.temporaryUpgrades));
-        for (RoguelikeMCUpgradeData upgrade : playerData.currentOptions) {
-            ServerPlayNetworking.send(player, new UpgradeOptionS2CPayload(upgrade));
+
+        if (RoguelikeMCCommonConfig.INSTANCE.enableUpgradeSystem) {
+            // Send upgrade to client
+            ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(true, playerData.permanentUpgrades));
+            ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(false, playerData.temporaryUpgrades));
+            for (RoguelikeMCUpgradeData upgrade : playerData.currentOptions) {
+                ServerPlayNetworking.send(player, new UpgradeOptionS2CPayload(upgrade));
+            }
+            playerData.permanentUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyJoinUpgrade(player, upgrade));
+            playerData.temporaryUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyJoinUpgrade(player, upgrade));
+
+            // Send upgrade points to client
+            ServerPlayNetworking.send(player, new SendUpgradePointsS2CPayload(playerData.upgradePoints));
         }
-        playerData.permanentUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyJoinUpgrade(player, upgrade));
-        playerData.temporaryUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyJoinUpgrade(player, upgrade));
+
+        // Send boss stage to client
+        if (RoguelikeMCCommonConfig.INSTANCE.enableLinearGameStage) {
+            ServerPlayNetworking.send(player, new RefreshCurrentBossStageS2CPayload(RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.get(playerData.currentGameStage)));
+            RoguelikeMC.LOGGER.info(String.valueOf(playerData.currentGameStage));
+        }
+        else {
+            ServerPlayNetworking.send(player, new RefreshCurrentBossStageS2CPayload("none"));
+        }
     }
 
     public static void onServerLoadEventRegister(MinecraftServer minecraftServer) {
@@ -159,8 +183,8 @@ public class RoguelikeMCRegisterUtil {
             if (entity instanceof ServerPlayerEntity && context instanceof HostileEntity && !context.isPlayer()) {
                 RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState((ServerPlayerEntity) entity);
                 playerData.currentKillHostile++;
-                while (playerData.currentKillHostile >= playerData.currentKillHostileRequirement) {
-                    playerData.currentKillHostile -= playerData.currentKillHostileRequirement;
+                while (playerData.currentKillHostile >= RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirement) {
+                    playerData.currentKillHostile -= RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirement;
                     RoguelikeMCPointUtil.addUpgradePoints((ServerPlayerEntity) entity, 1);
                 }
             }

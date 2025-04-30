@@ -32,9 +32,14 @@ public class RoguelikeMCStateSaverAndLoader extends PersistentState {
             NbtCompound playerNbt = new NbtCompound();
             playerNbt.put("temporaryUpgrades", RoguelikeMCUpgradeData.CODEC.listOf().encodeStart(NbtOps.INSTANCE, playerData.temporaryUpgrades).getOrThrow());
             playerNbt.put("permanentUpgrades", RoguelikeMCUpgradeData.CODEC.listOf().encodeStart(NbtOps.INSTANCE, playerData.permanentUpgrades).getOrThrow());
+            playerNbt.put("currentOptions", RoguelikeMCUpgradeData.CODEC.listOf().encodeStart(NbtOps.INSTANCE, playerData.currentOptions).getOrThrow());
             playerNbt.putInt("currentKillHostile", playerData.currentKillHostile);
-            playerNbt.putInt("currentKillHostileRequirement", playerData.currentKillHostileRequirement);
             playerNbt.putInt("upgradePoints", playerData.upgradePoints);
+            playerNbt.putInt("currentLevelGain", playerData.currentLevelGain);
+            playerNbt.putInt("currentAdvancementGain", playerData.currentAdvancementGain);
+            playerNbt.putInt("currentGameStage", playerData.currentGameStage);
+            playerNbt.putBoolean("keepEquipmentAfterDeath", playerData.keepEquipmentAfterDeath);
+            playerNbt.putBoolean("revive", playerData.revive);
             playersNbt.put(uuid.toString(), playerNbt);
         });
 
@@ -52,9 +57,14 @@ public class RoguelikeMCStateSaverAndLoader extends PersistentState {
             NbtElement permElement = playerNbt.get("permanentUpgrades");
             playerData.temporaryUpgrades = new ArrayList<>(RoguelikeMCUpgradeData.CODEC.listOf().decode(NbtOps.INSTANCE, tempElement).result().map(Pair::getFirst).orElse(new ArrayList<>()));
             playerData.permanentUpgrades = new ArrayList<>(RoguelikeMCUpgradeData.CODEC.listOf().decode(NbtOps.INSTANCE, permElement).result().map(Pair::getFirst).orElse(new ArrayList<>()));
+            playerData.currentOptions = new ArrayList<>(RoguelikeMCUpgradeData.CODEC.listOf().decode(NbtOps.INSTANCE, playerNbt.get("currentOptions")).result().map(Pair::getFirst).orElse(new ArrayList<>()));
             playerData.currentKillHostile = playerNbt.getInt("currentKillHostile");
-            playerData.currentKillHostileRequirement = playerNbt.getInt("currentKillHostileRequirement");
             playerData.upgradePoints = playerNbt.getInt("upgradePoints");
+            playerData.currentLevelGain = playerNbt.getInt("currentLevelGain");
+            playerData.currentAdvancementGain = playerNbt.getInt("currentAdvancementGain");
+            playerData.currentGameStage = playerNbt.getInt("currentGameStage");
+            playerData.keepEquipmentAfterDeath = playerNbt.getBoolean("keepEquipmentAfterDeath");
+            playerData.revive = playerNbt.getBoolean("revive");
             state.players.put(UUID.fromString(key), playerData);
         });
 

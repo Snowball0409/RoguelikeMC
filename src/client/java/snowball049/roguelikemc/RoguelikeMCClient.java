@@ -6,10 +6,12 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 import snowball049.roguelikemc.data.RoguelikeMCClientData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.gui.RoguelikeMCScreen;
+import snowball049.roguelikemc.network.packet.RefreshCurrentBossStageS2CPayload;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
 import snowball049.roguelikemc.network.packet.SendUpgradePointsS2CPayload;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
@@ -53,6 +55,10 @@ public class RoguelikeMCClient implements ClientModInitializer {
 		// Refresh Upgrade Points
 		ClientPlayNetworking.registerGlobalReceiver(SendUpgradePointsS2CPayload.ID, (payload, context) -> {
 			RoguelikeMCClientData.INSTANCE.currentPoints = payload.point();
+		});
+		// Refresh Next Boss
+		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentBossStageS2CPayload.ID, (payload, context) -> {
+			RoguelikeMCClientData.INSTANCE.nextBoss = Identifier.tryParse(payload.nextBoss());
 		});
 	}
 }

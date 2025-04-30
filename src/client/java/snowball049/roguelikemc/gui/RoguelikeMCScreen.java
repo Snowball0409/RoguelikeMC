@@ -10,10 +10,14 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.entity.EntityType;
+import net.minecraft.registry.Registries;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.data.RoguelikeMCClientData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
@@ -91,7 +95,7 @@ public class RoguelikeMCScreen extends Screen {
                 })
                 .dimensions(
                         guiLeft + GUI_WIDTH / 2 - 50, // GUI水平居中
-                        guiTop + GUI_HEIGHT - 30,   // GUI底部向上30像素
+                        guiTop + GUI_HEIGHT - 25,   // GUI底部向上30像素
                         100,
                         20
                 )
@@ -166,10 +170,34 @@ public class RoguelikeMCScreen extends Screen {
         renderUtilitySection(context, x + 2 * (SECTION_WIDTH + SECTION_SPACING), y, mouseX, mouseY);
 
         // Upgrade Points area
-        renderPointSection(context, x, y + GUI_HEIGHT - CONTENT_PADDING - 30, mouseX, mouseY);
+        renderPointSection(context, x - CONTENT_PADDING + 5, y + GUI_HEIGHT - CONTENT_PADDING - 25, mouseX, mouseY);
+
+        // Next Boss Hint
+        renderBossHint(context, x + SECTION_WIDTH - 8, y + GUI_HEIGHT - CONTENT_PADDING - 25, mouseX, mouseY);
 
         // 刷新按鈕渲染
         refreshButton.render(context, mouseX, mouseY, 0);
+    }
+
+    private void renderBossHint(DrawContext context, int i, int i1, int mouseX, int mouseY) {
+        context.fill(i, i1, i + 20, i1 + 20, 0x80303030);
+        context.drawBorder(i, i1, 20, 20, 0xFF000000);
+        context.drawTexture(
+                Identifier.tryParse("roguelikemc", "textures/gui/boss_icon.png"),
+                i, i1, 0, 0, 20, 20, 20, 20
+        );
+        // Render Tooltip
+        if (isMouseOver(mouseX, mouseY, i, i1, 20, 20)) {
+            Optional<EntityType<?>> nextBoss = Registries.ENTITY_TYPE.getOrEmpty(RoguelikeMCClientData.INSTANCE.nextBoss);
+            List<MutableText> bossName = nextBoss.map(entityType ->
+                    List.of(
+                            Text.translatable("gui.roguelikemc.next_boss").formatted(Formatting.WHITE).append(Text.translatable(entityType.getTranslationKey())),
+                            Text.literal(RoguelikeMCClientData.INSTANCE.nextBoss.toString()).formatted(Formatting.GRAY)))
+                    .orElseGet(() ->
+                        List.of(Text.translatable("gui.roguelikemc.next_boss").formatted(Formatting.WHITE),
+                                Text.translatable("message.roguelikemc.boss_not_found").formatted(Formatting.GREEN)));
+            context.drawTooltip(textRenderer, new ArrayList<>(bossName), mouseX, mouseY);
+        }
     }
 
     private void renderPointSection(DrawContext context, int x, int y, int mouseX, int mouseY) {

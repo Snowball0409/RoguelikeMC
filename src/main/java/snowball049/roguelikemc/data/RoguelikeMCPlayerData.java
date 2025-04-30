@@ -15,7 +15,6 @@ public class RoguelikeMCPlayerData {
     public int upgradePoints = 0;
 
     public int currentKillHostile = 0;
-    public int currentKillHostileRequirement;
     public int currentLevelGain = 0;
     public int currentAdvancementGain = 0;
     public int currentGameStage = 0;
@@ -27,7 +26,6 @@ public class RoguelikeMCPlayerData {
     public boolean revive = false;
 
     public RoguelikeMCPlayerData() {
-        this.currentKillHostileRequirement = RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirement;
     }
 
     public Collection<RoguelikeMCUpgradeData> getAllUpgrades() {
@@ -39,10 +37,9 @@ public class RoguelikeMCPlayerData {
 
     public void reset() {
         this.currentKillHostile = 0;
-        this.currentKillHostileRequirement = RoguelikeMCCommonConfig.INSTANCE.killHostileEntityRequirement;
         this.currentLevelGain = 0;
-        this.currentAdvancementGain = 0;
         this.currentGameStage = 0;
+        this.currentAdvancementGain = 0;
         this.keepEquipmentAfterDeath = false;
         this.revive = false;
     }

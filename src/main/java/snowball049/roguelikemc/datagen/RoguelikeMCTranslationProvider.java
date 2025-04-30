@@ -23,6 +23,7 @@ public class RoguelikeMCTranslationProvider extends FabricLanguageProvider {
         translationBuilder.add("gui.roguelikemc.temporary_upgrade", "Temporary Upgrades");
         translationBuilder.add("gui.roguelikemc.permanent_upgrade", "Permanent Upgrades");
         translationBuilder.add("gui.roguelikemc.upgrade_pool", "Upgrade Pool");
+        translationBuilder.add("gui.roguelikemc.next_boss", "Next Boss: ");
 
         // Items
         translationBuilder.add("item.roguelikemc.upgrade_point_orb", "Orb of Upgrade Point");
@@ -143,6 +144,8 @@ public class RoguelikeMCTranslationProvider extends FabricLanguageProvider {
         translationBuilder.add("message.roguelikemc.drop_equipment", "You have been dropped your equipment!");
         translationBuilder.add("message.roguelikemc.grant_upgrade_point", "You have been granted %d upgrade points!");
         translationBuilder.add("message.roguelikemc.not_enough_upgrade_point", "You don't have enough upgrade points!");
+        translationBuilder.add("message.roguelikemc.boss_not_found", "No next boss found!");
+        translationBuilder.add("message.roguelikemc.game_stage_reset", "Due to your death, the game stage has been reset.");
     }
 }
 

@@ -1,6 +1,7 @@
 {
   "button.roguelikemc.draw_upgrades": "抽取升級",
   "category.roguelikemc.gui": "RoguelikeMC",
+  "gui.roguelikemc.next_boss": "下一個Boss：",
   "gui.roguelikemc.permanent_upgrade": "永久升級",
   "gui.roguelikemc.temporary_upgrade": "臨時升級",
   "gui.roguelikemc.upgrade_points": "升級點數：",
@@ -8,8 +9,10 @@
   "item.roguelikemc.upgrade_point_orb": "升級點數寶珠",
   "itemGroup.roguelikemc.item_group": "RoguelikeMC",
   "key.roguelikemc.open_gui": "打開升級畫面",
+  "message.roguelikemc.boss_not_found": "沒有下個Boss！",
   "message.roguelikemc.damage_reduce": "你造成的傷害降低了 %s %%. 你尚未打敗前一個首領!",
   "message.roguelikemc.drop_equipment": "你的裝備掉落了，你不能穿上它！",
+  "message.roguelikemc.game_stage_reset": "由於你的死亡，遊戲進度已重置。",
   "message.roguelikemc.grant_upgrade_point": "你獲得了 %d 點升級點數!",
   "message.roguelikemc.not_enough_upgrade_point": "你沒有足夠的升級點數!",
   "message.roguelikemc.pass_game_stage": "§a你通過了這個遊戲進度：",
