@@ -5,7 +5,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.MultilineText;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
@@ -13,12 +12,9 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.NotNull;
-import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.data.RoguelikeMCClientData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
@@ -123,7 +119,7 @@ public class RoguelikeMCScreen extends Screen {
                 BACKGROUND_TEXTURE,
                 guiLeft,
                 guiTop,
-                0, 0, GUI_WIDTH, GUI_WIDTH,
+                0, 0, GUI_WIDTH, GUI_HEIGHT,
                 GUI_WIDTH, GUI_WIDTH
         );
 
@@ -257,10 +253,13 @@ public class RoguelikeMCScreen extends Screen {
             }
 
             // Hover Tooltip
+            Text isUnique = effect.isUnique()?
+                    Text.literal("[U]").formatted(Formatting.LIGHT_PURPLE):
+                    Text.empty();
             if (isMouseOver(mouseX, mouseY, itemX, itemY, itemWidth, itemHeight)) {
                 List<Text> tooltip = List.of(
-                        count>1?Text.translatable(effect.name()).formatted(getColorByRarity(effect.tier())).append(Text.literal(" x" + count).formatted(Formatting.WHITE)):
-                                Text.translatable(effect.name()).formatted(getColorByRarity(effect.tier())),
+                        count>1?Text.translatable(effect.name()).formatted(getColorByRarity(effect.tier())).append(Text.literal(" x" + count).formatted(Formatting.WHITE)).append(isUnique):
+                                Text.translatable(effect.name()).formatted(getColorByRarity(effect.tier())).append(isUnique),
                         Text.translatable(effect.description()).formatted(Formatting.GRAY)
                 );
                 context.drawTooltip(textRenderer, tooltip, mouseX, mouseY);
@@ -302,10 +301,17 @@ public class RoguelikeMCScreen extends Screen {
                         getColorByRarity(effect.tier()).getColorValue() // 文字顏色
                 );
                 // Render Tooltip
+                Text isUnique = effect.isUnique()?
+                        Text.literal("[U]").formatted(Formatting.DARK_PURPLE):
+                        Text.empty();
+                Text isPermanent = effect.isPermanent()?
+                        Text.literal("[P]").formatted(Formatting.GOLD):
+                        Text.literal("[T]").formatted(Formatting.DARK_GRAY);
                 if (optionButtons[i].isMouseOver(mouseX, mouseY)) {
                     context.drawTooltip(textRenderer,
                             List.of(
-                                    Text.translatable(effect.name()).formatted(getColorByRarity(effect.tier())),
+                                    Text.translatable(effect.name()).formatted(getColorByRarity(effect.tier()))
+                                            .append(isPermanent).append(isUnique),
                                     Text.translatable(effect.description()).formatted(Formatting.GRAY)
                             ),
                             mouseX, mouseY
