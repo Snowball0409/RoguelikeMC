@@ -1,30 +1,22 @@
 package snowball049.roguelikemc.mixin;
 
-import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
@@ -32,7 +24,6 @@ import snowball049.roguelikemc.data.RoguelikeMCAttribute;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.util.RoguelikeMCDeathUtil;
 import snowball049.roguelikemc.util.RoguelikeMCPointUtil;
-import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +89,13 @@ public abstract class PlayerEntityMixin {
 
         if (!(player instanceof ServerPlayerEntity)) return;
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+
+        // Thorn damage attribute
+        double thornDamage = player.getAttributeValue(RoguelikeMCAttribute.THORNS_DAMAGE);
+        float damage = (float) (amount * thornDamage);
+        if(damage > 0.0D && !player.blockedByShield(source) && source.getAttacker() instanceof LivingEntity attacker) {
+            attacker.damage(attacker.getDamageSources().thorns(player), damage);
+        }
 
         // One last chance
         float health = player.getHealth();

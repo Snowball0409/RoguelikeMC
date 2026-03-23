@@ -12,10 +12,8 @@ import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.server.MinecraftServer;
@@ -24,16 +22,9 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.command.RoguelikeMCCommands;
@@ -214,6 +205,7 @@ public class RoguelikeMCRegisterUtil {
                 .add(RoguelikeMCAttribute.EXPERIENCE_GAIN)
                 .add(RoguelikeMCAttribute.DAMAGE_RATIO)
                 .add(RoguelikeMCAttribute.CRITICAL_CHANCE)
-                .add(RoguelikeMCAttribute.CRITICAL_DAMAGE));
+                .add(RoguelikeMCAttribute.CRITICAL_DAMAGE)
+                .add(RoguelikeMCAttribute.THORNS_DAMAGE));
     }
 }

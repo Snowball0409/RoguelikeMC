@@ -32,6 +32,8 @@ import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradePoolManager;
 
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class RoguelikeMCUpgradeUtil {
@@ -39,55 +41,33 @@ public class RoguelikeMCUpgradeUtil {
         RoguelikeMCPlayerData serverState = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
         if (upgrade.isPermanent()) {
             serverState.permanentUpgrades.add(upgrade);
-        }else{
+        } else {
             serverState.temporaryUpgrades.add(upgrade);
         }
-        RoguelikeMCUpgradeUtil.applyUpgrade(player, upgrade);
+        applyUpgrade(player, upgrade);
         ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(true, serverState.permanentUpgrades));
         ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(false, serverState.temporaryUpgrades));
-        if(!player.getWorld().isClient()){
+        if (!player.getWorld().isClient()) {
             player.getWorld().playSound(null, player.getBlockPos(), SoundEvents.ENTITY_PLAYER_LEVELUP, player.getSoundCategory(), 1.0F, 1.0F);
         }
     }
 
     public static void applyUpgrade(ServerPlayerEntity player, RoguelikeMCUpgradeData upgrade) {
-        upgrade.actions().forEach(action -> {
-            switch (action.type()) {
-                case "attribute" -> RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, upgrade.id(), action.value(), upgrade.isPermanent());
-                case "effect" -> RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), upgrade.isPermanent());
-                case "command" -> RoguelikeMCUpgradeUtil.applyCommandEffect(player, action.value(), upgrade.isPermanent());
-                case "event" -> RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), upgrade.isPermanent());
-                default -> {
-                    RoguelikeMC.LOGGER.warn("Unknown action type: " + action.type());
-                }
-            }
-        });
+        forEachUpgradeAction(upgrade, action -> applyUpgradeAction(player, upgrade, action));
     }
 
     public static void applyJoinUpgrade(ServerPlayerEntity player, RoguelikeMCUpgradeData upgrade) {
-        upgrade.actions().forEach(action -> {
-            switch (action.type()) {
-                case "attribute" -> RoguelikeMCUpgradeUtil.addUpgradeAttribute(player, upgrade.id(), action.value(), upgrade.isPermanent());
-                case "effect" -> RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), upgrade.isPermanent());
-                case "event" -> RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), upgrade.isPermanent());
-                case "command" -> {
-                    // Do nothing
-                }
-                default -> {
-                    RoguelikeMC.LOGGER.warn("Unknown action type: " + action.type());
-                }
-            }
-        });
+        forEachUpgradeAction(upgrade, action -> applyJoinUpgradeAction(player, upgrade, action));
     }
 
     private static int[] uuidToIntArray(UUID uuid) {
         long most = uuid.getMostSignificantBits();
         long least = uuid.getLeastSignificantBits();
-        return new int[] {
-                (int)(most >> 32),
-                (int)most,
-                (int)(least >> 32),
-                (int)least
+        return new int[]{
+                (int) (most >> 32),
+                (int) most,
+                (int) (least >> 32),
+                (int) least
         };
     }
 
@@ -95,66 +75,33 @@ public class RoguelikeMCUpgradeUtil {
         String command = value.getFirst();
         MinecraftServer server = player.getServer();
 
-        if (server != null) {
-            if(Boolean.parseBoolean(value.getLast()) && command.startsWith("summon")){
-                // 取得 UUID 並轉換為 int[]
-                int[] uuidInts = uuidToIntArray(player.getUuid());
-
-                // 插入 Owner NBT
-                int nbtStart = command.indexOf('{');
-                if (nbtStart != -1) {
-                    // 有 NBT -> 插入 Owner 到內部
-                    String beforeNBT = command.substring(0, nbtStart + 1);
-                    String afterNBT = command.substring(nbtStart + 1);
-                    String ownerTag = String.format("Owner:[I;%d,%d,%d,%d],", uuidInts[0], uuidInts[1], uuidInts[2], uuidInts[3]);
-                    command = beforeNBT + ownerTag + afterNBT;
-                } else {
-                    // 沒有 NBT -> 補整個 NBT 區塊
-                    String ownerTag = String.format("{Owner:[I;%d,%d,%d,%d]}", uuidInts[0], uuidInts[1], uuidInts[2], uuidInts[3]);
-                    command = command + " " + ownerTag;
-                }
-            }
-
-            String[] parts = command.split(" ");
-            if(command.split(" ")[1].equals("cat")){
-                Optional<RegistryEntry.Reference<CatVariant>> variantEntry = Registries.CAT_VARIANT.getRandom(server.getOverworld().getRandom());
-                if(variantEntry.isPresent()) {
-                    String variant = Objects.requireNonNull(Registries.CAT_VARIANT.getId(variantEntry.get().value())).toString();
-                    int nbtStart = command.indexOf('{');
-                    if (nbtStart != -1) {
-                        // 有 NBT -> 插入 Owner 到內部
-                        String beforeNBT = command.substring(0, nbtStart + 1);
-                        String afterNBT = command.substring(nbtStart + 1);
-                        String variantTag = String.format("variant:\"%s\",", variant);
-                        command = beforeNBT + variantTag + afterNBT;
-                    } else {
-                        // 沒有 NBT -> 補整個 NBT 區塊
-                        String variantTag = String.format("{variant:\"%s\"}", variant);
-                        command = command + " " + variantTag;
-                    }
-                }
-            } else if (command.split(" ")[1].equals("horse")) {
-                int color = player.getRandom().nextInt(7); // 0–6
-                int style = player.getRandom().nextInt(5); // 0–4
-                int variant = color | (style << 8);
-
-                int nbtStart = command.indexOf('{');
-                if (nbtStart != -1) {
-                    // 有 NBT -> 插入 Owner 到內部
-                    String beforeNBT = command.substring(0, nbtStart + 1);
-                    String afterNBT = command.substring(nbtStart + 1);
-                    String variantTag = String.format("Variant:%d,", variant);
-                    command = beforeNBT + variantTag + afterNBT;
-                } else {
-                    // 沒有 NBT -> 補整個 NBT 區塊
-                    String variantTag = String.format("{Variant:%d}", variant);
-                    command = command + " " + variantTag;
-                }
-            }
-            server.getCommandManager().executeWithPrefix(player.getCommandSource().withLevel(4).withSilent(), command);
-        } else {
+        if (server == null) {
             RoguelikeMC.LOGGER.warn("Server is null");
+            return;
         }
+
+        if (Boolean.parseBoolean(value.getLast()) && command.startsWith("summon")) {
+            int[] uuidInts = uuidToIntArray(player.getUuid());
+            int nbtStart = command.indexOf('{');
+            if (nbtStart != -1) {
+                String beforeNBT = command.substring(0, nbtStart + 1);
+                String afterNBT = command.substring(nbtStart + 1);
+                String ownerTag = String.format("Owner:[I;%d,%d,%d,%d],", uuidInts[0], uuidInts[1], uuidInts[2], uuidInts[3]);
+                command = beforeNBT + ownerTag + afterNBT;
+            } else {
+                String ownerTag = String.format("{Owner:[I;%d,%d,%d,%d]}", uuidInts[0], uuidInts[1], uuidInts[2], uuidInts[3]);
+                command = command + " " + ownerTag;
+            }
+        }
+
+        String summonedEntityType = getSummonedEntityType(command);
+        if ("cat".equals(summonedEntityType)) {
+            command = applyCatVariant(command, server);
+        } else if ("horse".equals(summonedEntityType)) {
+            command = applyHorseVariant(command, player);
+        }
+
+        server.getCommandManager().executeWithPrefix(player.getCommandSource().withLevel(4).withSilent(), command);
     }
 
     public static void addUpgradeAttribute(ServerPlayerEntity player, String id, List<String> value, boolean isPermanent) {
@@ -168,56 +115,47 @@ public class RoguelikeMCUpgradeUtil {
             case "add_multiplied_total" -> EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
             default -> EntityAttributeModifier.Operation.ADD_VALUE;
         };
-        EntityAttributeModifier attributeModifier;
-        attributeModifier = new EntityAttributeModifier(Identifier.of(RoguelikeMC.MOD_ID + ":" + id + "/" + UUID.randomUUID()), amount, operation);
+
+        EntityAttributeModifier attributeModifier = new EntityAttributeModifier(
+                Identifier.of(RoguelikeMC.MOD_ID + ":" + id + "/" + UUID.randomUUID()),
+                amount,
+                operation
+        );
 
         Multimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier> modifiers = HashMultimap.create();
         modifiers.put(attributeEntry, attributeModifier);
-
         player.getAttributes().addTemporaryModifiers(modifiers);
     }
 
     public static void applyUpgradeEffect(ServerPlayerEntity player, List<String> value, boolean isPermanent) {
         Identifier effectIdentifier = Identifier.tryParse(value.getFirst());
         RegistryEntry.Reference<StatusEffect> effectEntry = Registries.STATUS_EFFECT.getEntry(effectIdentifier)
-                .orElseThrow();//()->new IllegalStateException("Effect not found: "+effectIdentifier));
+                .orElseThrow();
 
-
-        if(!player.getWorld().isClient()) {
+        if (!player.getWorld().isClient()) {
             player.addStatusEffect(new StatusEffectInstance(effectEntry, Integer.parseInt(value.get(1)), Integer.parseInt(value.get(2)), false, false, true));
         }
     }
 
     public static void tickInfiniteEffects(MinecraftServer minecraftServer) {
-        minecraftServer.getPlayerManager().getPlayerList().forEach(player -> {
-            RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-            playerData.temporaryUpgrades.forEach(upgrade -> {
-                upgrade.actions().forEach(action -> {
-                    if (action.type().equals("effect") && action.value().get(1).equals("-1")) {
-                        RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), false);
-                    }
-                });
-            });
-            playerData.permanentUpgrades.forEach(upgrade -> {
-                upgrade.actions().forEach(action -> {
-                    if (action.type().equals("effect") && action.value().get(1).equals("-1")) {
-                        RoguelikeMCUpgradeUtil.applyUpgradeEffect(player, action.value(), true);
-                    }
-                });
-            });
-        });
+        forEachPlayerAction(
+                minecraftServer,
+                action -> action.type().equals("effect") && action.value().get(1).equals("-1"),
+                (player, upgrade, action) -> applyUpgradeEffect(player, action.value(), upgrade.isPermanent())
+        );
     }
 
     public static void removeUpgradeEffect(ServerPlayerEntity player, List<String> value) {
         player.removeStatusEffect(Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(value.getFirst())).orElseThrow());
     }
+
     public static void removeUpgradeAttribute(ServerPlayerEntity player, Identifier id, List<String> value) {
         Identifier attributeIdentifier = Identifier.tryParse(value.getFirst());
         RegistryEntry.Reference<EntityAttribute> attributeEntry = Registries.ATTRIBUTE.getEntry(attributeIdentifier)
-                .orElseThrow();//(() -> new IllegalStateException("Attribute not found: " + attributeIdentifier));
+                .orElseThrow();
 
         for (EntityAttributeModifier modifier : Objects.requireNonNull(player.getAttributeInstance(attributeEntry)).getModifiers()) {
-            RoguelikeMC.LOGGER.debug("Removing attribute " + modifier.id() + " from upgrade effect");
+            RoguelikeMC.LOGGER.debug("Removing attribute {} from upgrade effect", modifier.id());
             if (modifier.id().toString().startsWith(id.toString())) {
                 Objects.requireNonNull(player.getAttributeInstance(attributeEntry)).removeModifier(modifier);
             }
@@ -231,9 +169,10 @@ public class RoguelikeMCUpgradeUtil {
                 .map(RoguelikeMCUpgradeManager::getUpgrade)
                 .filter(Objects::nonNull)
                 .toList();
-        if (allUpgrades.isEmpty()) allUpgrades = RoguelikeMCUpgradeManager.getUpgrades().stream().toList();
+        if (allUpgrades.isEmpty()) {
+            allUpgrades = RoguelikeMCUpgradeManager.getUpgrades().stream().toList();
+        }
 
-        // Filter Unique Upgrades which player already owns
         Set<String> ownedUniqueIds = playerData.getAllUpgrades().stream()
                 .filter(RoguelikeMCUpgradeData::isUnique)
                 .map(RoguelikeMCUpgradeData::id)
@@ -243,9 +182,10 @@ public class RoguelikeMCUpgradeUtil {
                 .filter(data -> !(data.isUnique() && ownedUniqueIds.contains(data.id())))
                 .toList();
 
-        if (available.isEmpty()) return List.of();
+        if (available.isEmpty()) {
+            return List.of();
+        }
 
-        // Randomly select by tier rate
         Map<String, Integer> tierWeights = Map.of(
                 "legendary", 5,
                 "epic", 15,
@@ -261,29 +201,28 @@ public class RoguelikeMCUpgradeUtil {
             }
         }
 
-        // Pick 3 random upgrades from the weighted pool with at least one non-unique
         List<RoguelikeMCUpgradeData> chosen = new ArrayList<>();
-        Collections.shuffle(weightedPool);
         Set<String> selectedIds = new HashSet<>();
+        Random random = new Random();
 
         int tries = 0;
         while (chosen.size() < 3 && tries < 1000) {
             tries++;
-            RoguelikeMCUpgradeData candidate = weightedPool.get(new Random().nextInt(weightedPool.size()));
-            if (selectedIds.contains(candidate.id())) continue;
+            RoguelikeMCUpgradeData candidate = weightedPool.get(random.nextInt(weightedPool.size()));
+            if (selectedIds.contains(candidate.id())) {
+                continue;
+            }
             chosen.add(candidate);
             selectedIds.add(candidate.id());
         }
 
         if (chosen.stream().allMatch(RoguelikeMCUpgradeData::isUnique)) {
-            // Replace one unique upgrade with a non-unique one
             List<RoguelikeMCUpgradeData> nonUniquePool = available.stream()
                     .filter(upg -> !upg.isUnique() && !selectedIds.contains(upg.id()))
                     .toList();
 
             if (!nonUniquePool.isEmpty()) {
-                RoguelikeMCUpgradeData replacement = nonUniquePool.get(new Random().nextInt(nonUniquePool.size()));
-                chosen.set(0, replacement);
+                chosen.set(0, nonUniquePool.get(random.nextInt(nonUniquePool.size())));
             }
         }
 
@@ -291,21 +230,19 @@ public class RoguelikeMCUpgradeUtil {
     }
 
     public static void removeUpgrade(ServerPlayerEntity player, Identifier id, RoguelikeMCUpgradeData.ActionData upgradeAction) {
-        switch(upgradeAction.type()){
-            case "attribute" -> RoguelikeMCUpgradeUtil.removeUpgradeAttribute(player, id, upgradeAction.value());
-            case "effect" -> RoguelikeMCUpgradeUtil.removeUpgradeEffect(player, upgradeAction.value());
+        switch (upgradeAction.type()) {
+            case "attribute" -> removeUpgradeAttribute(player, id, upgradeAction.value());
+            case "effect" -> removeUpgradeEffect(player, upgradeAction.value());
             case "command" -> {
             }
-            case "event" -> RoguelikeMCUpgradeUtil.removeUpgradeEvent(player, upgradeAction.value());
-            default -> {
-                RoguelikeMC.LOGGER.warn("Unexpected value: " + upgradeAction.type());
-            }
+            case "event" -> removeUpgradeEvent(player, upgradeAction.value());
+            default -> RoguelikeMC.LOGGER.warn("Unexpected value: {}", upgradeAction.type());
         }
     }
 
     private static void applyUpgradeEvent(ServerPlayerEntity player, List<String> value, boolean isPermanent) {
         String eventType = value.getFirst();
-        switch(eventType){
+        switch (eventType) {
             case "allow_creative_flying" -> {
                 player.getAbilities().allowFlying = true;
                 player.sendAbilitiesUpdate();
@@ -322,16 +259,15 @@ public class RoguelikeMCUpgradeUtil {
                 try {
                     int slotIndex = Integer.parseInt(value.get(1));
                     String nbtString = value.get(2);
-                    NbtCompound nbt = !nbtString.isEmpty()?StringNbtReader.parse(nbtString):new NbtCompound();
-                    if (!player.getInventory().armor.get(slotIndex).isEmpty()) {
-                        if(!player.getInventory().armor.get(slotIndex).getItem().equals(ItemStack.fromNbtOrEmpty(player.getWorld().getRegistryManager(), nbt).getItem())){
-                            player.dropItem(player.getInventory().armor.get(slotIndex), false);
-                            player.sendMessage(Text.translatable("message.roguelikemc.drop_equipment"), false);
-                        }
+                    NbtCompound nbt = !nbtString.isEmpty() ? StringNbtReader.parse(nbtString) : new NbtCompound();
+                    if (!player.getInventory().armor.get(slotIndex).isEmpty()
+                            && !player.getInventory().armor.get(slotIndex).getItem().equals(ItemStack.fromNbtOrEmpty(player.getWorld().getRegistryManager(), nbt).getItem())) {
+                        player.dropItem(player.getInventory().armor.get(slotIndex), false);
+                        player.sendMessage(Text.translatable("message.roguelikemc.drop_equipment"), false);
                     }
                     player.getInventory().armor.set(slotIndex, ItemStack.fromNbtOrEmpty(player.getWorld().getRegistryManager(), nbt));
                 } catch (CommandSyntaxException e) {
-                    RoguelikeMC.LOGGER.warn(e.getClass() + ":" + e.getMessage());
+                    RoguelikeMC.LOGGER.warn("{}:{}", e.getClass(), e.getMessage());
                 }
             }
             case "effect_mobs" -> {
@@ -340,26 +276,26 @@ public class RoguelikeMCUpgradeUtil {
                     RegistryEntry.Reference<StatusEffect> effectEntry = Registries.STATUS_EFFECT.getEntry(effectIdentifier)
                             .orElseThrow();
                     World world = player.getWorld();
-                    if (world.isClient()) return;
+                    if (world.isClient()) {
+                        return;
+                    }
                     Box area = new Box(player.getBlockPos()).expand(Double.parseDouble(value.get(3)));
                     for (LivingEntity entity : world.getEntitiesByClass(LivingEntity.class, area, e -> !e.isPlayer() && e instanceof HostileEntity)) {
                         entity.addStatusEffect(new StatusEffectInstance(effectEntry, 40, Integer.parseInt(value.get(2)), false, true, false));
                     }
                 } catch (Exception e) {
-                    RoguelikeMC.LOGGER.warn(e.getClass() + ":" + e.getMessage());
+                    RoguelikeMC.LOGGER.warn("{}:{}", e.getClass(), e.getMessage());
                 }
             }
             case "add_loot_table", "provoked" -> {
             }
-            default -> {
-                RoguelikeMC.LOGGER.warn("Unexpected eventType value: " + eventType);
-            }
+            default -> RoguelikeMC.LOGGER.warn("Unexpected eventType value: {}", eventType);
         }
     }
 
     private static void removeUpgradeEvent(ServerPlayerEntity player, List<String> value) {
         String eventType = value.getFirst();
-        switch(eventType){
+        switch (eventType) {
             case "allow_creative_flying" -> {
                 player.getAbilities().allowFlying = false;
                 player.sendAbilitiesUpdate();
@@ -378,69 +314,119 @@ public class RoguelikeMCUpgradeUtil {
             }
             case "effect_mobs", "add_loot_table", "provoked" -> {
             }
-            default -> {
-                RoguelikeMC.LOGGER.warn("Unexpected eventType value: " + eventType);
-            }
+            default -> RoguelikeMC.LOGGER.warn("Unexpected eventType value: {}", eventType);
         }
     }
 
     public static void tickSetEquipment(MinecraftServer minecraftServer) {
-        minecraftServer.getPlayerManager().getPlayerList().forEach(player -> {
-            RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-            playerData.temporaryUpgrades.forEach(upgrade -> {
-                upgrade.actions().forEach(action -> {
-                    if (action.type().equals("event") && action.value().get(0).equals("set_equipment") && action.value().get(2).isEmpty()) {
-                        RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), false);
-                    }
-                });
-            });
-            playerData.permanentUpgrades.forEach(upgrade -> {
-                upgrade.actions().forEach(action -> {
-                    if (action.type().equals("event") && action.value().get(0).equals("set_equipment") && action.value().get(2).isEmpty()) {
-                        RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), true);
-                    }
-                });
-            });
-        });
+        forEachPlayerAction(
+                minecraftServer,
+                action -> action.type().equals("event")
+                        && action.value().getFirst().equals("set_equipment")
+                        && action.value().get(2).isEmpty(),
+                (player, upgrade, action) -> applyUpgradeEvent(player, action.value(), upgrade.isPermanent())
+        );
     }
 
     public static void tickEffectToMobEntity(MinecraftServer minecraftServer) {
-        minecraftServer.getPlayerManager().getPlayerList().forEach(player -> {
-            RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-            playerData.temporaryUpgrades.forEach(upgrade -> {
-                upgrade.actions().forEach(action -> {
-                    if (action.type().equals("event") && action.value().getFirst().equals("effect_mobs")) {
-                        RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), false);
-                    }
-                });
-            });
-            playerData.permanentUpgrades.forEach(upgrade -> {
-                upgrade.actions().forEach(action -> {
-                    if (action.type().equals("event") && action.value().getFirst().equals("effect_mobs")) {
-                        RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), true);
-                    }
-                });
-            });
-        });
+        forEachPlayerAction(
+                minecraftServer,
+                action -> action.type().equals("event") && action.value().getFirst().equals("effect_mobs"),
+                (player, upgrade, action) -> applyUpgradeEvent(player, action.value(), upgrade.isPermanent())
+        );
     }
 
     public static void tickEnableCreativeFly(MinecraftServer minecraftServer) {
+        forEachPlayerAction(
+                minecraftServer,
+                action -> action.type().equals("event") && action.value().getFirst().equals("allow_creative_flying"),
+                (player, upgrade, action) -> applyUpgradeEvent(player, action.value(), upgrade.isPermanent())
+        );
+    }
+
+    private static void applyUpgradeAction(ServerPlayerEntity player, RoguelikeMCUpgradeData upgrade, RoguelikeMCUpgradeData.ActionData action) {
+        switch (action.type()) {
+            case "attribute" -> addUpgradeAttribute(player, upgrade.id(), action.value(), upgrade.isPermanent());
+            case "effect" -> applyUpgradeEffect(player, action.value(), upgrade.isPermanent());
+            case "command" -> applyCommandEffect(player, action.value(), upgrade.isPermanent());
+            case "event" -> applyUpgradeEvent(player, action.value(), upgrade.isPermanent());
+            default -> RoguelikeMC.LOGGER.warn("Unknown action type: {}", action.type());
+        }
+    }
+
+    private static void applyJoinUpgradeAction(ServerPlayerEntity player, RoguelikeMCUpgradeData upgrade, RoguelikeMCUpgradeData.ActionData action) {
+        switch (action.type()) {
+            case "attribute" -> addUpgradeAttribute(player, upgrade.id(), action.value(), upgrade.isPermanent());
+            case "effect", "event", "command" -> {
+            }
+            default -> RoguelikeMC.LOGGER.warn("Unknown action type: {}", action.type());
+        }
+    }
+
+    private static void forEachUpgradeAction(RoguelikeMCUpgradeData upgrade, Consumer<RoguelikeMCUpgradeData.ActionData> consumer) {
+        upgrade.actions().forEach(consumer);
+    }
+
+    private static void forEachPlayerAction(
+            MinecraftServer minecraftServer,
+            Predicate<RoguelikeMCUpgradeData.ActionData> filter,
+            PlayerUpgradeActionConsumer consumer
+    ) {
         minecraftServer.getPlayerManager().getPlayerList().forEach(player -> {
             RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-            playerData.temporaryUpgrades.forEach(upgrade -> {
-                upgrade.actions().forEach(action -> {
-                    if (action.type().equals("event") && action.value().getFirst().equals("allow_creative_flying")) {
-                        RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), false);
-                    }
-                });
-            });
-            playerData.permanentUpgrades.forEach(upgrade -> {
-                upgrade.actions().forEach(action -> {
-                    if (action.type().equals("event") && action.value().getFirst().equals("allow_creative_flying")) {
-                        RoguelikeMCUpgradeUtil.applyUpgradeEvent(player, action.value(), true);
-                    }
-                });
-            });
+            forEachUpgradeCollection(player, playerData.temporaryUpgrades, filter, consumer);
+            forEachUpgradeCollection(player, playerData.permanentUpgrades, filter, consumer);
         });
+    }
+
+    private static void forEachUpgradeCollection(
+            ServerPlayerEntity player,
+            Collection<RoguelikeMCUpgradeData> upgrades,
+            Predicate<RoguelikeMCUpgradeData.ActionData> filter,
+            PlayerUpgradeActionConsumer consumer
+    ) {
+        upgrades.forEach(upgrade -> forEachUpgradeAction(upgrade, action -> {
+            if (filter.test(action)) {
+                consumer.accept(player, upgrade, action);
+            }
+        }));
+    }
+
+    private static String getSummonedEntityType(String command) {
+        String[] parts = command.split(" ");
+        return parts.length > 1 ? parts[1] : "";
+    }
+
+    private static String applyCatVariant(String command, MinecraftServer server) {
+        Optional<RegistryEntry.Reference<CatVariant>> variantEntry = Registries.CAT_VARIANT.getRandom(server.getOverworld().getRandom());
+        if (variantEntry.isEmpty()) {
+            return command;
+        }
+
+        String variant = Objects.requireNonNull(Registries.CAT_VARIANT.getId(variantEntry.get().value())).toString();
+        return appendNbtTag(command, String.format("variant:\"%s\"", variant));
+    }
+
+    private static String applyHorseVariant(String command, ServerPlayerEntity player) {
+        int color = player.getRandom().nextInt(7);
+        int style = player.getRandom().nextInt(5);
+        int variant = color | (style << 8);
+        return appendNbtTag(command, String.format("Variant:%d", variant));
+    }
+
+    private static String appendNbtTag(String command, String tag) {
+        int nbtStart = command.indexOf('{');
+        if (nbtStart != -1) {
+            String beforeNBT = command.substring(0, nbtStart + 1);
+            String afterNBT = command.substring(nbtStart + 1);
+            return afterNBT.isEmpty() ? beforeNBT + tag + "}" : beforeNBT + tag + "," + afterNBT;
+        }
+
+        return command + " {" + tag + "}";
+    }
+
+    @FunctionalInterface
+    private interface PlayerUpgradeActionConsumer {
+        void accept(ServerPlayerEntity player, RoguelikeMCUpgradeData upgrade, RoguelikeMCUpgradeData.ActionData action);
     }
 }
