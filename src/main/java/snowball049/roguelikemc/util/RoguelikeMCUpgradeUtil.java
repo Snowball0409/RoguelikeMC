@@ -357,9 +357,24 @@ public class RoguelikeMCUpgradeUtil {
     private static void applyJoinUpgradeAction(ServerPlayerEntity player, RoguelikeMCUpgradeData upgrade, RoguelikeMCUpgradeData.ActionData action) {
         switch (action.type()) {
             case "attribute" -> addUpgradeAttribute(player, upgrade.id(), action.value(), upgrade.isPermanent());
-            case "effect", "event", "command" -> {
+            case "event" -> applyJoinUpgradeEvent(player, action.value(), upgrade.isPermanent());
+            case "effect", "command" -> {
             }
             default -> RoguelikeMC.LOGGER.warn("Unknown action type: {}", action.type());
+        }
+    }
+
+    private static void applyJoinUpgradeEvent(ServerPlayerEntity player, List<String> value, boolean isPermanent) {
+        if (value.isEmpty()) {
+            return;
+        }
+
+        if ("allow_creative_flying".equals(value.getFirst())) {
+            player.getAbilities().allowFlying = true;
+            if (!player.isOnGround()) {
+                player.getAbilities().flying = true;
+            }
+            player.sendAbilitiesUpdate();
         }
     }
 
