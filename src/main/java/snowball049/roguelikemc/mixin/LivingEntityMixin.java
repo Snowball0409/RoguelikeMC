@@ -42,8 +42,12 @@ public class LivingEntityMixin {
 
         if (stageIndex >= 0 && playerData.currentGameStage < stageIndex + 1) {
             playerData.currentGameStage = stageIndex + 1;
-            player.sendMessage(Text.translatable("message.roguelikemc.pass_game_stage").append(entity.getType().getName()), false);
-            ServerPlayNetworking.send(player, new RefreshCurrentBossStageS2CPayload(RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.get(playerData.currentGameStage)));
+            if (playerData.currentGameStage >= RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.size()) {
+                ServerPlayNetworking.send(player, new RefreshCurrentBossStageS2CPayload("none"));
+            }else{
+                player.sendMessage(Text.translatable("message.roguelikemc.pass_game_stage").append(entity.getType().getName()), false);
+                ServerPlayNetworking.send(player, new RefreshCurrentBossStageS2CPayload(RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.get(playerData.currentGameStage)));
+            }
         }
     }
 

@@ -39,7 +39,7 @@ public class RoguelikeMCCommonConfig {
     public double decayInventoryPercentage = 0.6;
     public String decayItem = "minecraft:rotten_flesh";
     public List<Integer> decayItemAmountMinMax = List.of(1, 3);
-    public List<String> gameStageEntities = List.of("minecraft:wither", "minecraft:ender_dragon", "none");
+    public List<String> gameStageEntities = List.of("minecraft:wither", "minecraft:ender_dragon");
     public List<String> bannedUpgrades = List.of();
     public double gameStageDecayPercentage = 0.9;
 
