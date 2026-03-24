@@ -10,6 +10,7 @@ import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 import snowball049.roguelikemc.data.RoguelikeMCClientData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
+import snowball049.roguelikemc.gui.RoguelikeMCDrawScreen;
 import snowball049.roguelikemc.gui.RoguelikeMCScreen;
 import snowball049.roguelikemc.network.packet.RefreshCurrentBossStageS2CPayload;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
@@ -18,6 +19,7 @@ import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
 
 public class RoguelikeMCClient implements ClientModInitializer {
 	private static KeyBinding openGuiKey;
+	private static KeyBinding openDrawGuiKey;
 	private static final RoguelikeMCScreen currentScreen = new RoguelikeMCScreen();
 
 	@Override
@@ -29,10 +31,19 @@ public class RoguelikeMCClient implements ClientModInitializer {
 				GLFW.GLFW_KEY_G,
 				"category.roguelikemc.gui"
 		));
+		openDrawGuiKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+				"key.roguelikemc.open_draw_gui",
+				InputUtil.Type.KEYSYM,
+				GLFW.GLFW_KEY_H,
+				"category.roguelikemc.gui"
+		));
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (openGuiKey.wasPressed()) {
 				client.setScreen(currentScreen);
+			}
+			if (openDrawGuiKey.wasPressed()) {
+				client.setScreen(new RoguelikeMCDrawScreen());
 			}
 		});
 
@@ -60,5 +71,13 @@ public class RoguelikeMCClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentBossStageS2CPayload.ID, (payload, context) -> {
 			RoguelikeMCClientData.INSTANCE.nextBoss = Identifier.tryParse(payload.nextBoss());
 		});
+	}
+
+	public static KeyBinding getOpenGuiKey() {
+		return openGuiKey;
+	}
+
+	public static KeyBinding getOpenDrawGuiKey() {
+		return openDrawGuiKey;
 	}
 }
