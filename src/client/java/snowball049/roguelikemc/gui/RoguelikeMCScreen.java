@@ -6,7 +6,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
@@ -26,15 +25,21 @@ import java.util.Optional;
 @Environment(EnvType.CLIENT)
 public class RoguelikeMCScreen extends Screen {
     private static final Identifier BACKGROUND_TEXTURE = Identifier.tryParse("roguelikemc", "textures/gui/upgrade_bg_2.png");
+    private static final Identifier DRAW_BUTTON_TEXTURE = Identifier.tryParse("roguelikemc", "textures/gui/draw.png");
+    private static final Identifier BOSS_ICON_TEXTURE = Identifier.tryParse("roguelikemc", "textures/gui/boss_icon.png");
 
     private static final int GUI_WIDTH = 360;
     private static final int GUI_HEIGHT = 210;
     private static final int CONTENT_PADDING = 15;
-    private static final int BOTTOM_ROW_HEIGHT = 20;
     private static final int SECTION_SPACING = 15;
     private static final int SECTION_WIDTH = (GUI_WIDTH - 3 * SECTION_SPACING) / 2;
+    private static final int TOP_ICON_SIZE = 20;
+    private static final int TOP_ICON_SPACING = 4;
 
-    private ButtonWidget openDrawScreenButton;
+    private int drawButtonX;
+    private int drawButtonY;
+    private int bossHintX;
+    private int bossHintY;
 
     public RoguelikeMCScreen() {
         super(Text.literal("RoguelikeMC Upgrade"));
@@ -46,18 +51,10 @@ public class RoguelikeMCScreen extends Screen {
         int guiLeft = (width - GUI_WIDTH) / 2;
         int guiTop = (height - GUI_HEIGHT) / 2;
 
-        openDrawScreenButton = ButtonWidget.builder(
-                        Text.translatable("button.roguelikemc.draw_upgrades"),
-                        button -> client.setScreen(new RoguelikeMCDrawScreen(this))
-                )
-                .dimensions(
-                        guiLeft + CONTENT_PADDING,
-                        getBottomRowY(guiTop),
-                        SECTION_WIDTH,
-                        BOTTOM_ROW_HEIGHT
-                )
-                .build();
-        addDrawableChild(openDrawScreenButton);
+        drawButtonX = guiLeft + GUI_WIDTH - CONTENT_PADDING - TOP_ICON_SIZE - 30;
+        drawButtonY = guiTop + CONTENT_PADDING - 4;
+        bossHintX = drawButtonX - TOP_ICON_SPACING - TOP_ICON_SIZE;
+        bossHintY = drawButtonY;
     }
 
     @Override
@@ -91,36 +88,16 @@ public class RoguelikeMCScreen extends Screen {
     private void renderContent(DrawContext context, int x, int y, int mouseX, int mouseY) {
         renderEffectsSection(context, x + SECTION_SPACING - 2, y, Text.translatable("gui.roguelikemc.temporary_upgrade"), RoguelikeMCClientData.INSTANCE.temporaryUpgrades, mouseX, mouseY);
         renderEffectsSection(context, x + SECTION_WIDTH + SECTION_SPACING + 1, y, Text.translatable("gui.roguelikemc.permanent_upgrade"), RoguelikeMCClientData.INSTANCE.permanentUpgrades, mouseX, mouseY);
-        renderBossHint(context, x + SECTION_WIDTH + SECTION_SPACING, getBottomRowY(y - CONTENT_PADDING), mouseX, mouseY);
-        openDrawScreenButton.render(context, mouseX, mouseY, 0);
+        renderBossHint(context, mouseX, mouseY);
+        renderDrawButton(context, mouseX, mouseY);
     }
 
-    private void renderBossHint(DrawContext context, int x, int y, int mouseX, int mouseY) {
-        context.fill(x, y, x + SECTION_WIDTH, y + 20, 0x80303030);
-        context.drawBorder(x, y, SECTION_WIDTH, 20, 0xFF000000);
-        context.drawTexture(
-                Identifier.tryParse("roguelikemc", "textures/gui/boss_icon.png"),
-                x + 3,
-                y,
-                0,
-                0,
-                20,
-                20,
-                20,
-                20
-        );
-        context.getMatrices().scale(0.85f, 0.85f, 1.0f);
-        context.drawText(
-                textRenderer,
-                bossHintText(),
-                Math.round((x + 26) / 0.85f),
-                Math.round((y + 7) / 0.85f),
-                0xFFFFFF,
-                true
-        );
-        context.getMatrices().scale(1.0f / 0.85f, 1.0f / 0.85f, 1.0f);
+    private void renderBossHint(DrawContext context, int mouseX, int mouseY) {
+        boolean hovered = isMouseOver(mouseX, mouseY, bossHintX, bossHintY, TOP_ICON_SIZE, TOP_ICON_SIZE);
+        context.fill(bossHintX, bossHintY, bossHintX + TOP_ICON_SIZE, bossHintY + TOP_ICON_SIZE, hovered ? 0x70403030 : 0x50303030);
+        context.drawTexture(BOSS_ICON_TEXTURE, bossHintX, bossHintY, 0, 0, TOP_ICON_SIZE, TOP_ICON_SIZE, TOP_ICON_SIZE, TOP_ICON_SIZE);
 
-        if (isMouseOver(mouseX, mouseY, x, y, SECTION_WIDTH, 20)) {
+        if (hovered) {
             Optional<EntityType<?>> nextBoss = Registries.ENTITY_TYPE.getOrEmpty(RoguelikeMCClientData.INSTANCE.nextBoss);
             List<MutableText> bossName = nextBoss.map(entityType ->
                             List.of(
@@ -132,6 +109,16 @@ public class RoguelikeMCScreen extends Screen {
                                     Text.translatable("message.roguelikemc.boss_not_found").formatted(Formatting.GREEN)
                             ));
             context.drawTooltip(textRenderer, new ArrayList<>(bossName), mouseX, mouseY);
+        }
+    }
+
+    private void renderDrawButton(DrawContext context, int mouseX, int mouseY) {
+        boolean hovered = isMouseOver(mouseX, mouseY, drawButtonX, drawButtonY, TOP_ICON_SIZE, TOP_ICON_SIZE);
+        context.fill(drawButtonX, drawButtonY, drawButtonX + TOP_ICON_SIZE, drawButtonY + TOP_ICON_SIZE, hovered ? 0x50FFFFFF : 0x30000000);
+        context.drawTexture(DRAW_BUTTON_TEXTURE, drawButtonX, drawButtonY, 0, 0, TOP_ICON_SIZE, TOP_ICON_SIZE, TOP_ICON_SIZE, TOP_ICON_SIZE);
+
+        if (hovered) {
+            context.drawTooltip(textRenderer, Text.translatable("button.roguelikemc.draw_upgrades"), mouseX, mouseY);
         }
     }
 
@@ -220,10 +207,6 @@ public class RoguelikeMCScreen extends Screen {
         return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
 
-    private int getBottomRowY(int guiTop) {
-        return guiTop + GUI_HEIGHT - CONTENT_PADDING - BOTTOM_ROW_HEIGHT;
-    }
-
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (MinecraftClient.getInstance().options.inventoryKey.matchesKey(keyCode, scanCode)
@@ -232,5 +215,16 @@ public class RoguelikeMCScreen extends Screen {
             return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (button == 0 && isMouseOver((int) mouseX, (int) mouseY, drawButtonX, drawButtonY, TOP_ICON_SIZE, TOP_ICON_SIZE)) {
+            if (client != null) {
+                client.setScreen(new RoguelikeMCDrawScreen(this));
+            }
+            return true;
+        }
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 }

@@ -32,6 +32,7 @@ public class RoguelikeMCDrawScreen extends Screen {
     private static final int HEADER_GAP = 8;
     private static final int CONTENT_GAP = 14;
     private static final int FOOTER_GAP = 12;
+    private static final int ERROR_DISPLAY_TICKS = 60;
 
     private final ButtonWidget[] optionButtons = new ButtonWidget[OPTION_COUNT];
     private final Screen previousScreen;
@@ -44,6 +45,8 @@ public class RoguelikeMCDrawScreen extends Screen {
     private int titleY;
     private int pointY;
     private int hintY;
+    private int errorMessageTicks;
+    private Text errorMessage;
 
     public RoguelikeMCDrawScreen(Screen previousScreen) {
         super(Text.literal("RoguelikeMC Draw"));
@@ -110,6 +113,8 @@ public class RoguelikeMCDrawScreen extends Screen {
             renderUpgradeCard(context, optionButtons[i], i, mouseX, mouseY);
         }
 
+        renderStatusMessage(context);
+
 //        Text hint = RoguelikeMCClientData.INSTANCE.currentOptions.isEmpty()
 //                ? Text.literal("Draw upgrades to reveal three choices").formatted(Formatting.GRAY)
 //                : Text.literal("Choose one upgrade").formatted(Formatting.GRAY);
@@ -120,6 +125,12 @@ public class RoguelikeMCDrawScreen extends Screen {
     public void tick() {
         super.tick();
         updateButtonState();
+        if (errorMessageTicks > 0) {
+            errorMessageTicks--;
+            if (errorMessageTicks == 0) {
+                errorMessage = null;
+            }
+        }
     }
 
     @Override
@@ -250,9 +261,18 @@ public class RoguelikeMCDrawScreen extends Screen {
     }
 
     private void requestOptions() {
-        if (RoguelikeMCClientData.INSTANCE.currentOptions.isEmpty()) {
-            ClientPlayNetworking.send(new RefreshUpgradeOptionC2SPayload());
+        if (!RoguelikeMCClientData.INSTANCE.currentOptions.isEmpty()) {
+            return;
         }
+
+        if (RoguelikeMCClientData.INSTANCE.currentPoints <= 0) {
+            showErrorMessage(Text.translatable("message.roguelikemc.not_enough_upgrade_point"));
+            return;
+        }
+
+        errorMessage = null;
+        errorMessageTicks = 0;
+        ClientPlayNetworking.send(new RefreshUpgradeOptionC2SPayload());
     }
 
     private void selectUpgrade(int index) {
@@ -290,5 +310,22 @@ public class RoguelikeMCDrawScreen extends Screen {
             return;
         }
         close();
+    }
+
+    private void renderStatusMessage(DrawContext context) {
+        if (errorMessage == null) {
+            return;
+        }
+
+        Text displayText = errorMessage.copy().formatted(Formatting.RED);
+        int maxTextWidth = Math.max(80, width - HORIZONTAL_MARGIN * 4);
+        int textWidth = Math.min(maxTextWidth, textRenderer.getWidth(displayText));
+        int textX = width / 2 - textWidth / 2;
+        context.drawTextWrapped(textRenderer, displayText, textX, hintY, maxTextWidth, 0xFF5555);
+    }
+
+    private void showErrorMessage(Text message) {
+        errorMessage = message;
+        errorMessageTicks = ERROR_DISPLAY_TICKS;
     }
 }
