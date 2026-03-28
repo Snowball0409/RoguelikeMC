@@ -43,7 +43,7 @@ public class RoguelikeMCClient implements ClientModInitializer {
 				client.setScreen(currentScreen);
 			}
 			if (openDrawGuiKey.wasPressed()) {
-				client.setScreen(new RoguelikeMCDrawScreen());
+				client.setScreen(new RoguelikeMCDrawScreen(null));
 			}
 		});
 

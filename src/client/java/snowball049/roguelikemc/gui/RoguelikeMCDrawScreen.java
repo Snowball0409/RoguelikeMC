@@ -10,6 +10,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import org.lwjgl.glfw.GLFW;
 import snowball049.roguelikemc.RoguelikeMCClient;
 import snowball049.roguelikemc.data.RoguelikeMCClientData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
@@ -33,6 +34,7 @@ public class RoguelikeMCDrawScreen extends Screen {
     private static final int FOOTER_GAP = 12;
 
     private final ButtonWidget[] optionButtons = new ButtonWidget[OPTION_COUNT];
+    private final Screen previousScreen;
     private ButtonWidget refreshButton;
 
     private int cardWidth;
@@ -43,8 +45,9 @@ public class RoguelikeMCDrawScreen extends Screen {
     private int pointY;
     private int hintY;
 
-    public RoguelikeMCDrawScreen() {
+    public RoguelikeMCDrawScreen(Screen previousScreen) {
         super(Text.literal("RoguelikeMC Draw"));
+        this.previousScreen = previousScreen;
     }
 
     @Override
@@ -91,6 +94,11 @@ public class RoguelikeMCDrawScreen extends Screen {
     }
 
     @Override
+    public boolean shouldCloseOnEsc() {
+        return false;
+    }
+
+    @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         renderOverlayBackground(context);
         super.render(context, mouseX, mouseY, delta);
@@ -117,8 +125,15 @@ public class RoguelikeMCDrawScreen extends Screen {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         MinecraftClient client = MinecraftClient.getInstance();
-        if (client.options.inventoryKey.matchesKey(keyCode, scanCode)
-                || RoguelikeMCClient.getOpenDrawGuiKey().matchesKey(keyCode, scanCode)) {
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+            returnToPreviousScreen();
+            return true;
+        }
+        if (RoguelikeMCClient.getOpenDrawGuiKey().matchesKey(keyCode, scanCode)) {
+            returnToPreviousScreen();
+            return true;
+        }
+        if (client.options.inventoryKey.matchesKey(keyCode, scanCode)) {
             close();
             return true;
         }
@@ -248,7 +263,7 @@ public class RoguelikeMCDrawScreen extends Screen {
         RoguelikeMCUpgradeData selected = RoguelikeMCClientData.INSTANCE.currentOptions.get(index);
         ClientPlayNetworking.send(new SelectUpgradeOptionC2SPayload(selected));
         RoguelikeMCClientData.INSTANCE.currentOptions.clear();
-        close();
+        returnToPreviousScreen();
     }
 
     private void updateButtonState() {
@@ -267,5 +282,13 @@ public class RoguelikeMCDrawScreen extends Screen {
             case "legendary" -> Formatting.GOLD;
             default -> Formatting.WHITE;
         };
+    }
+
+    private void returnToPreviousScreen() {
+        if (client != null && previousScreen != null) {
+            client.setScreen(previousScreen);
+            return;
+        }
+        close();
     }
 }

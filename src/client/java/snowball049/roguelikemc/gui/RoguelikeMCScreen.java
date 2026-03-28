@@ -6,6 +6,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
@@ -24,16 +25,39 @@ import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class RoguelikeMCScreen extends Screen {
-    private static final Identifier BACKGROUND_TEXTURE = Identifier.tryParse("roguelikemc", "textures/gui/upgrade_bg.png");
+    private static final Identifier BACKGROUND_TEXTURE = Identifier.tryParse("roguelikemc", "textures/gui/upgrade_bg_2.png");
 
     private static final int GUI_WIDTH = 360;
-    private static final int GUI_HEIGHT = 200;
+    private static final int GUI_HEIGHT = 210;
     private static final int CONTENT_PADDING = 15;
+    private static final int BOTTOM_ROW_HEIGHT = 20;
     private static final int SECTION_SPACING = 15;
     private static final int SECTION_WIDTH = (GUI_WIDTH - 3 * SECTION_SPACING) / 2;
 
+    private ButtonWidget openDrawScreenButton;
+
     public RoguelikeMCScreen() {
         super(Text.literal("RoguelikeMC Upgrade"));
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        int guiLeft = (width - GUI_WIDTH) / 2;
+        int guiTop = (height - GUI_HEIGHT) / 2;
+
+        openDrawScreenButton = ButtonWidget.builder(
+                        Text.translatable("button.roguelikemc.draw_upgrades"),
+                        button -> client.setScreen(new RoguelikeMCDrawScreen(this))
+                )
+                .dimensions(
+                        guiLeft + CONTENT_PADDING,
+                        getBottomRowY(guiTop),
+                        SECTION_WIDTH,
+                        BOTTOM_ROW_HEIGHT
+                )
+                .build();
+        addDrawableChild(openDrawScreenButton);
     }
 
     @Override
@@ -65,10 +89,10 @@ public class RoguelikeMCScreen extends Screen {
     }
 
     private void renderContent(DrawContext context, int x, int y, int mouseX, int mouseY) {
-        renderEffectsSection(context, x, y, Text.translatable("gui.roguelikemc.temporary_upgrade"), RoguelikeMCClientData.INSTANCE.temporaryUpgrades, mouseX, mouseY);
-        renderEffectsSection(context, x + SECTION_WIDTH + SECTION_SPACING, y, Text.translatable("gui.roguelikemc.permanent_upgrade"), RoguelikeMCClientData.INSTANCE.permanentUpgrades, mouseX, mouseY);
-        renderPointSection(context, x, y + GUI_HEIGHT - CONTENT_PADDING - 25);
-        renderBossHint(context, x + SECTION_WIDTH + SECTION_SPACING, y + GUI_HEIGHT - CONTENT_PADDING - 25, mouseX, mouseY);
+        renderEffectsSection(context, x + SECTION_SPACING - 2, y, Text.translatable("gui.roguelikemc.temporary_upgrade"), RoguelikeMCClientData.INSTANCE.temporaryUpgrades, mouseX, mouseY);
+        renderEffectsSection(context, x + SECTION_WIDTH + SECTION_SPACING + 1, y, Text.translatable("gui.roguelikemc.permanent_upgrade"), RoguelikeMCClientData.INSTANCE.permanentUpgrades, mouseX, mouseY);
+        renderBossHint(context, x + SECTION_WIDTH + SECTION_SPACING, getBottomRowY(y - CONTENT_PADDING), mouseX, mouseY);
+        openDrawScreenButton.render(context, mouseX, mouseY, 0);
     }
 
     private void renderBossHint(DrawContext context, int x, int y, int mouseX, int mouseY) {
@@ -120,39 +144,15 @@ public class RoguelikeMCScreen extends Screen {
         return Text.translatable("message.roguelikemc.boss_not_found").formatted(Formatting.GREEN);
     }
 
-    private void renderPointSection(DrawContext context, int x, int y) {
-        context.fill(x, y, x + SECTION_WIDTH, y + 20, 0x80303030);
-        context.drawBorder(x, y, SECTION_WIDTH, 20, 0xFF000000);
-        context.drawTexture(
-                Identifier.tryParse("roguelikemc", "textures/item/upgrade_point_orb.png"),
-                x + 2,
-                y + 5,
-                0,
-                0,
-                10,
-                10,
-                10,
-                10
-        );
-
-        context.getMatrices().scale(0.85f, 0.85f, 1.0f);
-        context.drawText(
-                textRenderer,
-                Text.translatable("gui.roguelikemc.upgrade_points").append(Text.of(String.valueOf(RoguelikeMCClientData.INSTANCE.currentPoints))),
-                Math.round((x + 13) / 0.85f),
-                Math.round((y + 7) / 0.85f),
-                0xD397FE,
-                true
-        );
-        context.getMatrices().scale(1.0f / 0.85f, 1.0f / 0.85f, 1.0f);
-    }
-
     private void renderEffectsSection(DrawContext context, int x, int y, Text title, List<RoguelikeMCUpgradeData> effects, int mouseX, int mouseY) {
-        context.drawCenteredTextWithShadow(textRenderer, title, x + SECTION_WIDTH / 2, y, 0xFFFFFF);
+//        context.drawCenteredTextWithShadow(textRenderer, title, x + SECTION_WIDTH / 2, y, 0xFFFFFF);
 
         int itemHeight = 20;
         int itemWidth = 20;
-        int itemPadding = 2;
+        int itemPaddingY = 2;
+        int itemPaddingX = 4;
+        int itemsPerRow = 5;
+        int offset = itemHeight - 4;
 
         Map<String, Pair<RoguelikeMCUpgradeData, Integer>> collapsed = collapseUpgrades(effects);
         int i = 0;
@@ -161,12 +161,11 @@ public class RoguelikeMCScreen extends Screen {
             RoguelikeMCUpgradeData effect = pair.getFirst();
             int count = pair.getSecond();
 
-            int itemY = y + CONTENT_PADDING + Math.floorMod(i, 6) * (itemHeight + itemPadding);
-            int itemX = x + Math.floorDiv(i, 6) * (itemWidth + itemPadding);
+            int itemX = x + Math.floorMod(i, itemsPerRow) * (itemWidth + itemPaddingX);
+            int itemY = y + CONTENT_PADDING + Math.floorDiv(i, itemsPerRow) * (itemHeight + itemPaddingY) + offset;
 
-            context.fill(itemX, itemY, itemX + itemWidth, itemY + itemHeight, 0xFF545454);
+            context.fill(itemX, itemY, itemX + itemWidth, itemY + itemHeight, 0x503A2414);
             context.drawTexture(Identifier.tryParse(effect.icon()), itemX, itemY, 0, 0, itemWidth, itemHeight, itemWidth, itemHeight);
-            context.drawBorder(itemX, itemY, itemWidth, itemHeight, 0xFFFFFFFF);
 
             if (count > 1) {
                 context.drawText(
@@ -219,6 +218,10 @@ public class RoguelikeMCScreen extends Screen {
 
     private boolean isMouseOver(int mouseX, int mouseY, int x, int y, int width, int height) {
         return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
+    }
+
+    private int getBottomRowY(int guiTop) {
+        return guiTop + GUI_HEIGHT - CONTENT_PADDING - BOTTOM_ROW_HEIGHT;
     }
 
     @Override
