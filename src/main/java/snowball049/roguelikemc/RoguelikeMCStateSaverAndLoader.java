@@ -1,23 +1,30 @@
 package snowball049.roguelikemc;
 
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
+import snowball049.roguelikemc.upgrade.UpgradeIds;
 
 import java.util.*;
 
 public class RoguelikeMCStateSaverAndLoader extends PersistentState {
 
     public HashMap<UUID, RoguelikeMCPlayerData> players = new HashMap<>();
+
+    private static final Codec<List<Identifier>> UPGRADE_ID_LIST_CODEC = Identifier.CODEC.listOf();
 
     private static final Type<RoguelikeMCStateSaverAndLoader> type = new Type<>(
       RoguelikeMCStateSaverAndLoader::new,
@@ -30,9 +37,9 @@ public class RoguelikeMCStateSaverAndLoader extends PersistentState {
         NbtCompound playersNbt = new NbtCompound();
         players.forEach((uuid, playerData) -> {
             NbtCompound playerNbt = new NbtCompound();
-            playerNbt.put("temporaryUpgrades", RoguelikeMCUpgradeData.CODEC.listOf().encodeStart(NbtOps.INSTANCE, playerData.temporaryUpgrades).getOrThrow());
-            playerNbt.put("permanentUpgrades", RoguelikeMCUpgradeData.CODEC.listOf().encodeStart(NbtOps.INSTANCE, playerData.permanentUpgrades).getOrThrow());
-            playerNbt.put("currentOptions", RoguelikeMCUpgradeData.CODEC.listOf().encodeStart(NbtOps.INSTANCE, playerData.currentOptions).getOrThrow());
+            playerNbt.put("temporaryUpgrades", encodeUpgradeIdList(playerData.temporaryUpgradeIds));
+            playerNbt.put("permanentUpgrades", encodeUpgradeIdList(playerData.permanentUpgradeIds));
+            playerNbt.put("currentOptions", encodeUpgradeIdList(playerData.currentOptionIds));
             playerNbt.putInt("currentKillHostile", playerData.currentKillHostile);
             playerNbt.putInt("upgradePoints", playerData.upgradePoints);
             playerNbt.putInt("currentLevelGain", playerData.currentLevelGain);
@@ -53,11 +60,9 @@ public class RoguelikeMCStateSaverAndLoader extends PersistentState {
         playersNbt.getKeys().forEach(key -> {
             RoguelikeMCPlayerData playerData = new RoguelikeMCPlayerData();
             NbtCompound playerNbt = playersNbt.getCompound(key);
-            NbtElement tempElement = playerNbt.get("temporaryUpgrades");
-            NbtElement permElement = playerNbt.get("permanentUpgrades");
-            playerData.temporaryUpgrades = new ArrayList<>(RoguelikeMCUpgradeData.CODEC.listOf().decode(NbtOps.INSTANCE, tempElement).result().map(Pair::getFirst).orElse(new ArrayList<>()));
-            playerData.permanentUpgrades = new ArrayList<>(RoguelikeMCUpgradeData.CODEC.listOf().decode(NbtOps.INSTANCE, permElement).result().map(Pair::getFirst).orElse(new ArrayList<>()));
-            playerData.currentOptions = new ArrayList<>(RoguelikeMCUpgradeData.CODEC.listOf().decode(NbtOps.INSTANCE, playerNbt.get("currentOptions")).result().map(Pair::getFirst).orElse(new ArrayList<>()));
+            playerData.temporaryUpgradeIds = decodeUpgradeIdList(playerNbt.get("temporaryUpgrades"));
+            playerData.permanentUpgradeIds = decodeUpgradeIdList(playerNbt.get("permanentUpgrades"));
+            playerData.currentOptionIds = decodeUpgradeIdList(playerNbt.get("currentOptions"));
             playerData.currentKillHostile = playerNbt.getInt("currentKillHostile");
             playerData.upgradePoints = playerNbt.getInt("upgradePoints");
             playerData.currentLevelGain = playerNbt.getInt("currentLevelGain");
@@ -69,6 +74,33 @@ public class RoguelikeMCStateSaverAndLoader extends PersistentState {
         });
 
         return state;
+    }
+
+    private static NbtElement encodeUpgradeIdList(List<Identifier> upgradeIds) {
+        return UPGRADE_ID_LIST_CODEC.encodeStart(NbtOps.INSTANCE, upgradeIds).getOrThrow();
+    }
+
+    private static List<Identifier> decodeUpgradeIdList(NbtElement element) {
+        if (element == null || element.getType() == NbtElement.END_TYPE) {
+            return new ArrayList<>();
+        }
+
+        if (element instanceof NbtList list && !list.isEmpty() && list.get(0) instanceof NbtString) {
+            return new ArrayList<>(UPGRADE_ID_LIST_CODEC
+                    .decode(NbtOps.INSTANCE, element)
+                    .result()
+                    .map(Pair::getFirst)
+                    .orElseGet(ArrayList::new));
+        }
+
+        return new ArrayList<>(RoguelikeMCUpgradeData.CODEC.listOf()
+                .decode(NbtOps.INSTANCE, element)
+                .result()
+                .map(Pair::getFirst)
+                .orElseGet(ArrayList::new)
+                .stream()
+                .map(UpgradeIds::fromUpgradeData)
+                .toList());
     }
 
     public static RoguelikeMCPlayerData getPlayerState(LivingEntity player) {

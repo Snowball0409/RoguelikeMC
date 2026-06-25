@@ -64,11 +64,11 @@ public class RoguelikeMCCommands {
                     RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
                     boolean removed;
                     if (upgrade.persistence() == UpgradePersistence.PERMANENT) {
-                        removed = playerData.permanentUpgrades.removeIf(u -> u.equals(RoguelikeMCUpgradeManager.getUpgrade(upgradeId)));
-                        ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(true, playerData.permanentUpgrades));
-                    }else {
-                        removed = playerData.temporaryUpgrades.removeIf(u -> u.equals(RoguelikeMCUpgradeManager.getUpgrade(upgradeId)));
-                        ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(false, playerData.temporaryUpgrades));
+                        removed = playerData.permanentUpgradeIds.removeIf(id -> id.equals(upgradeId));
+                        ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(true, playerData.getPermanentUpgrades()));
+                    } else {
+                        removed = playerData.temporaryUpgradeIds.removeIf(id -> id.equals(upgradeId));
+                        ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(false, playerData.getTemporaryUpgrades()));
                     }
                     if (removed) {
                         upgrade.actions().forEach(upgradeAction -> UpgradeApplier.removeUpgrade(player, upgrade, upgradeAction));
@@ -89,12 +89,12 @@ public class RoguelikeMCCommands {
             List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "player").stream().toList();
             players.forEach(player -> {
                 RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-                playerData.permanentUpgrades.forEach(upgrade -> upgrade.actions().forEach(upgradeAction ->
+                playerData.getPermanentUpgrades().forEach(upgrade -> upgrade.actions().forEach(upgradeAction ->
                         UpgradeApplier.removeUpgrade(player, upgrade, upgradeAction)));
-                playerData.temporaryUpgrades.forEach(upgrade -> upgrade.actions().forEach(upgradeAction ->
+                playerData.getTemporaryUpgrades().forEach(upgrade -> upgrade.actions().forEach(upgradeAction ->
                         UpgradeApplier.removeUpgrade(player, upgrade, upgradeAction)));
-                playerData.permanentUpgrades.clear();
-                playerData.temporaryUpgrades.clear();
+                playerData.permanentUpgradeIds.clear();
+                playerData.temporaryUpgradeIds.clear();
                 UpgradeApplier.syncOwnedUpgrades(player, playerData);
                 player.sendMessage(Text.of("You have been cleared all upgrades!"));
             });

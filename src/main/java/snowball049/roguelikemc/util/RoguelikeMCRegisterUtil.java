@@ -67,8 +67,8 @@ public class RoguelikeMCRegisterUtil {
 
         playerData.reset();
 
-        playerData.temporaryUpgrades.clear();
-        playerData.permanentUpgrades.forEach(upgrade -> UpgradeApplier.applyUpgrade(newPlayer, upgrade));
+        playerData.temporaryUpgradeIds.clear();
+        playerData.getPermanentUpgrades().forEach(upgrade -> UpgradeApplier.applyUpgrade(newPlayer, upgrade));
 
         if(playerData.keepEquipmentAfterDeath){
             for (int i = 0; i < oldPlayer.getInventory().armor.size(); i++) {
@@ -91,11 +91,11 @@ public class RoguelikeMCRegisterUtil {
 
         if (RoguelikeMCCommonConfig.INSTANCE.enableUpgradeSystem) {
             UpgradeApplier.syncOwnedUpgrades(player, playerData);
-            for (RoguelikeMCUpgradeData upgrade : playerData.currentOptions) {
+            for (RoguelikeMCUpgradeData upgrade : playerData.getCurrentOptions()) {
                 ServerPlayNetworking.send(player, new UpgradeOptionS2CPayload(upgrade));
             }
-            playerData.permanentUpgrades.forEach(upgrade -> UpgradeApplier.applyJoinUpgrade(player, upgrade));
-            playerData.temporaryUpgrades.forEach(upgrade -> UpgradeApplier.applyJoinUpgrade(player, upgrade));
+            playerData.getPermanentUpgrades().forEach(upgrade -> UpgradeApplier.applyJoinUpgrade(player, upgrade));
+            playerData.getTemporaryUpgrades().forEach(upgrade -> UpgradeApplier.applyJoinUpgrade(player, upgrade));
 
             // Send upgrade points to client
             ServerPlayNetworking.send(player, new SendUpgradePointsS2CPayload(playerData.upgradePoints));

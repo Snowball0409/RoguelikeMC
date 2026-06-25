@@ -36,8 +36,8 @@ public final class UpgradeTickService {
     ) {
         server.getPlayerManager().getPlayerList().forEach(player -> {
             RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-            forEachUpgradeCollection(player, playerData.temporaryUpgrades, filter, consumer);
-            forEachUpgradeCollection(player, playerData.permanentUpgrades, filter, consumer);
+            forEachUpgradeCollection(player, playerData.getTemporaryUpgrades(), filter, consumer);
+            forEachUpgradeCollection(player, playerData.getPermanentUpgrades(), filter, consumer);
         });
     }
 

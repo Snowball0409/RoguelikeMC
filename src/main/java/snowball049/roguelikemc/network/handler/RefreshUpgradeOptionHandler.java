@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.text.Text;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
+import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
@@ -28,8 +29,9 @@ public class RefreshUpgradeOptionHandler {
 
         List<RoguelikeMCUpgradeData> currentUpgrades = UpgradeRollService
                 .rollOptions(RoguelikeMCStateSaverAndLoader.getPlayerState(context.player()));
+        RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(context.player());
         for (RoguelikeMCUpgradeData upgrade : currentUpgrades) {
-            RoguelikeMCStateSaverAndLoader.getPlayerState(context.player()).currentOptions.add(upgrade);
+            playerData.currentOptionIds.add(RoguelikeMCUpgradeManager.idFor(upgrade));
             ServerPlayNetworking.send(context.player(), new UpgradeOptionS2CPayload(upgrade));
         }
     }

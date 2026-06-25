@@ -305,8 +305,7 @@ public class RoguelikeMCDrawScreen extends Screen {
             return;
         }
 
-        RoguelikeMCUpgradeData selected = RoguelikeMCClientData.INSTANCE.currentOptions.get(index);
-        ClientPlayNetworking.send(new SelectUpgradeOptionC2SPayload(selected));
+        ClientPlayNetworking.send(new SelectUpgradeOptionC2SPayload(index));
         RoguelikeMCClientData.INSTANCE.currentOptions.clear();
         returnToPreviousScreen();
     }

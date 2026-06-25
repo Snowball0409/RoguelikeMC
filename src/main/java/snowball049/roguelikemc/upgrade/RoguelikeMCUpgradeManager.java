@@ -52,7 +52,22 @@ public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloa
 
 
     public static RoguelikeMCUpgradeData getUpgrade(Identifier id) {
-        return UPGRADES.getOrDefault(id, null);
+        return UPGRADES.get(id);
+    }
+
+    public static Identifier idFor(RoguelikeMCUpgradeData upgrade) {
+        Identifier parsed = Identifier.tryParse(upgrade.id());
+        if (parsed != null && UPGRADES.containsKey(parsed)) {
+            return parsed;
+        }
+
+        for (Map.Entry<Identifier, RoguelikeMCUpgradeData> entry : UPGRADES.entrySet()) {
+            if (entry.getValue() == upgrade || entry.getValue().id().equals(upgrade.id())) {
+                return entry.getKey();
+            }
+        }
+
+        return UpgradeIds.fromUpgradeData(upgrade);
     }
 
     public static Collection<RoguelikeMCUpgradeData> getUpgrades() {

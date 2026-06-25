@@ -50,8 +50,8 @@ public final class UpgradeEventGameplayService {
     private static void forEachEventAction(MinecraftServer server, EventActionConsumer consumer) {
         server.getPlayerManager().getPlayerList().forEach(player -> {
             RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-            forEachUpgradeEvents(player, playerData.temporaryUpgrades, consumer);
-            forEachUpgradeEvents(player, playerData.permanentUpgrades, consumer);
+            forEachUpgradeEvents(player, playerData.getTemporaryUpgrades(), consumer);
+            forEachUpgradeEvents(player, playerData.getPermanentUpgrades(), consumer);
         });
     }
 
