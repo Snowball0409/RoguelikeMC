@@ -34,6 +34,7 @@ public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloa
                         .orElse(null);
 
                 if (upgrade != null) {
+                    upgrade.rarity();
                     if (!RoguelikeMCCommonConfig.INSTANCE.bannedUpgrades.contains(Identifier.of(id.getNamespace(), upgrade.id()).toString()))
                         allUpgrades.put(Identifier.of(id.getNamespace(), upgrade.id()), upgrade); // Add upgrade to the map
                 } else {

@@ -16,6 +16,7 @@ import snowball049.roguelikemc.data.RoguelikeMCClientData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
+import snowball049.roguelikemc.upgrade.UpgradePresentation;
 
 import java.util.List;
 
@@ -206,7 +207,7 @@ public class RoguelikeMCDrawScreen extends Screen {
         }
 
         RoguelikeMCUpgradeData upgrade = RoguelikeMCClientData.INSTANCE.currentOptions.get(index);
-        Formatting rarityColor = getColorByRarity(upgrade.tier());
+        Formatting rarityColor = UpgradePresentation.rarityColor(upgrade);
         int textColor = rarityColor.getColorValue() != null ? rarityColor.getColorValue() : 0xFFFFFF;
 
         int iconSize = Math.max(28, Math.min(48, cardWidth / 2 - 12));
@@ -234,8 +235,7 @@ public class RoguelikeMCDrawScreen extends Screen {
                 textColor
         );
 
-        Text tags = (upgrade.isPermanent() ? Text.literal("[P]").formatted(Formatting.GOLD) : Text.literal("[T]").formatted(Formatting.DARK_GRAY))
-                .append(upgrade.isUnique() ? Text.literal(" [U]").formatted(Formatting.LIGHT_PURPLE) : Text.empty());
+        Text tags = UpgradePresentation.classificationTags(upgrade);
         context.drawCenteredTextWithShadow(textRenderer, tags, x + button.getWidth() / 2, tagsY, 0xFFFFFF);
 
         context.drawTextWrapped(
@@ -292,16 +292,6 @@ public class RoguelikeMCDrawScreen extends Screen {
         for (int i = 0; i < optionButtons.length; i++) {
             optionButtons[i].active = i < RoguelikeMCClientData.INSTANCE.currentOptions.size();
         }
-    }
-
-    private Formatting getColorByRarity(String rarity) {
-        return switch (rarity) {
-            case "common" -> Formatting.WHITE;
-            case "rare" -> Formatting.BLUE;
-            case "epic" -> Formatting.DARK_PURPLE;
-            case "legendary" -> Formatting.GOLD;
-            default -> Formatting.WHITE;
-        };
     }
 
     private void returnToPreviousScreen() {

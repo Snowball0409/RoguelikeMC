@@ -5,7 +5,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
-import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
+import snowball049.roguelikemc.upgrade.apply.UpgradeApplier;
 
 public class SelectUpgradeOptionHandler {
     public static void handle(SelectUpgradeOptionC2SPayload packet, ServerPlayNetworking.Context context) {
@@ -16,6 +16,6 @@ public class SelectUpgradeOptionHandler {
         RoguelikeMCUpgradeData selected = packet.option();
         ServerPlayerEntity player = context.player();
         RoguelikeMCStateSaverAndLoader.getPlayerState(player).currentOptions.clear();
-        RoguelikeMCUpgradeUtil.addUpgrade(selected, player);
+        UpgradeApplier.addUpgrade(selected, player);
     }
 }

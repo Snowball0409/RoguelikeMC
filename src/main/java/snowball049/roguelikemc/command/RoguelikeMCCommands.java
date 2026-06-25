@@ -21,8 +21,9 @@ import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.RefreshCurrentUpgradeS2CPayload;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradePoolManager;
+import snowball049.roguelikemc.upgrade.enums.UpgradePersistence;
+import snowball049.roguelikemc.upgrade.apply.UpgradeApplier;
 import snowball049.roguelikemc.util.RoguelikeMCPointUtil;
-import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
 import java.util.Iterator;
 import java.util.List;
@@ -41,7 +42,7 @@ public class RoguelikeMCCommands {
                 return 0;
             }
 
-            players.forEach(player -> RoguelikeMCUpgradeUtil.addUpgrade(upgrade, player));
+            players.forEach(player -> UpgradeApplier.addUpgrade(upgrade, player));
             return Command.SINGLE_SUCCESS;
         } catch (CommandSyntaxException e) {
             context.getSource().sendError(Text.literal("Error parsing players: " + e.getMessage()));
@@ -62,17 +63,15 @@ public class RoguelikeMCCommands {
                 players.forEach(player -> {
                     RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
                     boolean removed;
-                    if(upgrade.isPermanent()) {
+                    if (upgrade.persistence() == UpgradePersistence.PERMANENT) {
                         removed = playerData.permanentUpgrades.removeIf(u -> u.equals(RoguelikeMCUpgradeManager.getUpgrade(upgradeId)));
                         ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(true, playerData.permanentUpgrades));
                     }else {
                         removed = playerData.temporaryUpgrades.removeIf(u -> u.equals(RoguelikeMCUpgradeManager.getUpgrade(upgradeId)));
                         ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(false, playerData.temporaryUpgrades));
                     }
-                    if(removed){
-                        upgrade.actions().forEach(upgradeAction -> {
-                            RoguelikeMCUpgradeUtil.removeUpgrade(player, upgradeId, upgradeAction);
-                        });
+                    if (removed) {
+                        upgrade.actions().forEach(upgradeAction -> UpgradeApplier.removeUpgrade(player, upgrade, upgradeAction));
                     }
                     player.sendMessage(Text.of("You have been removed upgrade: "+ upgrade.name()));
                 });
@@ -90,16 +89,10 @@ public class RoguelikeMCCommands {
             List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "player").stream().toList();
             players.forEach(player -> {
                 RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-                playerData.permanentUpgrades.forEach(upgrade -> {
-                    upgrade.actions().forEach(upgradeAction -> {
-                        RoguelikeMCUpgradeUtil.removeUpgrade(player, RoguelikeMCUpgradeManager.getUpgradeId(upgrade), upgradeAction);
-                    });
-                });
-                playerData.temporaryUpgrades.forEach(upgrade -> {
-                    upgrade.actions().forEach(upgradeAction -> {
-                        RoguelikeMCUpgradeUtil.removeUpgrade(player, RoguelikeMCUpgradeManager.getUpgradeId(upgrade), upgradeAction);
-                    });
-                });
+                playerData.permanentUpgrades.forEach(upgrade -> upgrade.actions().forEach(upgradeAction ->
+                        UpgradeApplier.removeUpgrade(player, upgrade, upgradeAction)));
+                playerData.temporaryUpgrades.forEach(upgrade -> upgrade.actions().forEach(upgradeAction ->
+                        UpgradeApplier.removeUpgrade(player, upgrade, upgradeAction)));
                 playerData.permanentUpgrades.clear();
                 playerData.temporaryUpgrades.clear();
                 ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(true, playerData.permanentUpgrades));

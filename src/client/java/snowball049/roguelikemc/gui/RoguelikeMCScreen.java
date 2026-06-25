@@ -15,6 +15,7 @@ import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.RoguelikeMCClient;
 import snowball049.roguelikemc.data.RoguelikeMCClientData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
+import snowball049.roguelikemc.upgrade.UpgradePresentation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class RoguelikeMCScreen extends Screen {
-    private static final Identifier BACKGROUND_TEXTURE = Identifier.tryParse("roguelikemc", "textures/gui/upgrade_bg_2.png");
+    private static final Identifier BACKGROUND_TEXTURE = Identifier.tryParse("roguelikemc", "textures/gui/upgrade_bg.png");
     private static final Identifier DRAW_BUTTON_TEXTURE = Identifier.tryParse("roguelikemc", "textures/gui/draw.png");
     private static final Identifier BOSS_ICON_TEXTURE = Identifier.tryParse("roguelikemc", "textures/gui/boss_icon.png");
 
@@ -165,12 +166,13 @@ public class RoguelikeMCScreen extends Screen {
                 );
             }
 
-            Text isUnique = effect.isUnique() ? Text.literal("[U]").formatted(Formatting.LIGHT_PURPLE) : Text.empty();
+            Text isUnique = UpgradePresentation.uniqueTag(effect);
             if (isMouseOver(mouseX, mouseY, itemX, itemY, itemWidth, itemHeight)) {
+                Formatting rarityColor = UpgradePresentation.rarityColor(effect);
                 List<Text> tooltip = List.of(
                         count > 1
-                                ? Text.translatable(effect.name()).formatted(getColorByRarity(effect.tier())).append(Text.literal(" x" + count).formatted(Formatting.WHITE)).append(isUnique)
-                                : Text.translatable(effect.name()).formatted(getColorByRarity(effect.tier())).append(isUnique),
+                                ? Text.translatable(effect.name()).formatted(rarityColor).append(Text.literal(" x" + count).formatted(Formatting.WHITE)).append(isUnique)
+                                : Text.translatable(effect.name()).formatted(rarityColor).append(isUnique),
                         Text.translatable(effect.description()).formatted(Formatting.GRAY)
                 );
                 context.drawTooltip(textRenderer, tooltip, mouseX, mouseY);
@@ -178,16 +180,6 @@ public class RoguelikeMCScreen extends Screen {
 
             i++;
         }
-    }
-
-    private Formatting getColorByRarity(String rarity) {
-        return switch (rarity) {
-            case "common" -> Formatting.WHITE;
-            case "rare" -> Formatting.BLUE;
-            case "epic" -> Formatting.DARK_PURPLE;
-            case "legendary" -> Formatting.GOLD;
-            default -> Formatting.WHITE;
-        };
     }
 
     private Map<String, Pair<RoguelikeMCUpgradeData, Integer>> collapseUpgrades(List<RoguelikeMCUpgradeData> upgrades) {

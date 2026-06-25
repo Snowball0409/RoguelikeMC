@@ -13,7 +13,6 @@ import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.util.RoguelikeMCPointUtil;
-import snowball049.roguelikemc.util.RoguelikeMCUpgradeUtil;
 
 @Mixin(PlayerAdvancementTracker.class)
 public class PlayerAdvancementTrackerMixin {

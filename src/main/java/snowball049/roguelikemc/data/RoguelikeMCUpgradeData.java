@@ -5,6 +5,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
+import snowball049.roguelikemc.upgrade.enums.UpgradeActionType;
+import snowball049.roguelikemc.upgrade.enums.UpgradePersistence;
+import snowball049.roguelikemc.upgrade.enums.UpgradeRarity;
+import snowball049.roguelikemc.upgrade.enums.UpgradeStacking;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +39,17 @@ public record RoguelikeMCUpgradeData(
             );
     public static final PacketCodec<RegistryByteBuf, RoguelikeMCUpgradeData> PACKET_CODEC = PacketCodecs.registryCodec(RoguelikeMCUpgradeData.CODEC);
 
+    public UpgradeRarity rarity() {
+        return UpgradeRarity.fromString(tier);
+    }
+
+    public UpgradePersistence persistence() {
+        return UpgradePersistence.fromPermanentFlag(isPermanent);
+    }
+
+    public UpgradeStacking stacking() {
+        return UpgradeStacking.fromUniqueFlag(isUnique);
+    }
 
     // Inner class for action data
     public record ActionData(
@@ -46,5 +61,9 @@ public record RoguelikeMCUpgradeData(
                         Codec.list(Codec.STRING).fieldOf("value").forGetter(ActionData::value)
                 ).apply(instance, ActionData::new)
         );
+
+        public UpgradeActionType actionType() {
+            return UpgradeActionType.fromString(type);
+        }
     }
 }

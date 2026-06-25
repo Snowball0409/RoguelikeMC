@@ -36,6 +36,8 @@ import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.item.RoguelikeMCItemGroup;
 import snowball049.roguelikemc.item.RoguelikeMCItems;
 import snowball049.roguelikemc.network.packet.*;
+import snowball049.roguelikemc.upgrade.apply.UpgradeApplier;
+import snowball049.roguelikemc.upgrade.tick.UpgradeTickService;
 
 public class RoguelikeMCRegisterUtil {
 
@@ -66,7 +68,7 @@ public class RoguelikeMCRegisterUtil {
         playerData.reset();
 
         playerData.temporaryUpgrades.clear();
-        playerData.permanentUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyUpgrade(newPlayer, upgrade));
+        playerData.permanentUpgrades.forEach(upgrade -> UpgradeApplier.applyUpgrade(newPlayer, upgrade));
 
         if(playerData.keepEquipmentAfterDeath){
             for (int i = 0; i < oldPlayer.getInventory().armor.size(); i++) {
@@ -95,8 +97,8 @@ public class RoguelikeMCRegisterUtil {
             for (RoguelikeMCUpgradeData upgrade : playerData.currentOptions) {
                 ServerPlayNetworking.send(player, new UpgradeOptionS2CPayload(upgrade));
             }
-            playerData.permanentUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyJoinUpgrade(player, upgrade));
-            playerData.temporaryUpgrades.forEach(upgrade -> RoguelikeMCUpgradeUtil.applyJoinUpgrade(player, upgrade));
+            playerData.permanentUpgrades.forEach(upgrade -> UpgradeApplier.applyJoinUpgrade(player, upgrade));
+            playerData.temporaryUpgrades.forEach(upgrade -> UpgradeApplier.applyJoinUpgrade(player, upgrade));
 
             // Send upgrade points to client
             ServerPlayNetworking.send(player, new SendUpgradePointsS2CPayload(playerData.upgradePoints));
@@ -185,17 +187,13 @@ public class RoguelikeMCRegisterUtil {
     public static void onServerTick(MinecraftServer minecraftServer) {
         // Handle infinite effect upgrade every 2 seconds
         if (minecraftServer.getTicks() % 40 == 0) {
-            RoguelikeMCUpgradeUtil.tickInfiniteEffects(minecraftServer);
+            UpgradeTickService.tickInfiniteEffects(minecraftServer);
         }
-        // Handle empty set_equipment upgrade every second
         if (minecraftServer.getTicks() % 20 == 0) {
-            RoguelikeMCUpgradeUtil.tickSetEquipment(minecraftServer);
-            RoguelikeMCUpgradeUtil.tickEffectToMobEntity(minecraftServer);
-            RoguelikeMCUpgradeUtil.tickEnableCreativeFly(minecraftServer);
+            UpgradeTickService.tickEvents(minecraftServer, 20);
         }
-        //Handle particle effect every 5 seconds
         if (minecraftServer.getTicks() % 100 == 0) {
-            RoguelikeMCEventUtil.tickPlayerEvent(minecraftServer);
+            UpgradeTickService.tickEvents(minecraftServer, 100);
         }
     }
 
