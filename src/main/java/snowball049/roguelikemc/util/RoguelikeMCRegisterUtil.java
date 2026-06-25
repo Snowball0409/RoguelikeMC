@@ -78,22 +78,19 @@ public class RoguelikeMCRegisterUtil {
             oldPlayer.getInventory().dropAll();
         }
 
-        ServerPlayNetworking.send(newPlayer, new RefreshCurrentUpgradeS2CPayload(true, playerData.permanentUpgrades));
-        ServerPlayNetworking.send(newPlayer, new RefreshCurrentUpgradeS2CPayload(false, playerData.temporaryUpgrades));
+        UpgradeApplier.syncOwnedUpgrades(newPlayer, playerData);
         if (RoguelikeMCCommonConfig.INSTANCE.enableLinearGameStage){
             ServerPlayNetworking.send(newPlayer, new RefreshCurrentBossStageS2CPayload(RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.get(playerData.currentGameStage)));
             newPlayer.sendMessage(Text.translatable("message.roguelikemc.game_stage_reset").formatted(Formatting.RED));
         }
     }
 
-    public static void onJoinEventRegister(ServerPlayNetworkHandler serverPlayNetworkHandler, PacketSender packetSender, MinecraftServer minecraftServer) {
+    public static void onJoinEventRegister(ServerPlayNetworkHandler serverPlayNetworkHandler, PacketSender ignoredPacketSender, MinecraftServer ignoredServer) {
         ServerPlayerEntity player = serverPlayNetworkHandler.getPlayer();
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
 
         if (RoguelikeMCCommonConfig.INSTANCE.enableUpgradeSystem) {
-            // Send upgrade to client
-            ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(true, playerData.permanentUpgrades));
-            ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(false, playerData.temporaryUpgrades));
+            UpgradeApplier.syncOwnedUpgrades(player, playerData);
             for (RoguelikeMCUpgradeData upgrade : playerData.currentOptions) {
                 ServerPlayNetworking.send(player, new UpgradeOptionS2CPayload(upgrade));
             }
@@ -114,11 +111,11 @@ public class RoguelikeMCRegisterUtil {
         }
     }
 
-    public static void onServerLoadEventRegister(MinecraftServer minecraftServer) {
+    public static void onServerLoadEventRegister(MinecraftServer ignoredServer) {
         RoguelikeMCCompat.load();
     }
 
-    public static void commandRegister(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment){
+    public static void commandRegister(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess ignoredRegistryAccess, CommandManager.RegistrationEnvironment ignoredEnvironment){
         dispatcher.register(CommandManager.literal("roguelikemc")
                 .then(CommandManager.argument("player", EntityArgumentType.players())
                         .then(CommandManager.literal("upgrade")
@@ -171,7 +168,7 @@ public class RoguelikeMCRegisterUtil {
                 );
     }
 
-    public static void onKillEntityEventRegister(ServerWorld server, Entity entity, LivingEntity context) {
+    public static void onKillEntityEventRegister(ServerWorld ignoredServer, Entity entity, LivingEntity context) {
         if(RoguelikeMCCommonConfig.INSTANCE.enableUpgradeSystem && RoguelikeMCCommonConfig.INSTANCE.enableKillHostileEntityUpgrade) {
             if (entity instanceof ServerPlayerEntity && context instanceof HostileEntity && !context.isPlayer()) {
                 RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState((ServerPlayerEntity) entity);

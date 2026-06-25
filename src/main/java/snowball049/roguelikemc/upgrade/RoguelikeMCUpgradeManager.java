@@ -35,8 +35,9 @@ public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloa
 
                 if (upgrade != null) {
                     upgrade.rarity();
-                    if (!RoguelikeMCCommonConfig.INSTANCE.bannedUpgrades.contains(Identifier.of(id.getNamespace(), upgrade.id()).toString()))
-                        allUpgrades.put(Identifier.of(id.getNamespace(), upgrade.id()), upgrade); // Add upgrade to the map
+                    if (!RoguelikeMCCommonConfig.INSTANCE.bannedUpgrades.contains(Identifier.of(id.getNamespace(), upgrade.id()).toString())) {
+                        allUpgrades.put(Identifier.of(id.getNamespace(), upgrade.id()), upgrade);
+                    }
                 } else {
                     RoguelikeMC.LOGGER.error("Failed to parse upgrade: {}", id);
                 }
@@ -60,15 +61,6 @@ public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloa
 
     public static Set<Identifier> getUpgradeIds() {
         return UPGRADES.keySet();
-    }
-
-    public static Identifier getUpgradeId(RoguelikeMCUpgradeData upgrade) {
-        for (Map.Entry<Identifier, RoguelikeMCUpgradeData> entry : UPGRADES.entrySet()) {
-            if (entry.getValue().equals(upgrade)) {
-                return entry.getKey();
-            }
-        }
-        return null;
     }
 
     @Override

@@ -31,11 +31,16 @@ public class RoguelikeMCScreen extends Screen {
 
     private static final int GUI_WIDTH = 360;
     private static final int GUI_HEIGHT = 210;
+    private static final int BACKGROUND_TEXTURE_WIDTH = GUI_WIDTH;
+    private static final int BACKGROUND_TEXTURE_HEIGHT = GUI_WIDTH;
     private static final int CONTENT_PADDING = 15;
     private static final int SECTION_SPACING = 15;
     private static final int SECTION_WIDTH = (GUI_WIDTH - 3 * SECTION_SPACING) / 2;
     private static final int TOP_ICON_SIZE = 20;
+    private static final int TOP_ICON_TEXTURE_SIZE = 20;
     private static final int TOP_ICON_SPACING = 4;
+
+    private static final int TOP_ICON_HITBOX_SIZE = TOP_ICON_SIZE;
 
     private int drawButtonX;
     private int drawButtonY;
@@ -79,24 +84,24 @@ public class RoguelikeMCScreen extends Screen {
                 0,
                 GUI_WIDTH,
                 GUI_HEIGHT,
-                GUI_WIDTH,
-                GUI_WIDTH
+                BACKGROUND_TEXTURE_WIDTH,
+                BACKGROUND_TEXTURE_HEIGHT
         );
         renderContent(context, guiLeft + CONTENT_PADDING, guiTop + CONTENT_PADDING, mouseX, mouseY);
         context.getMatrices().pop();
     }
 
     private void renderContent(DrawContext context, int x, int y, int mouseX, int mouseY) {
-        renderEffectsSection(context, x + SECTION_SPACING - 2, y, Text.translatable("gui.roguelikemc.temporary_upgrade"), RoguelikeMCClientData.INSTANCE.temporaryUpgrades, mouseX, mouseY);
-        renderEffectsSection(context, x + SECTION_WIDTH + SECTION_SPACING + 1, y, Text.translatable("gui.roguelikemc.permanent_upgrade"), RoguelikeMCClientData.INSTANCE.permanentUpgrades, mouseX, mouseY);
+        renderEffectsSection(context, x + SECTION_SPACING - 2, y, RoguelikeMCClientData.INSTANCE.temporaryUpgrades, mouseX, mouseY);
+        renderEffectsSection(context, x + SECTION_WIDTH + SECTION_SPACING + 1, y, RoguelikeMCClientData.INSTANCE.permanentUpgrades, mouseX, mouseY);
         renderBossHint(context, mouseX, mouseY);
         renderDrawButton(context, mouseX, mouseY);
     }
 
     private void renderBossHint(DrawContext context, int mouseX, int mouseY) {
-        boolean hovered = isMouseOver(mouseX, mouseY, bossHintX, bossHintY, TOP_ICON_SIZE, TOP_ICON_SIZE);
+        boolean hovered = isMouseOver(mouseX, mouseY, bossHintX, bossHintY, TOP_ICON_HITBOX_SIZE, TOP_ICON_HITBOX_SIZE);
         context.fill(bossHintX, bossHintY, bossHintX + TOP_ICON_SIZE, bossHintY + TOP_ICON_SIZE, hovered ? 0x70403030 : 0x50303030);
-        context.drawTexture(BOSS_ICON_TEXTURE, bossHintX, bossHintY, 0, 0, TOP_ICON_SIZE, TOP_ICON_SIZE, TOP_ICON_SIZE, TOP_ICON_SIZE);
+        context.drawTexture(BOSS_ICON_TEXTURE, bossHintX, bossHintY, 0, 0, TOP_ICON_SIZE, TOP_ICON_SIZE, TOP_ICON_TEXTURE_SIZE, TOP_ICON_TEXTURE_SIZE);
 
         if (hovered) {
             Optional<EntityType<?>> nextBoss = Registries.ENTITY_TYPE.getOrEmpty(RoguelikeMCClientData.INSTANCE.nextBoss);
@@ -114,27 +119,16 @@ public class RoguelikeMCScreen extends Screen {
     }
 
     private void renderDrawButton(DrawContext context, int mouseX, int mouseY) {
-        boolean hovered = isMouseOver(mouseX, mouseY, drawButtonX, drawButtonY, TOP_ICON_SIZE, TOP_ICON_SIZE);
+        boolean hovered = isMouseOver(mouseX, mouseY, drawButtonX, drawButtonY, TOP_ICON_HITBOX_SIZE, TOP_ICON_HITBOX_SIZE);
         context.fill(drawButtonX, drawButtonY, drawButtonX + TOP_ICON_SIZE, drawButtonY + TOP_ICON_SIZE, hovered ? 0x50FFFFFF : 0x30000000);
-        context.drawTexture(DRAW_BUTTON_TEXTURE, drawButtonX, drawButtonY, 0, 0, TOP_ICON_SIZE, TOP_ICON_SIZE, TOP_ICON_SIZE, TOP_ICON_SIZE);
+        context.drawTexture(DRAW_BUTTON_TEXTURE, drawButtonX, drawButtonY, 0, 0, TOP_ICON_SIZE, TOP_ICON_SIZE, TOP_ICON_TEXTURE_SIZE, TOP_ICON_TEXTURE_SIZE);
 
         if (hovered) {
             context.drawTooltip(textRenderer, Text.translatable("button.roguelikemc.draw_upgrades"), mouseX, mouseY);
         }
     }
 
-    private Text bossHintText() {
-        Optional<EntityType<?>> nextBoss = Registries.ENTITY_TYPE.getOrEmpty(RoguelikeMCClientData.INSTANCE.nextBoss);
-        if (nextBoss.isPresent()) {
-            return Text.translatable("gui.roguelikemc.next_boss")
-                    .append(Text.translatable(nextBoss.get().getTranslationKey()).formatted(Formatting.WHITE));
-        }
-        return Text.translatable("message.roguelikemc.boss_not_found").formatted(Formatting.GREEN);
-    }
-
-    private void renderEffectsSection(DrawContext context, int x, int y, Text title, List<RoguelikeMCUpgradeData> effects, int mouseX, int mouseY) {
-//        context.drawCenteredTextWithShadow(textRenderer, title, x + SECTION_WIDTH / 2, y, 0xFFFFFF);
-
+    private void renderEffectsSection(DrawContext context, int x, int y, List<RoguelikeMCUpgradeData> effects, int mouseX, int mouseY) {
         int itemHeight = 20;
         int itemWidth = 20;
         int itemPaddingY = 2;
@@ -211,7 +205,7 @@ public class RoguelikeMCScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0 && isMouseOver((int) mouseX, (int) mouseY, drawButtonX, drawButtonY, TOP_ICON_SIZE, TOP_ICON_SIZE)) {
+        if (button == 0 && isMouseOver((int) mouseX, (int) mouseY, drawButtonX, drawButtonY, TOP_ICON_HITBOX_SIZE, TOP_ICON_HITBOX_SIZE)) {
             if (client != null) {
                 client.setScreen(new RoguelikeMCDrawScreen(this));
             }

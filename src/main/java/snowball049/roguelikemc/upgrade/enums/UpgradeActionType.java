@@ -32,8 +32,4 @@ public enum UpgradeActionType {
         RoguelikeMC.LOGGER.warn("Unknown upgrade action type '{}'", type);
         return null;
     }
-
-    public boolean matches(String type) {
-        return type != null && id.equalsIgnoreCase(type);
-    }
 }

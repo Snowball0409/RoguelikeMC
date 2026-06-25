@@ -40,9 +40,6 @@ public class RoguelikeMCDrawScreen extends Screen {
     private ButtonWidget refreshButton;
 
     private int cardWidth;
-    private int cardHeight;
-    private int cardSpacing;
-    private int cardY;
     private int titleY;
     private int pointY;
     private int hintY;
@@ -59,20 +56,20 @@ public class RoguelikeMCDrawScreen extends Screen {
         super.init();
 
         titleY = HEADER_TOP;
-        pointY = titleY + textRenderer.fontHeight + HEADER_GAP;
+        int pointY = titleY + textRenderer.fontHeight + HEADER_GAP;
 
-        cardSpacing = Math.max(8, Math.min(BASE_CARD_SPACING, width / 40));
+        int cardSpacing = Math.max(8, Math.min(BASE_CARD_SPACING, width / 40));
         int availableWidth = Math.max(MIN_CARD_WIDTH * OPTION_COUNT, width - HORIZONTAL_MARGIN * 2 - cardSpacing * (OPTION_COUNT - 1));
         cardWidth = Math.max(MIN_CARD_WIDTH, Math.min(BASE_CARD_WIDTH, availableWidth / OPTION_COUNT));
 
         int headerBottom = pointY + textRenderer.fontHeight;
         int footerHeight = 20 + FOOTER_GAP + textRenderer.fontHeight;
         int availableHeight = height - headerBottom - footerHeight - CONTENT_GAP * 2;
-        cardHeight = Math.max(MIN_CARD_HEIGHT, Math.min(BASE_CARD_HEIGHT, availableHeight));
+        int cardHeight = Math.max(MIN_CARD_HEIGHT, Math.min(BASE_CARD_HEIGHT, availableHeight));
 
         int totalWidth = OPTION_COUNT * cardWidth + (OPTION_COUNT - 1) * cardSpacing;
         int startX = (width - totalWidth) / 2;
-        cardY = Math.max(headerBottom + CONTENT_GAP, (height - cardHeight - footerHeight) / 2);
+        int cardY = Math.max(headerBottom + CONTENT_GAP, (height - cardHeight - footerHeight) / 2);
 
         for (int i = 0; i < OPTION_COUNT; i++) {
             final int index = i;
@@ -89,6 +86,7 @@ public class RoguelikeMCDrawScreen extends Screen {
         addDrawableChild(refreshButton);
 
         hintY = refreshY + 28;
+        this.pointY = pointY;
         updateButtonState();
     }
 

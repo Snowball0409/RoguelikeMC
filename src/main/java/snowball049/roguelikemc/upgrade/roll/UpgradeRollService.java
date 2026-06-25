@@ -30,7 +30,7 @@ public final class UpgradeRollService {
         }
 
         List<RoguelikeMCUpgradeData> weightedPool = buildWeightedPool(available);
-        List<RoguelikeMCUpgradeData> chosen = pickUniqueOptions(weightedPool, available);
+        List<RoguelikeMCUpgradeData> chosen = pickUniqueOptions(weightedPool);
         ensureAtLeastOneStackableOption(chosen, available);
         return chosen;
     }
@@ -75,10 +75,7 @@ public final class UpgradeRollService {
         return weightedPool;
     }
 
-    private static List<RoguelikeMCUpgradeData> pickUniqueOptions(
-            List<RoguelikeMCUpgradeData> weightedPool,
-            List<RoguelikeMCUpgradeData> available
-    ) {
+    private static List<RoguelikeMCUpgradeData> pickUniqueOptions(List<RoguelikeMCUpgradeData> weightedPool) {
         List<RoguelikeMCUpgradeData> chosen = new ArrayList<>();
         Set<String> selectedIds = new HashSet<>();
         Random random = new Random();

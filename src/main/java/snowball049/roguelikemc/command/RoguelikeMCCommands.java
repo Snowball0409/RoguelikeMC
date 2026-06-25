@@ -95,8 +95,7 @@ public class RoguelikeMCCommands {
                         UpgradeApplier.removeUpgrade(player, upgrade, upgradeAction)));
                 playerData.permanentUpgrades.clear();
                 playerData.temporaryUpgrades.clear();
-                ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(true, playerData.permanentUpgrades));
-                ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(false, playerData.temporaryUpgrades));
+                UpgradeApplier.syncOwnedUpgrades(player, playerData);
                 player.sendMessage(Text.of("You have been cleared all upgrades!"));
             });
         }catch (CommandSyntaxException e){
@@ -110,9 +109,7 @@ public class RoguelikeMCCommands {
         List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "player").stream().toList();
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
-        players.forEach(player -> {
-            RoguelikeMCPointUtil.addUpgradePoints(player, amount);
-        });
+        players.forEach(player -> RoguelikeMCPointUtil.addUpgradePoints(player, amount));
 
         return Command.SINGLE_SUCCESS;
     }
@@ -133,18 +130,14 @@ public class RoguelikeMCCommands {
         List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "player").stream().toList();
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
-        players.forEach(player -> {
-            RoguelikeMCPointUtil.setUpgradePoints(player, amount);
-        });
+        players.forEach(player -> RoguelikeMCPointUtil.setUpgradePoints(player, amount));
         return Command.SINGLE_SUCCESS;
     }
 
     public static int getPoint(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "player").stream().toList();
 
-        players.forEach(player -> {
-            RoguelikeMCPointUtil.getUpgradePoints(context.getSource(), player);
-        });
+        players.forEach(player -> RoguelikeMCPointUtil.getUpgradePoints(context.getSource(), player));
         return Command.SINGLE_SUCCESS;
     }
 
@@ -191,7 +184,7 @@ public class RoguelikeMCCommands {
 
     public static class UpgradeSuggestionProvider implements SuggestionProvider<ServerCommandSource> {
         @Override
-        public CompletableFuture<Suggestions> getSuggestions(CommandContext commandContext, SuggestionsBuilder suggestionsBuilder){
+        public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> commandContext, SuggestionsBuilder suggestionsBuilder){
             String input = suggestionsBuilder.getRemaining().toLowerCase();
             RoguelikeMCUpgradeManager.getUpgradeIds().forEach((identifier -> {
                 if(identifier.toString().toLowerCase().contains(input))
