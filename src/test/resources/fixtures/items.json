@@ -1,0 +1,7 @@
+{
+  "armorOrWeapon": [
+    { "name": "diamond_sword", "itemId": "minecraft:diamond_sword", "isArmorOrWeapon": true },
+    { "name": "diamond_helmet", "itemId": "minecraft:diamond_helmet", "isArmorOrWeapon": true },
+    { "name": "rotten_flesh", "itemId": "minecraft:rotten_flesh", "isArmorOrWeapon": false }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "custom": {
+    "enableUpgradeSystem": true,
+    "enableKillHostileEntityUpgrade": false,
+    "killHostileEntityRequirement": 25,
+    "decayInventoryPercentage": 0.75,
+    "decayItem": "minecraft:bone",
+    "decayItemAmountMinMax": [2, 5],
+    "bannedUpgrades": ["roguelikemc:test_ban"]
+  }
+}

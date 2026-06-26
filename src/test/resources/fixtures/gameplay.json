@@ -1,0 +1,45 @@
+{
+  "pools": {
+    "test_pool": {
+      "id": "roguelikemc:test_pool",
+      "upgradeIds": ["roguelikemc:roll_stack_a", "roguelikemc:roll_stack_b", "roguelikemc:roll_unique_a"]
+    }
+  },
+  "roll": {
+    "excludeOwnedUnique": {
+      "ownedPermanentUpgradeIds": ["roguelikemc:roll_unique_a"],
+      "excludedUpgradeIds": ["roguelikemc:roll_unique_a"]
+    },
+    "seeded": {
+      "seed": 42,
+      "expectedUpgradeIds": ["roll_stack_a", "roll_stack_d", "roll_stack_b"]
+    },
+    "activePool": {
+      "pool": "test_pool",
+      "activeUpgradePools": ["roguelikemc:test_pool"],
+      "expectedUpgradeIds": ["roguelikemc:roll_stack_a", "roguelikemc:roll_stack_b", "roguelikemc:roll_unique_a"]
+    }
+  },
+  "playerData": {
+    "resolveUpgrades": {
+      "temporaryUpgradeIds": ["roguelikemc:gods_fruit"],
+      "permanentUpgradeIds": ["roguelikemc:swift_stride"],
+      "missingUpgradeIds": ["roguelikemc:missing_upgrade"],
+      "expectedTemporaryCount": 1,
+      "expectedPermanentCount": 1,
+      "expectedAllUpgradeIdCount": 3
+    }
+  },
+  "presentation": {
+    "temporaryUnique": {
+      "registryKey": "one_last_chance",
+      "persistenceTag": "[T]",
+      "uniqueTag": "[U]"
+    },
+    "permanentStackable": {
+      "registryKey": "swift_stride",
+      "tags": "[P]",
+      "uniqueTag": ""
+    }
+  }
+}

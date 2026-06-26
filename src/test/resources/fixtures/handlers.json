@@ -1,0 +1,28 @@
+{
+  "actionTypes": ["attribute", "effect", "command", "event"],
+  "eventHandlers": [
+    { "eventType": "allow_creative_flying", "tickInterval": 20 },
+    { "eventType": "keep_equipment_after_death", "tickInterval": 0 },
+    { "eventType": "one_last_chance", "tickInterval": 0 },
+    { "eventType": "set_equipment", "tickInterval": 20 },
+    { "eventType": "effect_mobs", "tickInterval": 20 },
+    { "eventType": "provoked", "tickInterval": 100 },
+    { "eventType": "add_loot_table", "tickInterval": 0 }
+  ],
+  "effectMatchesTick": [
+    { "name": "infinite", "values": ["minecraft:speed", "-1", "0"], "matches": true },
+    { "name": "timed", "values": ["minecraft:speed", "200", "0"], "matches": false },
+    { "name": "missing_duration", "values": ["minecraft:speed"], "matches": false }
+  ],
+  "setEquipmentMatchesTick": [
+    { "name": "empty_nbt", "values": ["set_equipment", "2", ""], "matches": true },
+    { "name": "filled_nbt", "values": ["set_equipment", "2", "{id:\"minecraft:diamond_helmet\"}"], "matches": false },
+    { "name": "missing_nbt", "values": ["set_equipment", "2"], "matches": false }
+  ],
+  "rarityWeights": [
+    { "tier": "common", "rollWeight": 50 },
+    { "tier": "rare", "rollWeight": 30 },
+    { "tier": "epic", "rollWeight": 15 },
+    { "tier": "legendary", "rollWeight": 5 }
+  ]
+}

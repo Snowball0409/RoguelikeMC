@@ -1,0 +1,17 @@
+{
+  "legacySnapshot": [
+    {
+      "id": "gods_fruit",
+      "name": "upgrade.roguelikemc.name.gods_fruit",
+      "actions": [{ "type": "command", "value": ["give @s enchanted_golden_apple 1"] }]
+    },
+    {
+      "id": "roguelikemc:swift_stride",
+      "name": "upgrade.roguelikemc.name.swift_stride",
+      "isPermanent": true,
+      "actions": [{ "type": "attribute", "value": ["minecraft:generic.movement_speed", "0.04", "add_multiplied_base"] }]
+    }
+  ],
+  "legacyIds": ["roguelikemc:gods_fruit", "roguelikemc:swift_stride"],
+  "modernIds": ["roguelikemc:one_last_chance", "roguelikemc:swift_stride", "roguelikemc:wind_swiftness"]
+}

@@ -1,0 +1,147 @@
+{
+  "codec": [
+    {
+      "name": "event",
+      "input": {
+        "id": "one_last_chance",
+        "name": "upgrade.roguelikemc.name.one_last_chance",
+        "tier": "legendary",
+        "isUnique": true,
+        "actions": [{ "type": "event", "value": ["one_last_chance"] }]
+      },
+      "expected": {
+        "id": "one_last_chance",
+        "name": "upgrade.roguelikemc.name.one_last_chance",
+        "description": "",
+        "tier": "legendary",
+        "isPermanent": false,
+        "isUnique": true,
+        "icon": "",
+        "actionTypes": ["event"],
+        "firstActionValues": ["one_last_chance"]
+      }
+    },
+    {
+      "name": "attribute",
+      "input": {
+        "id": "swift_stride",
+        "name": "upgrade.roguelikemc.name.swift_stride",
+        "tier": "common",
+        "isPermanent": true,
+        "actions": [{ "type": "attribute", "value": ["minecraft:generic.movement_speed", "0.04", "add_multiplied_base"] }]
+      },
+      "expected": {
+        "id": "swift_stride",
+        "name": "upgrade.roguelikemc.name.swift_stride",
+        "description": "",
+        "tier": "common",
+        "isPermanent": true,
+        "isUnique": false,
+        "icon": "",
+        "actionTypes": ["attribute"],
+        "firstActionValues": ["minecraft:generic.movement_speed", "0.04", "add_multiplied_base"]
+      }
+    },
+    {
+      "name": "effect",
+      "input": {
+        "id": "wind_swiftness",
+        "name": "upgrade.roguelikemc.name.wind_swiftness",
+        "tier": "rare",
+        "isUnique": true,
+        "actions": [{ "type": "effect", "value": ["minecraft:speed", "-1", "0"] }]
+      },
+      "expected": {
+        "id": "wind_swiftness",
+        "name": "upgrade.roguelikemc.name.wind_swiftness",
+        "description": "",
+        "tier": "rare",
+        "isPermanent": false,
+        "isUnique": true,
+        "icon": "",
+        "actionTypes": ["effect"],
+        "firstActionValues": ["minecraft:speed", "-1", "0"]
+      }
+    },
+    {
+      "name": "command",
+      "input": {
+        "id": "gods_fruit",
+        "name": "upgrade.roguelikemc.name.gods_fruit",
+        "actions": [{ "type": "command", "value": ["give @s enchanted_golden_apple 1"] }]
+      },
+      "expected": {
+        "id": "gods_fruit",
+        "name": "upgrade.roguelikemc.name.gods_fruit",
+        "description": "",
+        "tier": "common",
+        "isPermanent": false,
+        "isUnique": false,
+        "icon": "",
+        "actionTypes": ["command"],
+        "firstActionValues": ["give @s enchanted_golden_apple 1"]
+      }
+    },
+    {
+      "name": "minimal_defaults",
+      "input": {
+        "id": "minimal_upgrade",
+        "name": "upgrade.roguelikemc.name.minimal"
+      },
+      "expected": {
+        "id": "minimal_upgrade",
+        "name": "upgrade.roguelikemc.name.minimal",
+        "description": "",
+        "tier": "common",
+        "isPermanent": false,
+        "isUnique": false,
+        "icon": "",
+        "actionTypes": []
+      }
+    }
+  ],
+  "identifiers": [
+    {
+      "name": "path_only",
+      "input": { "id": "swift_stride", "name": "upgrade.roguelikemc.name.swift_stride" },
+      "identifier": "roguelikemc:swift_stride"
+    },
+    {
+      "name": "namespaced",
+      "input": { "id": "roguelikemc:swift_stride", "name": "upgrade.roguelikemc.name.swift_stride" },
+      "identifier": "roguelikemc:swift_stride"
+    }
+  ],
+  "registry": {
+    "shared": {
+      "one_last_chance": {
+        "id": "one_last_chance",
+        "name": "upgrade.roguelikemc.name.one_last_chance",
+        "tier": "legendary",
+        "isUnique": true,
+        "actions": [{ "type": "event", "value": ["one_last_chance"] }]
+      },
+      "swift_stride": {
+        "id": "swift_stride",
+        "name": "upgrade.roguelikemc.name.swift_stride",
+        "tier": "common",
+        "isPermanent": true,
+        "actions": [{ "type": "attribute", "value": ["minecraft:generic.movement_speed", "0.04", "add_multiplied_base"] }]
+      },
+      "gods_fruit": {
+        "id": "gods_fruit",
+        "name": "upgrade.roguelikemc.name.gods_fruit",
+        "actions": [{ "type": "command", "value": ["give @s enchanted_golden_apple 1"] }]
+      }
+    },
+    "roll": {
+      "roll_stack_a": { "id": "roll_stack_a", "name": "n", "tier": "common", "actions": [] },
+      "roll_stack_b": { "id": "roll_stack_b", "name": "n", "tier": "common", "actions": [] },
+      "roll_stack_c": { "id": "roll_stack_c", "name": "n", "tier": "common", "actions": [] },
+      "roll_stack_d": { "id": "roll_stack_d", "name": "n", "tier": "common", "actions": [] },
+      "roll_unique_a": { "id": "roll_unique_a", "name": "n", "tier": "legendary", "isUnique": true, "actions": [] },
+      "roll_unique_b": { "id": "roll_unique_b", "name": "n", "tier": "legendary", "isUnique": true, "actions": [] },
+      "roll_unique_c": { "id": "roll_unique_c", "name": "n", "tier": "legendary", "isUnique": true, "actions": [] }
+    }
+  }
+}
