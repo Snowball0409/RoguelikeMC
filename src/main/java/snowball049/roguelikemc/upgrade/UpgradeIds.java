@@ -9,10 +9,18 @@ public final class UpgradeIds {
     }
 
     public static Identifier fromUpgradeData(RoguelikeMCUpgradeData upgrade) {
-        Identifier parsed = Identifier.tryParse(upgrade.id());
-        if (parsed != null) {
-            return parsed;
+        String rawId = upgrade.id();
+        if (rawId == null || rawId.isBlank()) {
+            return Identifier.of(RoguelikeMC.MOD_ID, "unknown");
         }
-        return Identifier.of(RoguelikeMC.MOD_ID, upgrade.id());
+
+        if (rawId.contains(":")) {
+            Identifier parsed = Identifier.tryParse(rawId);
+            if (parsed != null) {
+                return parsed;
+            }
+        }
+
+        return Identifier.of(RoguelikeMC.MOD_ID, rawId);
     }
 }

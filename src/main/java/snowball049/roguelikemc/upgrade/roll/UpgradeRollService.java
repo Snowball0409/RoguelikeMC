@@ -22,6 +22,10 @@ public final class UpgradeRollService {
     }
 
     public static List<RoguelikeMCUpgradeData> rollOptions(RoguelikeMCPlayerData playerData) {
+        return rollOptions(playerData, new Random());
+    }
+
+    static List<RoguelikeMCUpgradeData> rollOptions(RoguelikeMCPlayerData playerData, Random random) {
         List<RoguelikeMCUpgradeData> candidatePool = resolveCandidatePool(playerData);
         List<RoguelikeMCUpgradeData> available = filterAvailableUpgrades(playerData, candidatePool);
 
@@ -30,8 +34,8 @@ public final class UpgradeRollService {
         }
 
         List<RoguelikeMCUpgradeData> weightedPool = buildWeightedPool(available);
-        List<RoguelikeMCUpgradeData> chosen = pickUniqueOptions(weightedPool);
-        ensureAtLeastOneStackableOption(chosen, available);
+        List<RoguelikeMCUpgradeData> chosen = pickUniqueOptions(weightedPool, random);
+        ensureAtLeastOneStackableOption(chosen, available, random);
         return chosen;
     }
 
@@ -75,10 +79,9 @@ public final class UpgradeRollService {
         return weightedPool;
     }
 
-    private static List<RoguelikeMCUpgradeData> pickUniqueOptions(List<RoguelikeMCUpgradeData> weightedPool) {
+    private static List<RoguelikeMCUpgradeData> pickUniqueOptions(List<RoguelikeMCUpgradeData> weightedPool, Random random) {
         List<RoguelikeMCUpgradeData> chosen = new ArrayList<>();
         Set<String> selectedIds = new HashSet<>();
-        Random random = new Random();
 
         int tries = 0;
         while (chosen.size() < OPTION_COUNT && tries < MAX_ROLL_ATTEMPTS && !weightedPool.isEmpty()) {
@@ -96,7 +99,8 @@ public final class UpgradeRollService {
 
     private static void ensureAtLeastOneStackableOption(
             List<RoguelikeMCUpgradeData> chosen,
-            List<RoguelikeMCUpgradeData> available
+            List<RoguelikeMCUpgradeData> available,
+            Random random
     ) {
         if (chosen.isEmpty()) {
             return;
@@ -114,7 +118,7 @@ public final class UpgradeRollService {
                 .toList();
 
         if (!stackablePool.isEmpty()) {
-            chosen.set(0, stackablePool.get(new Random().nextInt(stackablePool.size())));
+            chosen.set(0, stackablePool.get(random.nextInt(stackablePool.size())));
         }
     }
 }

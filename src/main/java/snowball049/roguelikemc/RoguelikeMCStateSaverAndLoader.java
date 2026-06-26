@@ -76,11 +76,11 @@ public class RoguelikeMCStateSaverAndLoader extends PersistentState {
         return state;
     }
 
-    private static NbtElement encodeUpgradeIdList(List<Identifier> upgradeIds) {
+    static NbtElement encodeUpgradeIdList(List<Identifier> upgradeIds) {
         return UPGRADE_ID_LIST_CODEC.encodeStart(NbtOps.INSTANCE, upgradeIds).getOrThrow();
     }
 
-    private static List<Identifier> decodeUpgradeIdList(NbtElement element) {
+    static List<Identifier> decodeUpgradeIdList(NbtElement element) {
         if (element == null || element.getType() == NbtElement.END_TYPE) {
             return new ArrayList<>();
         }

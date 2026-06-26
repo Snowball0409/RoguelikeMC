@@ -50,15 +50,22 @@ public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloa
         RoguelikeMC.LOGGER.info("Loaded {} upgrades", UPGRADES.size());
     }
 
+    public static void replaceUpgradesForTesting(Map<Identifier, RoguelikeMCUpgradeData> upgrades) {
+        UPGRADES.clear();
+        if (upgrades != null) {
+            UPGRADES.putAll(upgrades);
+        }
+    }
+
 
     public static RoguelikeMCUpgradeData getUpgrade(Identifier id) {
         return UPGRADES.get(id);
     }
 
     public static Identifier idFor(RoguelikeMCUpgradeData upgrade) {
-        Identifier parsed = Identifier.tryParse(upgrade.id());
-        if (parsed != null && UPGRADES.containsKey(parsed)) {
-            return parsed;
+        Identifier canonicalId = UpgradeIds.fromUpgradeData(upgrade);
+        if (UPGRADES.containsKey(canonicalId)) {
+            return canonicalId;
         }
 
         for (Map.Entry<Identifier, RoguelikeMCUpgradeData> entry : UPGRADES.entrySet()) {
@@ -67,7 +74,7 @@ public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloa
             }
         }
 
-        return UpgradeIds.fromUpgradeData(upgrade);
+        return canonicalId;
     }
 
     public static Collection<RoguelikeMCUpgradeData> getUpgrades() {

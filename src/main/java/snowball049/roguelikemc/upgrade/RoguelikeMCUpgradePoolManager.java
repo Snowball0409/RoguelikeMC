@@ -60,4 +60,11 @@ public class RoguelikeMCUpgradePoolManager implements SimpleSynchronousResourceR
     public static List<Identifier> getUpgradePools() {
         return new ArrayList<>(POOLS.keySet());
     }
+
+    public static void replacePoolsForTesting(Map<Identifier, List<Identifier>> pools) {
+        POOLS.clear();
+        if (pools != null) {
+            POOLS.putAll(pools);
+        }
+    }
 }

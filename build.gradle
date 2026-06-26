@@ -75,6 +75,9 @@ dependencies {
 	// trinkets
 	modCompileOnly("dev.emi:trinkets:${project.trinkets_version}")
 	modRuntimeOnly("dev.emi:trinkets:${project.trinkets_version}")
+
+	testImplementation "net.fabricmc:fabric-loader-junit:${project.loader_version}"
+	testImplementation "org.junit.jupiter:junit-jupiter:5.11.4"
 }
 
 processResources {
@@ -87,6 +90,10 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
 	it.options.release = 21
+}
+
+test {
+	useJUnitPlatform()
 }
 
 java {
