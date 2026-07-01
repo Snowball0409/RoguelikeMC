@@ -1,13 +1,19 @@
-package snowball049.roguelikemc.util;
+package snowball049.roguelikemc.datagen;
 
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
-import snowball049.roguelikemc.datagen.RoguelikeMCUpgradeDataProvider;
 
 import java.util.List;
 
-public class RoguelikeMCDatagenUtil {
-    public static void addDefaultUpgrades(RoguelikeMCUpgradeDataProvider upgradeProvider) {
-        List<RoguelikeMCUpgradeData> defaultUpgrades = List.of(
+public final class DefaultUpgradeDefinitions {
+    private DefaultUpgradeDefinitions() {
+    }
+
+    public static void register(RoguelikeMCUpgradeDataProvider upgradeProvider) {
+        defaultUpgrades().forEach(upgradeProvider::addUpgrade);
+    }
+
+    public static List<RoguelikeMCUpgradeData> defaultUpgrades() {
+        return List.of(
                 upgrade("fortunes_favor", "rare", true, false, List.of(attribute("minecraft:generic.luck", "1", "add_value"))),
                 upgrade("swift_stride", "common", true, false, List.of(attribute("minecraft:generic.movement_speed", "0.04", "add_multiplied_base"))),
                 upgrade("enduring_vitality", "common", true, false, List.of(attribute("minecraft:generic.max_health", "2", "add_value"))),
@@ -115,8 +121,6 @@ public class RoguelikeMCDatagenUtil {
                         attribute("roguelikemc:experience_gain", "0.1", "add_value")
                 ))
         );
-
-        defaultUpgrades.forEach(upgradeProvider::addUpgrade);
     }
 
     private static RoguelikeMCUpgradeData upgrade(String id, String tier, boolean isPermanent, boolean isUnique, List<RoguelikeMCUpgradeData.ActionData> actions) {

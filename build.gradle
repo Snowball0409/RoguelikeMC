@@ -1,6 +1,7 @@
 plugins {
 	id 'fabric-loom' version '1.10-SNAPSHOT'
 	id 'maven-publish'
+	id 'jacoco'
 }
 
 version = project.mod_version
@@ -78,6 +79,8 @@ dependencies {
 
 	testImplementation "net.fabricmc:fabric-loader-junit:${project.loader_version}"
 	testImplementation "org.junit.jupiter:junit-jupiter:5.11.4"
+	testImplementation "org.mockito:mockito-core:5.14.2"
+	testImplementation "org.mockito:mockito-junit-jupiter:5.14.2"
 }
 
 processResources {
@@ -94,6 +97,15 @@ tasks.withType(JavaCompile).configureEach {
 
 test {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required = true
+		html.required = true
+	}
 }
 
 java {

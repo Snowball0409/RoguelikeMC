@@ -22,8 +22,8 @@ import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.data.RoguelikeMCAttribute;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
-import snowball049.roguelikemc.util.RoguelikeMCDeathUtil;
-import snowball049.roguelikemc.util.RoguelikeMCPointUtil;
+import snowball049.roguelikemc.gameplay.death.DeathInventoryService;
+import snowball049.roguelikemc.upgrade.point.UpgradePointService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public abstract class PlayerEntityMixin {
                 playerData.currentLevelGain += level;
                 if(playerData.currentLevelGain >= RoguelikeMCCommonConfig.INSTANCE.amountOfLevelUpgrade) {
                     playerData.currentLevelGain -= RoguelikeMCCommonConfig.INSTANCE.amountOfLevelUpgrade;
-                    RoguelikeMCPointUtil.addUpgradePoints(serverPlayer, 1);
+                    UpgradePointService.addUpgradePoints(serverPlayer, 1);
                 }
             }
         }
@@ -64,14 +64,14 @@ public abstract class PlayerEntityMixin {
             if (RoguelikeMCCommonConfig.INSTANCE.enableClearInventoryAfterDeath) {
                 serverPlayer.getInventory().clear();
             }else if (RoguelikeMCCommonConfig.INSTANCE.enableDecayInventoryAfterDeath) {
-                RoguelikeMCDeathUtil.decayInventory(serverPlayer);
+                DeathInventoryService.decayInventory(serverPlayer);
             }
 
             if (RoguelikeMCCommonConfig.INSTANCE.enableClearEquipmentAfterDeath) {
-                RoguelikeMCDeathUtil.clearArmorAndWeapons(serverPlayer);
+                DeathInventoryService.clearArmorAndWeapons(serverPlayer);
             }
             else if (RoguelikeMCCommonConfig.INSTANCE.enableDecayEquipmentAfterDeath) {
-                RoguelikeMCDeathUtil.decayArmorAndWeapons(serverPlayer);
+                DeathInventoryService.decayArmorAndWeapons(serverPlayer);
             }
         }
 

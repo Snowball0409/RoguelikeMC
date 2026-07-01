@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
-import snowball049.roguelikemc.util.RoguelikeMCPointUtil;
+import snowball049.roguelikemc.upgrade.point.UpgradePointService;
 
 @Mixin(PlayerAdvancementTracker.class)
 public class PlayerAdvancementTrackerMixin {
@@ -35,7 +35,7 @@ public class PlayerAdvancementTrackerMixin {
             RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
             playerData.currentAdvancementGain ++;
             if (playerData.currentAdvancementGain >= RoguelikeMCCommonConfig.INSTANCE.amountOfAdvancementUpgrade) {
-                RoguelikeMCPointUtil.addUpgradePoints(player, 1);
+                UpgradePointService.addUpgradePoints(player, 1);
                 playerData.currentAdvancementGain -= RoguelikeMCCommonConfig.INSTANCE.amountOfAdvancementUpgrade;
             }
 

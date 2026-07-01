@@ -1,4 +1,4 @@
-package snowball049.roguelikemc.util;
+package snowball049.roguelikemc.inventory;
 
 import net.minecraft.Bootstrap;
 import net.minecraft.SharedConstants;
@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class RoguelikeMCDeathUtilTest {
+class InventoryItemClassifierTest {
     @BeforeAll
     static void beforeAll() {
         SharedConstants.createGameVersion();
@@ -36,11 +36,11 @@ class RoguelikeMCDeathUtilTest {
         ItemStack stack = new ItemStack(
                 net.minecraft.registry.Registries.ITEM.get(net.minecraft.util.Identifier.of(testCase.get("itemId").getAsString()))
         );
-        assertEquals(testCase.get("isArmorOrWeapon").getAsBoolean(), RoguelikeMCDeathUtil.isArmorOrWeapon(stack), caseName);
+        assertEquals(testCase.get("isArmorOrWeapon").getAsBoolean(), InventoryItemClassifier.isArmorOrWeapon(stack), caseName);
     }
 
     @org.junit.jupiter.api.Test
     void emptyStackIsNotArmorOrWeapon() {
-        assertFalse(RoguelikeMCDeathUtil.isArmorOrWeapon(ItemStack.EMPTY));
+        assertFalse(InventoryItemClassifier.isArmorOrWeapon(ItemStack.EMPTY));
     }
 }

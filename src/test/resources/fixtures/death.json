@@ -1,0 +1,15 @@
+{
+  "shouldDecay": [
+    { "name": "below_threshold", "chance": 0.6, "roll": 0.59, "expected": true },
+    { "name": "at_threshold", "chance": 0.6, "roll": 0.6, "expected": false },
+    { "name": "above_threshold", "chance": 0.6, "roll": 0.9, "expected": false }
+  ],
+  "randomCount": [
+    { "name": "fixed_min", "min": 2, "max": 5, "seed": 0, "expected": 2 },
+    { "name": "fixed_max", "min": 2, "max": 5, "seed": 42, "expected": 5 }
+  ],
+  "capCountToSource": [
+    { "name": "source_smaller", "sourceCount": 2, "decayedCount": 5, "expected": 2 },
+    { "name": "decayed_smaller", "sourceCount": 8, "decayedCount": 3, "expected": 3 }
+  ]
+}

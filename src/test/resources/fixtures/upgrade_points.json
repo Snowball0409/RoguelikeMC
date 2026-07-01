@@ -1,0 +1,19 @@
+{
+  "applyAdd": [
+    { "name": "positive_delta", "current": 3, "delta": 2, "expected": 5 },
+    { "name": "negative_clamped", "current": 1, "delta": -5, "expected": 0 }
+  ],
+  "applySpend": [
+    { "name": "partial_spend", "current": 5, "cost": 2, "expected": 3 },
+    { "name": "overspend_clamped", "current": 1, "cost": 5, "expected": 0 }
+  ],
+  "canSpend": [
+    { "name": "has_points", "current": 1, "expected": true },
+    { "name": "no_points", "current": 0, "expected": false }
+  ],
+  "applyKillProgress": [
+    { "name": "single_reward", "currentKills": 9, "killsToAdd": 1, "requirement": 10, "remaining": 0, "pointsEarned": 1 },
+    { "name": "multiple_rewards", "currentKills": 18, "killsToAdd": 5, "requirement": 10, "remaining": 3, "pointsEarned": 2 },
+    { "name": "no_reward", "currentKills": 3, "killsToAdd": 2, "requirement": 10, "remaining": 5, "pointsEarned": 0 }
+  ]
+}

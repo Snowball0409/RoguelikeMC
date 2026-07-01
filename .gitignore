@@ -42,3 +42,5 @@ replay_*.log
 *.log
 
 src/main/generated/.cache/
+
+.cursor

@@ -1,6 +1,7 @@
 package snowball049.roguelikemc.command;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -8,8 +9,10 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.IdentifierArgumentType;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -23,13 +26,72 @@ import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradePoolManager;
 import snowball049.roguelikemc.upgrade.enums.UpgradePersistence;
 import snowball049.roguelikemc.upgrade.apply.UpgradeApplier;
-import snowball049.roguelikemc.util.RoguelikeMCPointUtil;
+import snowball049.roguelikemc.upgrade.point.UpgradePointService;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class RoguelikeMCCommands {
+    private RoguelikeMCCommands() {
+    }
+
+    public static void register(
+            CommandDispatcher<ServerCommandSource> dispatcher,
+            CommandRegistryAccess ignoredRegistryAccess,
+            CommandManager.RegistrationEnvironment ignoredEnvironment
+    ) {
+        dispatcher.register(CommandManager.literal("roguelikemc")
+                .then(CommandManager.argument("player", EntityArgumentType.players())
+                        .then(CommandManager.literal("upgrade")
+                                .then(CommandManager.literal("grant")
+                                        .then(CommandManager.argument("upgradeOption", IdentifierArgumentType.identifier()).suggests(new UpgradeSuggestionProvider())
+                                                .executes(RoguelikeMCCommands::grantUpgrade)
+                                        )
+                                )
+                                .then(CommandManager.literal("remove")
+                                        .then(CommandManager.argument("upgradeOption", IdentifierArgumentType.identifier()).suggests(new UpgradeSuggestionProvider())
+                                                .executes(RoguelikeMCCommands::removeUpgrade)
+                                        )
+                                )
+                                .then(CommandManager.literal("clear")
+                                        .executes(RoguelikeMCCommands::clearUpgrade)
+                                )
+                        )
+                        .then(CommandManager.literal("point")
+                                .then(CommandManager.literal("add")
+                                        .then(CommandManager.argument("amount", IntegerArgumentType.integer(1))
+                                                .executes(RoguelikeMCCommands::addPoint)
+                                        )
+                                )
+                                .then(CommandManager.literal("remove")
+                                        .then(CommandManager.argument("amount", IntegerArgumentType.integer(1))
+                                                .executes(RoguelikeMCCommands::removePoint)
+                                        )
+                                )
+                                .then(CommandManager.literal("set")
+                                        .then(CommandManager.argument("amount", IntegerArgumentType.integer(1))
+                                                .executes(RoguelikeMCCommands::setPoint)
+                                        )
+                                )
+                                .then(CommandManager.literal("get")
+                                        .executes(RoguelikeMCCommands::getPoint))
+                        )
+                        .then(CommandManager.literal("upgrade_pool")
+                                .then(CommandManager.literal("add")
+                                        .then(CommandManager.argument("upgradePoolOption", IdentifierArgumentType.identifier()).suggests(new UpgradePoolSuggestionProvider())
+                                                .executes(RoguelikeMCCommands::addUpgradePool))
+                                )
+                                .then(CommandManager.literal("remove")
+                                        .then(CommandManager.argument("upgradePoolOption", IdentifierArgumentType.identifier()).suggests(new UpgradePoolSuggestionProvider())
+                                                .executes(RoguelikeMCCommands::removeUpgradePool))
+                                )
+                                .then(CommandManager.literal("get")
+                                        .executes(RoguelikeMCCommands::getUpgradePool))
+                        )
+                )
+        );
+    }
 
     public static int grantUpgrade(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         try {
@@ -109,7 +171,7 @@ public class RoguelikeMCCommands {
         List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "player").stream().toList();
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
-        players.forEach(player -> RoguelikeMCPointUtil.addUpgradePoints(player, amount));
+        players.forEach(player -> UpgradePointService.addUpgradePoints(player, amount));
 
         return Command.SINGLE_SUCCESS;
     }
@@ -119,7 +181,7 @@ public class RoguelikeMCCommands {
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
         players.forEach(player -> {
-            boolean isRemoved = RoguelikeMCPointUtil.removeUpgradePoints(player, amount);
+            boolean isRemoved = UpgradePointService.removeUpgradePoints(player, amount);
             if(isRemoved)
                 player.sendMessage(Text.of("You have been removed " + amount + " upgrade points!"), false);
         });
@@ -130,14 +192,14 @@ public class RoguelikeMCCommands {
         List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "player").stream().toList();
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
-        players.forEach(player -> RoguelikeMCPointUtil.setUpgradePoints(player, amount));
+        players.forEach(player -> UpgradePointService.setUpgradePoints(player, amount));
         return Command.SINGLE_SUCCESS;
     }
 
     public static int getPoint(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "player").stream().toList();
 
-        players.forEach(player -> RoguelikeMCPointUtil.getUpgradePoints(context.getSource(), player));
+        players.forEach(player -> UpgradePointService.getUpgradePoints(context.getSource(), player));
         return Command.SINGLE_SUCCESS;
     }
 

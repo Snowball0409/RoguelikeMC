@@ -10,7 +10,7 @@ import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.UpgradeOptionS2CPayload;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
 import snowball049.roguelikemc.upgrade.roll.UpgradeRollService;
-import snowball049.roguelikemc.util.RoguelikeMCPointUtil;
+import snowball049.roguelikemc.upgrade.point.UpgradePointService;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class RefreshUpgradeOptionHandler {
             return;
         }
 
-        boolean isRemove = RoguelikeMCPointUtil.removeUpgradePoints(context.player(), 1);
+        boolean isRemove = UpgradePointService.removeUpgradePoints(context.player(), 1);
         if (!isRemove) return;
 
         List<RoguelikeMCUpgradeData> currentUpgrades = UpgradeRollService

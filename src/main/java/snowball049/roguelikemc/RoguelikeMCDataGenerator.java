@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import snowball049.roguelikemc.datagen.RoguelikeMCTranslationProvider;
 import snowball049.roguelikemc.datagen.RoguelikeMCUpgradeDataProvider;
-import snowball049.roguelikemc.util.RoguelikeMCDatagenUtil;
+import snowball049.roguelikemc.datagen.DefaultUpgradeDefinitions;
 
 public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 
@@ -17,7 +17,7 @@ public class RoguelikeMCDataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider((FabricDataOutput output) -> {
 			RoguelikeMCUpgradeDataProvider upgradeProvider = new RoguelikeMCUpgradeDataProvider(output);
 
-			RoguelikeMCDatagenUtil.addDefaultUpgrades(upgradeProvider);
+			DefaultUpgradeDefinitions.register(upgradeProvider);
 
 			return upgradeProvider;
 		});

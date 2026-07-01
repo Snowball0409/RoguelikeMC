@@ -22,6 +22,8 @@ public final class TestFixtures {
     public static final String HANDLERS = "fixtures/handlers.json";
     public static final String CONFIG = "fixtures/config.json";
     public static final String ITEMS = "fixtures/items.json";
+    public static final String DEATH = "fixtures/death.json";
+    public static final String UPGRADE_POINTS = "fixtures/upgrade_points.json";
 
     private static final Gson GSON = new Gson();
 

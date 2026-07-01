@@ -11,7 +11,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import snowball049.roguelikemc.util.RoguelikeMCPointUtil;
+import snowball049.roguelikemc.upgrade.point.UpgradePointService;
 
 import java.util.List;
 
@@ -31,11 +31,11 @@ public class UpgradePointOrbItem extends Item {
         if (!world.isClient) {
             // Add upgrade point to player
             if(user.isSneaking()) {
-                RoguelikeMCPointUtil.addUpgradePoints((ServerPlayerEntity) user, itemStack.getCount());
+                UpgradePointService.addUpgradePoints((ServerPlayerEntity) user, itemStack.getCount());
                 itemStack.decrement(itemStack.getCount());
             }
             else {
-                RoguelikeMCPointUtil.addUpgradePoints((ServerPlayerEntity) user, 1);
+                UpgradePointService.addUpgradePoints((ServerPlayerEntity) user, 1);
                 if(!user.getAbilities().creativeMode)
                     itemStack.decrement(1);
             }
