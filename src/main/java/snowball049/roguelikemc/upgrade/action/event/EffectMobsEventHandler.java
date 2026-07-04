@@ -22,6 +22,8 @@ public final class EffectMobsEventHandler implements UpgradeEventHandler {
 
     @Override
     public void apply(UpgradeActionContext context) {
+        // Legacy normalized runtime payload: authored `payload` fields are still routed
+        // through value[] until runtime schema convergence happens.
         List<String> value = context.action().value();
         try {
             Identifier effectIdentifier = Identifier.tryParse(value.get(1));

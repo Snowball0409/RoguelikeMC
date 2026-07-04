@@ -27,6 +27,8 @@ public final class AttributeUpgradeActionHandler implements UpgradeActionHandler
 
     @Override
     public void apply(UpgradeActionContext context) {
+        // Legacy normalized runtime payload. When packet/runtime schema converges with
+        // authored `type + payload`, migrate this call site away from direct value[] reads.
         addAttribute(context.player(), context.upgrade().id(), context.action().value());
     }
 

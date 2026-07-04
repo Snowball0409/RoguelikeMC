@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "event",
-      "value": [
-        "set_equipment",
-        "2",
-        "{components: {\"minecraft:enchantments\": {levels: {\"minecraft:binding_curse\": 1}}, \"minecraft:unbreakable\": {}}, count: 1, id: \"minecraft:elytra\"}"
-      ]
+      "payload": {
+        "eventType": "set_equipment",
+        "slot": 2,
+        "itemNbt": "{components: {\"minecraft:enchantments\": {levels: {\"minecraft:binding_curse\": 1}}, \"minecraft:unbreakable\": {}}, count: 1, id: \"minecraft:elytra\"}"
+      }
     }
   ]
 }

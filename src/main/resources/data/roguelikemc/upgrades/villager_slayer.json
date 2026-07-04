@@ -9,18 +9,18 @@
   "actions": [
     {
       "type": "event",
-      "value": [
-        "add_loot_table",
-        "minecraft:villager",
-        "roguelikemc:villager_slayer"
-      ]
+      "payload": {
+        "eventType": "add_loot_table",
+        "entityType": "minecraft:villager",
+        "lootTable": "roguelikemc:villager_slayer"
+      }
     },
     {
       "type": "event",
-      "value": [
-        "provoked",
-        "minecraft:iron_golem"
-      ]
+      "payload": {
+        "eventType": "provoked",
+        "entityType": "minecraft:iron_golem"
+      }
     }
   ]
 }

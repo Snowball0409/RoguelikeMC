@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.armor_toughness",
-        "0.5",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.armor_toughness",
+        "amount": 0.5,
+        "operation": "add_value"
+      }
     }
   ]
 }

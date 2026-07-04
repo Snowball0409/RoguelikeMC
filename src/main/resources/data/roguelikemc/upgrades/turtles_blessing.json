@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "event",
-      "value": [
-        "set_equipment",
-        "3",
-        "{components: {\"minecraft:enchantments\": {levels: {\"minecraft:binding_curse\": 1}}, \"minecraft:unbreakable\": {}}, count: 1, id: \"minecraft:turtle_helmet\"}"
-      ]
+      "payload": {
+        "eventType": "set_equipment",
+        "slot": 3,
+        "itemNbt": "{components: {\"minecraft:enchantments\": {levels: {\"minecraft:binding_curse\": 1}}, \"minecraft:unbreakable\": {}}, count: 1, id: \"minecraft:turtle_helmet\"}"
+      }
     }
   ]
 }

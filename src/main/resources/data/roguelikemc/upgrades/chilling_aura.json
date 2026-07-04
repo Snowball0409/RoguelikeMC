@@ -9,12 +9,12 @@
   "actions": [
     {
       "type": "event",
-      "value": [
-        "effect_mobs",
-        "minecraft:slowness",
-        "0",
-        "8.0"
-      ]
+      "payload": {
+        "eventType": "effect_mobs",
+        "effect": "minecraft:slowness",
+        "amplifier": 0,
+        "radius": 8.0
+      }
     }
   ]
 }

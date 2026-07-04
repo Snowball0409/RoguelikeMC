@@ -18,6 +18,8 @@ public final class SetEquipmentEventHandler implements UpgradeEventHandler {
 
     @Override
     public void apply(UpgradeActionContext context) {
+        // Legacy normalized runtime payload: semantic authored fields have already been
+        // flattened into value[] before this handler executes.
         List<String> value = context.action().value();
         try {
             int slotIndex = Integer.parseInt(value.get(1));
@@ -51,6 +53,7 @@ public final class SetEquipmentEventHandler implements UpgradeEventHandler {
 
     @Override
     public boolean matchesPeriodicTick(UpgradeActionContext context) {
+        // Future packet/runtime schema convergence should replace this positional check.
         List<String> value = context.action().value();
         return value.size() > 2 && value.get(2).isEmpty();
     }

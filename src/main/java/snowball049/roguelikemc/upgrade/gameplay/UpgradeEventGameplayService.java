@@ -75,6 +75,8 @@ public final class UpgradeEventGameplayService {
     }
 
     private static String eventType(RoguelikeMCUpgradeData.ActionData action) {
+        // Legacy normalized runtime payload: gameplay event routing still reads value[0]
+        // until the packet/runtime schema catches up with authored `type + payload`.
         return action.value().getFirst();
     }
 

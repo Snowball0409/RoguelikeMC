@@ -9,27 +9,27 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.scale",
-        "-0.5",
-        "add_multiplied_total"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.scale",
+        "amount": -0.5,
+        "operation": "add_multiplied_total"
+      }
     },
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.movement_speed",
-        "0.2",
-        "add_multiplied_base"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.movement_speed",
+        "amount": 0.2,
+        "operation": "add_multiplied_base"
+      }
     },
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.attack_damage",
-        "-0.2",
-        "add_multiplied_base"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.attack_damage",
+        "amount": -0.2,
+        "operation": "add_multiplied_base"
+      }
     }
   ]
 }

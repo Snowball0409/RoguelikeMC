@@ -9,19 +9,19 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "roguelikemc:critical_chance",
-        "0.15",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "roguelikemc:critical_chance",
+        "amount": 0.15,
+        "operation": "add_value"
+      }
     },
     {
       "type": "attribute",
-      "value": [
-        "roguelikemc:damage_ratio",
-        "0.5",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "roguelikemc:damage_ratio",
+        "amount": 0.5,
+        "operation": "add_value"
+      }
     }
   ]
 }

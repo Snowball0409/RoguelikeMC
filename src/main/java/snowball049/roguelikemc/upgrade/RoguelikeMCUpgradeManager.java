@@ -2,7 +2,6 @@ package snowball049.roguelikemc.upgrade;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.mojang.serialization.JsonOps;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -28,8 +27,7 @@ public class RoguelikeMCUpgradeManager implements SimpleSynchronousResourceReloa
         for (Identifier id: resourceManager.findAllResources(dataType, path -> path.getPath().endsWith(".json")).keySet()) {
             try (InputStreamReader reader = new InputStreamReader(resourceManager.getResource(id).orElseThrow().getInputStream(), StandardCharsets.UTF_8)) {
                 JsonObject json = GSON.fromJson(reader, JsonObject.class);
-                RoguelikeMCUpgradeData upgrade = RoguelikeMCUpgradeData.CODEC
-                        .parse(JsonOps.INSTANCE, json)
+                RoguelikeMCUpgradeData upgrade = UpgradeResourceSchemaReader.parse(json)
                         .resultOrPartial(RoguelikeMC.LOGGER::error)
                         .orElse(null);
 

@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.knockback_resistance",
-        "0.1",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.knockback_resistance",
+        "amount": 0.1,
+        "operation": "add_value"
+      }
     }
   ]
 }

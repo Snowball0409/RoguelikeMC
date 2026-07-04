@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "effect",
-      "value": [
-        "minecraft:slow_falling",
-        "-1",
-        "0"
-      ]
+      "payload": {
+        "effect": "minecraft:slow_falling",
+        "duration": -1,
+        "amplifier": 0
+      }
     }
   ]
 }

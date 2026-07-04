@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.movement_speed",
-        "0.04",
-        "add_multiplied_base"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.movement_speed",
+        "amount": 0.04,
+        "operation": "add_multiplied_base"
+      }
     }
   ]
 }

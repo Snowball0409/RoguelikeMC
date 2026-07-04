@@ -36,6 +36,8 @@ public final class ProvokedEventHandler implements UpgradeEventHandler {
             return;
         }
 
+        // Legacy normalized runtime payload: provoked event data is still positional here
+        // until packet/runtime schema convergence introduces semantic runtime fields.
         List<String> value = context.action().value();
         if (value.size() < 2) {
             return;

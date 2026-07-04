@@ -27,6 +27,8 @@ public final class AddLootTableEventHandler implements UpgradeEventHandler {
 
     @Override
     public boolean matchesEntityKill(UpgradeActionContext context, LivingEntity target) {
+        // Legacy normalized runtime payload: this positional event payload is a future
+        // migration target once packet/runtime schema aligns with authored resources.
         List<String> value = context.action().value();
         if (value.size() < 3) {
             return false;

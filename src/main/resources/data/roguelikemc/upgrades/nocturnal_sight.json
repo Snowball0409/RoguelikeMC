@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "effect",
-      "value": [
-        "minecraft:night_vision",
-        "-1",
-        "0"
-      ]
+      "payload": {
+        "effect": "minecraft:night_vision",
+        "duration": -1,
+        "amplifier": 0
+      }
     }
   ]
 }

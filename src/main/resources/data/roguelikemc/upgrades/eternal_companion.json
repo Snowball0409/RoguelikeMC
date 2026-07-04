@@ -9,10 +9,10 @@
   "actions": [
     {
       "type": "command",
-      "value": [
-        "summon cat ~ ~ ~ {Invulnerable:1b}",
-        "true"
-      ]
+      "payload": {
+        "command": "summon cat ~ ~ ~ {Invulnerable:1b}",
+        "needsOwner": true
+      }
     }
   ]
 }

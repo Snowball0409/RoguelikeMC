@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "roguelikemc:experience_gain",
-        "0.06",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "roguelikemc:experience_gain",
+        "amount": 0.06,
+        "operation": "add_value"
+      }
     }
   ]
 }

@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.oxygen_bonus",
-        "1",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.oxygen_bonus",
+        "amount": 1,
+        "operation": "add_value"
+      }
     }
   ]
 }

@@ -9,9 +9,9 @@
   "actions": [
     {
       "type": "command",
-      "value": [
-        "summon horse ~ ~ ~ {Tame:1b,SaddleItem:{id:\"minecraft:saddle\",count:1}}"
-      ]
+      "payload": {
+        "command": "summon horse ~ ~ ~ {Tame:1b,SaddleItem:{id:\"minecraft:saddle\",count:1}}"
+      }
     }
   ]
 }

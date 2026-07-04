@@ -56,6 +56,8 @@ public final class UpgradeEventHandlers {
     }
 
     private static String eventType(UpgradeActionContext context) {
+        // Legacy normalized runtime payload: eventType still lives in value[0] until
+        // packet/runtime schema convergence replaces this with semantic fields.
         return context.action().value().getFirst();
     }
 

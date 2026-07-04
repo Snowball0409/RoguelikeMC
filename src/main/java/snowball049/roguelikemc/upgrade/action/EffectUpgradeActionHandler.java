@@ -33,11 +33,14 @@ public final class EffectUpgradeActionHandler implements UpgradeActionHandler {
 
     @Override
     public boolean matchesTick(RoguelikeMCUpgradeData.ActionData action) {
+        // Legacy normalized runtime payload. This tick check should move to semantic fields
+        // when packet/runtime schema converges with authored `type + payload`.
         List<String> value = action.value();
         return value.size() > 1 && "-1".equals(value.get(1));
     }
 
     private static void applyEffect(net.minecraft.server.network.ServerPlayerEntity player, List<String> value) {
+        // Legacy normalized runtime payload consumed by the current handler contract.
         Identifier effectIdentifier = Identifier.tryParse(value.getFirst());
         RegistryEntry.Reference<StatusEffect> effectEntry = Registries.STATUS_EFFECT.getEntry(effectIdentifier)
                 .orElseThrow();

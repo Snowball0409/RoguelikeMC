@@ -9,9 +9,9 @@
   "actions": [
     {
       "type": "command",
-      "value": [
-        "give @p enchanted_book[stored_enchantments\u003d{\"minecraft:mending\":1}] 1"
-      ]
+      "payload": {
+        "command": "give @p enchanted_book[stored_enchantments\u003d{\"minecraft:mending\":1}] 1"
+      }
     }
   ]
 }

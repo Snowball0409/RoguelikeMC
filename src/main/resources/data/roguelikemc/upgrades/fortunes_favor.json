@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.luck",
-        "1",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.luck",
+        "amount": 1,
+        "operation": "add_value"
+      }
     }
   ]
 }

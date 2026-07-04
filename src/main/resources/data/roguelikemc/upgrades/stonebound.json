@@ -9,19 +9,19 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.max_health",
-        "-2",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.max_health",
+        "amount": -2,
+        "operation": "add_value"
+      }
     },
     {
       "type": "effect",
-      "value": [
-        "minecraft:resistance",
-        "-1",
-        "0"
-      ]
+      "payload": {
+        "effect": "minecraft:resistance",
+        "duration": -1,
+        "amplifier": 0
+      }
     }
   ]
 }

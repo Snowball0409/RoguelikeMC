@@ -9,20 +9,20 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "roguelikemc:damage_ratio",
-        "-0.1",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "roguelikemc:damage_ratio",
+        "amount": -0.1,
+        "operation": "add_value"
+      }
     },
     {
       "type": "event",
-      "value": [
-        "effect_mobs",
-        "minecraft:speed",
-        "0",
-        "8.0"
-      ]
+      "payload": {
+        "eventType": "effect_mobs",
+        "effect": "minecraft:speed",
+        "amplifier": 0,
+        "radius": 8.0
+      }
     }
   ]
 }

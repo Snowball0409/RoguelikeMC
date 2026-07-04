@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "effect",
-      "value": [
-        "minecraft:regeneration",
-        "-1",
-        "0"
-      ]
+      "payload": {
+        "effect": "minecraft:regeneration",
+        "duration": -1,
+        "amplifier": 0
+      }
     }
   ]
 }

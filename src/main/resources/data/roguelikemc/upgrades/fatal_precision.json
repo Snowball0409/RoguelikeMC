@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "roguelikemc:critical_damage",
-        "0.03",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "roguelikemc:critical_damage",
+        "amount": 0.03,
+        "operation": "add_value"
+      }
     }
   ]
 }

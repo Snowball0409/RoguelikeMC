@@ -100,6 +100,169 @@
       }
     }
   ],
+  "resource_schema": [
+    {
+      "name": "legacy_attribute",
+      "input": {
+        "id": "swift_stride",
+        "name": "upgrade.roguelikemc.name.swift_stride",
+        "tier": "common",
+        "isPermanent": true,
+        "actions": [{ "type": "attribute", "value": ["minecraft:generic.movement_speed", "0.04", "add_multiplied_base"] }]
+      },
+      "expected": {
+        "id": "swift_stride",
+        "name": "upgrade.roguelikemc.name.swift_stride",
+        "description": "",
+        "tier": "common",
+        "isPermanent": true,
+        "isUnique": false,
+        "icon": "",
+        "actionTypes": ["attribute"],
+        "actionValues": [["minecraft:generic.movement_speed", "0.04", "add_multiplied_base"]]
+      }
+    },
+    {
+      "name": "payload_attribute",
+      "input": {
+        "id": "mighty_force",
+        "name": "upgrade.roguelikemc.name.mighty_force",
+        "description": "upgrade.roguelikemc.description.mighty_force",
+        "tier": "common",
+        "isPermanent": true,
+        "icon": "roguelikemc:textures/upgrades/mighty_force.png",
+        "actions": [{
+          "type": "attribute",
+          "payload": {
+            "attribute": "minecraft:generic.attack_damage",
+            "amount": 0.05,
+            "operation": "add_multiplied_base"
+          }
+        }]
+      },
+      "expected": {
+        "id": "mighty_force",
+        "name": "upgrade.roguelikemc.name.mighty_force",
+        "description": "upgrade.roguelikemc.description.mighty_force",
+        "tier": "common",
+        "isPermanent": true,
+        "isUnique": false,
+        "icon": "roguelikemc:textures/upgrades/mighty_force.png",
+        "actionTypes": ["attribute"],
+        "actionValues": [["minecraft:generic.attack_damage", "0.05", "add_multiplied_base"]]
+      }
+    },
+    {
+      "name": "payload_command_with_owner",
+      "input": {
+        "id": "eternal_companion",
+        "name": "upgrade.roguelikemc.name.eternal_companion",
+        "description": "upgrade.roguelikemc.description.eternal_companion",
+        "actions": [{
+          "type": "command",
+          "payload": {
+            "command": "summon cat ~ ~ ~ {Invulnerable:1b}",
+            "needsOwner": true
+          }
+        }]
+      },
+      "expected": {
+        "id": "eternal_companion",
+        "name": "upgrade.roguelikemc.name.eternal_companion",
+        "description": "upgrade.roguelikemc.description.eternal_companion",
+        "tier": "common",
+        "isPermanent": false,
+        "isUnique": false,
+        "icon": "",
+        "actionTypes": ["command"],
+        "actionValues": [["summon cat ~ ~ ~ {Invulnerable:1b}", "true"]]
+      }
+    },
+    {
+      "name": "payload_event_set_equipment",
+      "input": {
+        "id": "tank_mode",
+        "name": "upgrade.roguelikemc.name.tank_mode",
+        "actions": [{
+          "type": "event",
+          "payload": {
+            "eventType": "set_equipment",
+            "slot": 1,
+            "itemNbt": ""
+          }
+        }]
+      },
+      "expected": {
+        "id": "tank_mode",
+        "name": "upgrade.roguelikemc.name.tank_mode",
+        "description": "",
+        "tier": "common",
+        "isPermanent": false,
+        "isUnique": false,
+        "icon": "",
+        "actionTypes": ["event"],
+        "actionValues": [["set_equipment", "1", ""]]
+      }
+    },
+    {
+      "name": "payload_event_chain",
+      "input": {
+        "id": "villager_slayer",
+        "name": "upgrade.roguelikemc.name.villager_slayer",
+        "tier": "rare",
+        "isUnique": true,
+        "actions": [
+          {
+            "type": "event",
+            "payload": {
+              "eventType": "add_loot_table",
+              "entityType": "minecraft:villager",
+              "lootTable": "roguelikemc:villager_slayer"
+            }
+          },
+          {
+            "type": "event",
+            "payload": {
+              "eventType": "provoked",
+              "entityType": "minecraft:iron_golem"
+            }
+          }
+        ]
+      },
+      "expected": {
+        "id": "villager_slayer",
+        "name": "upgrade.roguelikemc.name.villager_slayer",
+        "description": "",
+        "tier": "rare",
+        "isPermanent": false,
+        "isUnique": true,
+        "icon": "",
+        "actionTypes": ["event", "event"],
+        "actionValues": [
+          ["add_loot_table", "minecraft:villager", "roguelikemc:villager_slayer"],
+          ["provoked", "minecraft:iron_golem"]
+        ]
+      }
+    },
+    {
+      "name": "minimal_defaults",
+      "input": {
+        "id": "minimal_upgrade",
+        "name": "upgrade.roguelikemc.name.minimal"
+      },
+      "expected": {
+        "id": "minimal_upgrade",
+        "name": "upgrade.roguelikemc.name.minimal",
+        "description": "",
+        "tier": "common",
+        "isPermanent": false,
+        "isUnique": false,
+        "icon": "",
+        "actionTypes": [],
+        "actionValues": []
+      }
+    }
+  ],
   "identifiers": [
     {
       "name": "path_only",

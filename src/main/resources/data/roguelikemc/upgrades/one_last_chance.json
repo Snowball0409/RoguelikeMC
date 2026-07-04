@@ -9,9 +9,9 @@
   "actions": [
     {
       "type": "event",
-      "value": [
-        "one_last_chance"
-      ]
+      "payload": {
+        "eventType": "one_last_chance"
+      }
     }
   ]
 }

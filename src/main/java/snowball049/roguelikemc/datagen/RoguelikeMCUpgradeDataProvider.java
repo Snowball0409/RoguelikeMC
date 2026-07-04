@@ -48,6 +48,8 @@ public class RoguelikeMCUpgradeDataProvider implements DataProvider {
             futures.add(CompletableFuture.runAsync(() -> {
                 try {
                     Files.createDirectories(path.getParent());
+                    // Generated defaults still emit the runtime RoguelikeMCUpgradeData shape.
+                    // Authored `type + payload` output is a later follow-up that needs a dedicated serializer.
                     Files.writeString(path, gson.toJson(upgrade), StandardCharsets.UTF_8);
                 } catch (IOException e) {
                     throw new RuntimeException("Failed to write upgrade data to file: " + path, e);

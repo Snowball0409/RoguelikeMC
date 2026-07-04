@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.water_movement_efficiency",
-        "0.33",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.water_movement_efficiency",
+        "amount": 0.33,
+        "operation": "add_value"
+      }
     }
   ]
 }

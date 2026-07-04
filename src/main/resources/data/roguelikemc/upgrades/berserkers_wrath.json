@@ -9,19 +9,19 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.attack_damage",
-        "0.5",
-        "add_multiplied_base"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.attack_damage",
+        "amount": 0.5,
+        "operation": "add_multiplied_base"
+      }
     },
     {
       "type": "attribute",
-      "value": [
-        "roguelikemc:damage_ratio",
-        "0.5",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "roguelikemc:damage_ratio",
+        "amount": 0.5,
+        "operation": "add_value"
+      }
     }
   ]
 }

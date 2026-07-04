@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "roguelikemc:damage_ratio",
-        "-0.01",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "roguelikemc:damage_ratio",
+        "amount": -0.01,
+        "operation": "add_value"
+      }
     }
   ]
 }

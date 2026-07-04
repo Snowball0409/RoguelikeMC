@@ -9,27 +9,27 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.max_health",
-        "4",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.max_health",
+        "amount": 4,
+        "operation": "add_value"
+      }
     },
     {
       "type": "effect",
-      "value": [
-        "minecraft:resistance",
-        "-1",
-        "1"
-      ]
+      "payload": {
+        "effect": "minecraft:resistance",
+        "duration": -1,
+        "amplifier": 1
+      }
     },
     {
       "type": "event",
-      "value": [
-        "set_equipment",
-        "1",
-        ""
-      ]
+      "payload": {
+        "eventType": "set_equipment",
+        "slot": 1,
+        "itemNbt": ""
+      }
     }
   ]
 }

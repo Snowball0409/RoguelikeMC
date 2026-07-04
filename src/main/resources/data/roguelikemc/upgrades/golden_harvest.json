@@ -9,9 +9,9 @@
   "actions": [
     {
       "type": "command",
-      "value": [
-        "give @s golden_carrot 64"
-      ]
+      "payload": {
+        "command": "give @s golden_carrot 64"
+      }
     }
   ]
 }

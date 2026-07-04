@@ -9,9 +9,9 @@
   "actions": [
     {
       "type": "command",
-      "value": [
-        "give @s shield[unbreakable\u003d{}] 1"
-      ]
+      "payload": {
+        "command": "give @s shield[unbreakable\u003d{}] 1"
+      }
     }
   ]
 }

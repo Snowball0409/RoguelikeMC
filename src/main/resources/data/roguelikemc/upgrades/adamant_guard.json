@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.armor",
-        "1",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.armor",
+        "amount": 1,
+        "operation": "add_value"
+      }
     }
   ]
 }

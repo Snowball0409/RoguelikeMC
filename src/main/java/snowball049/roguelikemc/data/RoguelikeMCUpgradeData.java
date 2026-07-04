@@ -62,6 +62,17 @@ public record RoguelikeMCUpgradeData(
                 ).apply(instance, ActionData::new)
         );
 
+        /**
+         * @deprecated Legacy runtime/packet payload shape retained for compatibility while authored
+         * resource JSON migrates to semantic {@code payload} fields. Prefer the authored
+         * {@code type + payload} schema at the resource layer and normalize through
+         * {@code UpgradeResourceSchemaReader}.
+         */
+        @Deprecated(forRemoval = false, since = "2.0.0")
+        public List<String> value() {
+            return value;
+        }
+
         public UpgradeActionType actionType() {
             return UpgradeActionType.fromString(type);
         }

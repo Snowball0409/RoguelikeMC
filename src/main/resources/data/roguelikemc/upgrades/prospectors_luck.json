@@ -9,9 +9,9 @@
   "actions": [
     {
       "type": "command",
-      "value": [
-        "loot give @s loot roguelikemc:random_ores"
-      ]
+      "payload": {
+        "command": "loot give @s loot roguelikemc:random_ores"
+      }
     }
   ]
 }

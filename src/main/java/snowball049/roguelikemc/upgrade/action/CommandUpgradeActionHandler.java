@@ -26,6 +26,8 @@ public final class CommandUpgradeActionHandler implements UpgradeActionHandler {
 
     @Override
     public void apply(UpgradeActionContext context) {
+        // Legacy normalized runtime payload. Replace this direct value[] contract when the
+        // packet/runtime schema is aligned with the authored `type + payload` format.
         executeCommand(context.player(), context.action().value());
     }
 

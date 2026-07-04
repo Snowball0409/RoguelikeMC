@@ -9,19 +9,19 @@
   "actions": [
     {
       "type": "effect",
-      "value": [
-        "minecraft:saturation",
-        "-1",
-        "0"
-      ]
+      "payload": {
+        "effect": "minecraft:saturation",
+        "duration": -1,
+        "amplifier": 0
+      }
     },
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.movement_speed",
-        "-0.5",
-        "add_multiplied_base"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.movement_speed",
+        "amount": -0.5,
+        "operation": "add_multiplied_base"
+      }
     }
   ]
 }

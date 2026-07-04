@@ -9,19 +9,19 @@
   "actions": [
     {
       "type": "effect",
-      "value": [
-        "minecraft:luck",
-        "36000",
-        "0"
-      ]
+      "payload": {
+        "effect": "minecraft:luck",
+        "duration": 36000,
+        "amplifier": 0
+      }
     },
     {
       "type": "attribute",
-      "value": [
-        "roguelikemc:experience_gain",
-        "0.1",
-        "add_value"
-      ]
+      "payload": {
+        "attribute": "roguelikemc:experience_gain",
+        "amount": 0.1,
+        "operation": "add_value"
+      }
     }
   ]
 }

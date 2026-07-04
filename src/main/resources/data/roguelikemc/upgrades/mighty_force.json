@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "attribute",
-      "value": [
-        "minecraft:generic.attack_damage",
-        "0.05",
-        "add_multiplied_base"
-      ]
+      "payload": {
+        "attribute": "minecraft:generic.attack_damage",
+        "amount": 0.05,
+        "operation": "add_multiplied_base"
+      }
     }
   ]
 }

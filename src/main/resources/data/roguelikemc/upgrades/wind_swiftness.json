@@ -9,11 +9,11 @@
   "actions": [
     {
       "type": "effect",
-      "value": [
-        "minecraft:speed",
-        "-1",
-        "0"
-      ]
+      "payload": {
+        "effect": "minecraft:speed",
+        "duration": -1,
+        "amplifier": 0
+      }
     }
   ]
 }
