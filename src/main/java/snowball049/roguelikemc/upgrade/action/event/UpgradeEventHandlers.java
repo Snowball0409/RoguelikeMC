@@ -45,7 +45,12 @@ public final class UpgradeEventHandlers {
     private static void dispatch(UpgradeActionContext context, EventConsumer consumer) {
         UpgradeEventHandler handler = getHandler(context);
         if (handler == null) {
-            RoguelikeMC.LOGGER.warn("Unexpected eventType value: {}", eventType(context));
+            String type = eventType(context);
+            if (type.isEmpty()) {
+                RoguelikeMC.LOGGER.warn("EVENT action in upgrade '{}' is missing legacy event type", context.upgrade().id());
+            } else {
+                RoguelikeMC.LOGGER.warn("Unexpected eventType value: {}", type);
+            }
             return;
         }
         consumer.accept(handler, context);
@@ -56,9 +61,7 @@ public final class UpgradeEventHandlers {
     }
 
     private static String eventType(UpgradeActionContext context) {
-        // Legacy normalized runtime payload: eventType still lives in value[0] until
-        // packet/runtime schema convergence replaces this with semantic fields.
-        return context.action().value().getFirst();
+        return context.action().legacyEventType();
     }
 
     @FunctionalInterface

@@ -1,4 +1,4 @@
-package snowball049.roguelikemc.upgrade;
+package snowball049.roguelikemc.upgrade.schema;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -10,9 +10,9 @@ import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import java.util.ArrayList;
 import java.util.List;
 
-import static snowball049.roguelikemc.upgrade.constants.UpgradeSchemaConstants.ActionType;
-import static snowball049.roguelikemc.upgrade.constants.UpgradeSchemaConstants.JsonField;
-import static snowball049.roguelikemc.upgrade.constants.UpgradeSchemaConstants.PayloadField;
+import static snowball049.roguelikemc.upgrade.schema.SchemaFields.ActionType;
+import static snowball049.roguelikemc.upgrade.schema.SchemaFields.JsonField;
+import static snowball049.roguelikemc.upgrade.schema.SchemaFields.PayloadField;
 
 public final class UpgradeResourceSchemaReader {
     private UpgradeResourceSchemaReader() {

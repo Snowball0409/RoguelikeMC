@@ -1,6 +1,5 @@
 package snowball049.roguelikemc.network.packet;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -10,11 +9,11 @@ import snowball049.roguelikemc.network.RoguelikeMCNetworkConstants;
 
 import java.util.List;
 
-public record RefreshCurrentUpgradeS2CPayload(boolean is_permanent, List<RoguelikeMCUpgradeData> upgrades) implements CustomPayload {
-    public static final CustomPayload.Id<RefreshCurrentUpgradeS2CPayload> ID = new CustomPayload.Id<>(RoguelikeMCNetworkConstants.REFRESH_CURRENT_UPGRADE_PACKET_ID);
+public record RefreshCurrentUpgradeS2CPayload(boolean isPermanent, List<RoguelikeMCUpgradeData> upgrades) implements CustomPayload {
+    public static final CustomPayload.Id<RefreshCurrentUpgradeS2CPayload> PACKET_ID = new CustomPayload.Id<>(RoguelikeMCNetworkConstants.REFRESH_CURRENT_UPGRADE_PACKET_ID);
     public static final PacketCodec<RegistryByteBuf, RefreshCurrentUpgradeS2CPayload> CODEC = PacketCodec.tuple(
             PacketCodecs.BOOL,
-            RefreshCurrentUpgradeS2CPayload::is_permanent,
+            RefreshCurrentUpgradeS2CPayload::isPermanent,
             PacketCodecs.registryCodec(RoguelikeMCUpgradeData.CODEC.listOf()),
             RefreshCurrentUpgradeS2CPayload::upgrades,
             RefreshCurrentUpgradeS2CPayload::new
@@ -22,6 +21,6 @@ public record RefreshCurrentUpgradeS2CPayload(boolean is_permanent, List<Rogueli
 
     @Override
     public CustomPayload.Id<? extends CustomPayload> getId() {
-        return ID;
+        return PACKET_ID;
     }
 }

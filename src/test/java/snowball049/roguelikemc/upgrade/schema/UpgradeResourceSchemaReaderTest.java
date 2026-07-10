@@ -1,4 +1,4 @@
-package snowball049.roguelikemc.upgrade;
+package snowball049.roguelikemc.upgrade.schema;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

@@ -16,8 +16,8 @@ import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.network.packet.RefreshCurrentBossStageS2CPayload;
-import snowball049.roguelikemc.upgrade.gameplay.UpgradeEventGameplayService;
-import snowball049.roguelikemc.upgrade.gameplay.UpgradeTriggerGameplayService;
+import snowball049.roguelikemc.upgrade.runtime.UpgradeEventRuntimeService;
+import snowball049.roguelikemc.upgrade.runtime.UpgradeTriggerRuntimeService;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
@@ -69,7 +69,7 @@ public class LivingEntityMixin {
         if (!causedByPlayer) return;
         if (!(source.getAttacker() instanceof ServerPlayerEntity player)) return;
 
-        UpgradeEventGameplayService.onEntityKilledByPlayer(player, (LivingEntity) (Object) this, source);
-        UpgradeTriggerGameplayService.onEntityKilledByPlayer(player, (LivingEntity) (Object) this, source);
+        UpgradeEventRuntimeService.onEntityKilledByPlayer(player, (LivingEntity) (Object) this, source);
+        UpgradeTriggerRuntimeService.onEntityKilledByPlayer(player, (LivingEntity) (Object) this);
     }
 }

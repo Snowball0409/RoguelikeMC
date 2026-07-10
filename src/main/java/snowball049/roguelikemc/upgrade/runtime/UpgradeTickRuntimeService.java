@@ -1,4 +1,4 @@
-package snowball049.roguelikemc.upgrade.tick;
+package snowball049.roguelikemc.upgrade.runtime;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -8,13 +8,12 @@ import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.upgrade.action.EffectUpgradeActionHandler;
 import snowball049.roguelikemc.upgrade.action.UpgradeActionContext;
 import snowball049.roguelikemc.upgrade.action.UpgradeActionHandlers;
-import snowball049.roguelikemc.upgrade.gameplay.UpgradeEventGameplayService;
 
 import java.util.Collection;
 import java.util.function.Predicate;
 
-public final class UpgradeTickService {
-    private UpgradeTickService() {
+public final class UpgradeTickRuntimeService {
+    private UpgradeTickRuntimeService() {
     }
 
     public static void tickInfiniteEffects(MinecraftServer server) {
@@ -26,7 +25,7 @@ public final class UpgradeTickService {
     }
 
     public static void tickEvents(MinecraftServer server, int interval) {
-        UpgradeEventGameplayService.tickAtInterval(server, interval);
+        UpgradeEventRuntimeService.tickAtInterval(server, interval);
     }
 
     private static void forEachMatchingAction(

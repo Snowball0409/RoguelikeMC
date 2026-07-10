@@ -1,7 +1,10 @@
-package snowball049.roguelikemc.upgrade.action;
+package snowball049.roguelikemc.upgrade.action.trigger;
 
+import snowball049.roguelikemc.upgrade.action.UpgradeActionContext;
+import snowball049.roguelikemc.upgrade.action.UpgradeActionHandler;
 import snowball049.roguelikemc.upgrade.enums.UpgradeActionType;
 
+@SuppressWarnings("java:S6548")
 public final class TriggerUpgradeActionHandler implements UpgradeActionHandler {
     public static final TriggerUpgradeActionHandler INSTANCE = new TriggerUpgradeActionHandler();
 
@@ -15,6 +18,6 @@ public final class TriggerUpgradeActionHandler implements UpgradeActionHandler {
 
     @Override
     public void apply(UpgradeActionContext context) {
-        // Trigger upgrades activate through gameplay hooks rather than immediate apply-time effects.
+        // Trigger upgrades activate through runtime hooks rather than immediate apply-time effects.
     }
 }

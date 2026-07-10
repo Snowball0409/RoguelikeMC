@@ -25,6 +25,41 @@ public class RoguelikeMCClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
+		registerKeyBindings();
+
+		ClientTickEvents.END_CLIENT_TICK.register(client -> {
+			if (openGuiKey.wasPressed())
+				client.setScreen(currentScreen);
+			if (openDrawGuiKey.wasPressed())
+				client.setScreen(new RoguelikeMCDrawScreen(null));
+		});
+
+		// Netowrk Packet
+		// Refresh Upgrade Options
+		ClientPlayNetworking.registerGlobalReceiver(UpgradeOptionS2CPayload.ID, (payload, context) -> {
+			RoguelikeMCUpgradeData upgrade = payload.upgrade();
+			if (upgrade != null)
+				RoguelikeMCClientData.INSTANCE.currentOptions.add(upgrade);
+		});
+		// Refresh Current Upgrades
+		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentUpgradeS2CPayload.PACKET_ID, (payload, context) -> {
+			if (payload.isPermanent()) {
+				RoguelikeMCClientData.INSTANCE.permanentUpgrades.clear();
+				RoguelikeMCClientData.INSTANCE.permanentUpgrades.addAll(payload.upgrades());
+			} else {
+				RoguelikeMCClientData.INSTANCE.temporaryUpgrades.clear();
+				RoguelikeMCClientData.INSTANCE.temporaryUpgrades.addAll(payload.upgrades());
+			}
+		});
+		// Refresh Upgrade Points
+		ClientPlayNetworking.registerGlobalReceiver(SendUpgradePointsS2CPayload.ID, (payload, context) ->
+				RoguelikeMCClientData.INSTANCE.currentPoints = payload.point());
+		// Refresh Next Boss
+		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentBossStageS2CPayload.ID, (payload, context) ->
+				RoguelikeMCClientData.INSTANCE.nextBoss = Identifier.tryParse(payload.nextBoss()));
+	}
+
+	private static void registerKeyBindings() {
 		openGuiKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 				"key.roguelikemc.open_gui",
 				InputUtil.Type.KEYSYM,
@@ -37,40 +72,6 @@ public class RoguelikeMCClient implements ClientModInitializer {
 				GLFW.GLFW_KEY_H,
 				"category.roguelikemc.gui"
 		));
-
-		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			if (openGuiKey.wasPressed()) {
-				client.setScreen(currentScreen);
-			}
-			if (openDrawGuiKey.wasPressed()) {
-				client.setScreen(new RoguelikeMCDrawScreen(null));
-			}
-		});
-
-		// Netowrk Packet
-		// Refresh Upgrade Options
-		ClientPlayNetworking.registerGlobalReceiver(UpgradeOptionS2CPayload.ID, (payload, context) -> {
-			RoguelikeMCUpgradeData upgrade = payload.upgrade();
-			if(upgrade != null) RoguelikeMCClientData.INSTANCE.currentOptions.add(upgrade);
-		});
-		// Refresh Current Upgrades
-		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentUpgradeS2CPayload.ID, (payload, context) -> {
-			if(payload.is_permanent()){
-				RoguelikeMCClientData.INSTANCE.permanentUpgrades.clear();
-				RoguelikeMCClientData.INSTANCE.permanentUpgrades.addAll(payload.upgrades());
-			} else {
-				RoguelikeMCClientData.INSTANCE.temporaryUpgrades.clear();
-				RoguelikeMCClientData.INSTANCE.temporaryUpgrades.addAll(payload.upgrades());
-			}
-		});
-		// Refresh Upgrade Points
-		ClientPlayNetworking.registerGlobalReceiver(SendUpgradePointsS2CPayload.ID, (payload, context) -> {
-			RoguelikeMCClientData.INSTANCE.currentPoints = payload.point();
-		});
-		// Refresh Next Boss
-		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentBossStageS2CPayload.ID, (payload, context) -> {
-			RoguelikeMCClientData.INSTANCE.nextBoss = Identifier.tryParse(payload.nextBoss());
-		});
 	}
 
 	public static KeyBinding getOpenGuiKey() {

@@ -1,12 +1,15 @@
-package snowball049.roguelikemc.upgrade.gameplay;
+package snowball049.roguelikemc.upgrade.runtime;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.Bootstrap;
 import net.minecraft.SharedConstants;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,11 +26,13 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings("deprecation")
-class UpgradeTriggerGameplayServiceTest {
+class UpgradeTriggerRuntimeServiceTest {
     private ServerPlayerEntity player;
     private HostileEntity hostileTarget;
+    private LivingEntity passiveTarget;
     private ServerWorld serverWorld;
     private UpgradeActionHandler originalCommandHandler;
     private RecordingCommandHandler recordingCommandHandler;
@@ -42,6 +47,7 @@ class UpgradeTriggerGameplayServiceTest {
     void setUp() {
         player = Mockito.mock(ServerPlayerEntity.class);
         hostileTarget = Mockito.mock(HostileEntity.class);
+        passiveTarget = Mockito.mock(VillagerEntity.class);
         serverWorld = Mockito.mock(ServerWorld.class);
 
         Mockito.when(player.getUuid()).thenReturn(UUID.fromString("00000000-0000-0000-0000-000000000123"));
@@ -50,13 +56,13 @@ class UpgradeTriggerGameplayServiceTest {
         originalCommandHandler = UpgradeActionHandlers.get(UpgradeActionType.COMMAND);
         recordingCommandHandler = new RecordingCommandHandler();
         UpgradeActionHandlers.register(recordingCommandHandler);
-        UpgradeTriggerGameplayService.clearAllForTesting();
+        UpgradeTriggerRuntimeService.clearAllForTesting();
     }
 
     @AfterEach
     void tearDown() {
         UpgradeActionHandlers.register(originalCommandHandler);
-        UpgradeTriggerGameplayService.clearAllForTesting();
+        UpgradeTriggerRuntimeService.clearAllForTesting();
     }
 
     @Test
@@ -68,8 +74,8 @@ class UpgradeTriggerGameplayServiceTest {
                 triggerAction(2, 0, "threshold")
         );
 
-        UpgradeTriggerGameplayService.processKillTriggers(player, List.of(upgrade), hostileTarget);
-        UpgradeTriggerGameplayService.processKillTriggers(player, List.of(upgrade), hostileTarget);
+        UpgradeTriggerRuntimeService.processKillTriggers(player, List.of(upgrade), hostileTarget);
+        UpgradeTriggerRuntimeService.processKillTriggers(player, List.of(upgrade), hostileTarget);
 
         assertEquals(List.of("threshold"), recordingCommandHandler.commands);
     }
@@ -83,9 +89,9 @@ class UpgradeTriggerGameplayServiceTest {
                 triggerAction(1, 5, "cooldown")
         );
 
-        UpgradeTriggerGameplayService.processKillTriggers(player, List.of(upgrade), hostileTarget);
-        UpgradeTriggerGameplayService.processKillTriggers(player, List.of(upgrade), hostileTarget);
-        UpgradeTriggerGameplayService.processKillTriggers(player, List.of(upgrade), hostileTarget);
+        UpgradeTriggerRuntimeService.processKillTriggers(player, List.of(upgrade), hostileTarget);
+        UpgradeTriggerRuntimeService.processKillTriggers(player, List.of(upgrade), hostileTarget);
+        UpgradeTriggerRuntimeService.processKillTriggers(player, List.of(upgrade), hostileTarget);
 
         assertEquals(List.of("cooldown", "cooldown"), recordingCommandHandler.commands);
     }
@@ -100,9 +106,51 @@ class UpgradeTriggerGameplayServiceTest {
                 triggerAction(1, 5, "second")
         );
 
-        UpgradeTriggerGameplayService.processKillTriggers(player, List.of(upgrade), hostileTarget);
+        UpgradeTriggerRuntimeService.processKillTriggers(player, List.of(upgrade), hostileTarget);
 
         assertEquals(List.of("first", "second"), recordingCommandHandler.commands);
+    }
+
+    @Test
+    void ignoresNonHostileTargetsForTargetHostileCondition() {
+        Mockito.when(serverWorld.getTime()).thenReturn(400L);
+
+        RoguelikeMCUpgradeData upgrade = upgradeWithActions(
+                "hostile_only_trigger",
+                triggerAction(1, 0, "should_not_fire")
+        );
+
+        UpgradeTriggerRuntimeService.processKillTriggers(player, List.of(upgrade), passiveTarget);
+
+        assertTrue(recordingCommandHandler.commands.isEmpty());
+    }
+
+    @Test
+    void clearUpgradeOnlyClearsMatchingUpgradeProgress() {
+        Mockito.when(serverWorld.getTime()).thenReturn(20L, 21L, 22L);
+
+        RoguelikeMCUpgradeData firstUpgrade = upgradeWithActions("first_upgrade", triggerAction(1, 0, "first"));
+        RoguelikeMCUpgradeData secondUpgrade = upgradeWithActions("second_upgrade", triggerAction(2, 0, "second"));
+
+        UpgradeTriggerRuntimeService.processKillTriggers(player, List.of(secondUpgrade), hostileTarget);
+        UpgradeTriggerRuntimeService.processKillTriggers(player, List.of(firstUpgrade), hostileTarget);
+        UpgradeTriggerRuntimeService.clearUpgrade(player, Identifier.of("roguelikemc", "first_upgrade"));
+        UpgradeTriggerRuntimeService.processKillTriggers(player, List.of(secondUpgrade), hostileTarget);
+
+        assertEquals(List.of("first", "second"), recordingCommandHandler.commands);
+    }
+
+    @Test
+    void clearPlayerRemovesAllTriggerProgress() {
+        Mockito.when(serverWorld.getTime()).thenReturn(600L, 601L);
+
+        RoguelikeMCUpgradeData upgrade = upgradeWithActions("reset_trigger", triggerAction(1, 0, "before_clear"));
+
+        UpgradeTriggerRuntimeService.processKillTriggers(player, List.of(upgrade), hostileTarget);
+        UpgradeTriggerRuntimeService.clearPlayer(player);
+        UpgradeTriggerRuntimeService.processKillTriggers(player, List.of(upgrade), hostileTarget);
+
+        assertEquals(List.of("before_clear", "before_clear"), recordingCommandHandler.commands);
     }
 
     private static RoguelikeMCUpgradeData upgradeWithActions(String id, RoguelikeMCUpgradeData.ActionData... actions) {

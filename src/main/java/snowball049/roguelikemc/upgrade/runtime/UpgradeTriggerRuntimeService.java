@@ -1,8 +1,7 @@
-package snowball049.roguelikemc.upgrade.gameplay;
+package snowball049.roguelikemc.upgrade.runtime;
 
 import com.mojang.serialization.DataResult;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
@@ -11,9 +10,9 @@ import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
-import snowball049.roguelikemc.upgrade.action.TriggerActionPayload;
 import snowball049.roguelikemc.upgrade.action.UpgradeActionContext;
 import snowball049.roguelikemc.upgrade.action.UpgradeActionHandlers;
+import snowball049.roguelikemc.upgrade.action.trigger.TriggerActionPayload;
 import snowball049.roguelikemc.upgrade.enums.UpgradeActionType;
 
 import java.util.Collection;
@@ -21,21 +20,37 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static snowball049.roguelikemc.upgrade.constants.UpgradeSchemaConstants.Trigger;
+import static snowball049.roguelikemc.upgrade.schema.SchemaFields.Trigger;
 
-public final class UpgradeTriggerGameplayService {
+public final class UpgradeTriggerRuntimeService {
     private static final Map<UUID, Map<TriggerStateKey, TriggerProgress>> TRIGGER_STATE = new HashMap<>();
 
-    private UpgradeTriggerGameplayService() {
+    private UpgradeTriggerRuntimeService() {
     }
 
-    public static void onEntityKilledByPlayer(ServerPlayerEntity player, LivingEntity target, DamageSource source) {
+    public static void onEntityKilledByPlayer(ServerPlayerEntity player, LivingEntity target) {
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
         processKillTriggers(player, playerData.getAllUpgrades(), target);
     }
 
     public static void clearPlayer(ServerPlayerEntity player) {
         if (player != null) {
+            TRIGGER_STATE.remove(player.getUuid());
+        }
+    }
+
+    public static void clearUpgrade(ServerPlayerEntity player, Identifier upgradeId) {
+        if (player == null || upgradeId == null) {
+            return;
+        }
+
+        Map<TriggerStateKey, TriggerProgress> playerState = TRIGGER_STATE.get(player.getUuid());
+        if (playerState == null || playerState.isEmpty()) {
+            return;
+        }
+
+        playerState.keySet().removeIf(key -> upgradeId.equals(key.upgradeId()));
+        if (playerState.isEmpty()) {
             TRIGGER_STATE.remove(player.getUuid());
         }
     }

@@ -29,9 +29,9 @@ import snowball049.roguelikemc.item.RoguelikeMCItemGroup;
 import snowball049.roguelikemc.item.RoguelikeMCItems;
 import snowball049.roguelikemc.network.packet.*;
 import snowball049.roguelikemc.upgrade.apply.UpgradeApplier;
-import snowball049.roguelikemc.upgrade.gameplay.UpgradeTriggerGameplayService;
 import snowball049.roguelikemc.upgrade.point.UpgradePointService;
-import snowball049.roguelikemc.upgrade.tick.UpgradeTickService;
+import snowball049.roguelikemc.upgrade.runtime.UpgradeTickRuntimeService;
+import snowball049.roguelikemc.upgrade.runtime.UpgradeTriggerRuntimeService;
 
 public final class RoguelikeMCModBootstrap {
     private RoguelikeMCModBootstrap() {
@@ -41,13 +41,13 @@ public final class RoguelikeMCModBootstrap {
         PayloadTypeRegistry.playC2S().register(RefreshUpgradeOptionC2SPayload.ID, RefreshUpgradeOptionC2SPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(UpgradeOptionS2CPayload.ID, UpgradeOptionS2CPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(SelectUpgradeOptionC2SPayload.ID, SelectUpgradeOptionC2SPayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(RefreshCurrentUpgradeS2CPayload.ID, RefreshCurrentUpgradeS2CPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(RefreshCurrentUpgradeS2CPayload.PACKET_ID, RefreshCurrentUpgradeS2CPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(SendUpgradePointsS2CPayload.ID, SendUpgradePointsS2CPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(RefreshCurrentBossStageS2CPayload.ID, RefreshCurrentBossStageS2CPayload.CODEC);
     }
 
     public static void registerItems() {
-        RoguelikeMCItems.initailize();
+        RoguelikeMCItems.initialize();
     }
 
     public static void registerItemGroups() {
@@ -66,7 +66,7 @@ public final class RoguelikeMCModBootstrap {
     public static void onPlayerDeath(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive) {
         if (alive) return;
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(oldPlayer);
-        UpgradeTriggerGameplayService.clearPlayer(oldPlayer);
+        UpgradeTriggerRuntimeService.clearPlayer(oldPlayer);
 
         playerData.reset();
         playerData.temporaryUpgradeIds.clear();
@@ -88,10 +88,15 @@ public final class RoguelikeMCModBootstrap {
     }
 
     @SuppressWarnings("java:S1172")
+    public static void onPlayerDisconnect(ServerPlayNetworkHandler serverPlayNetworkHandler, MinecraftServer ignoredServer) {
+        UpgradeTriggerRuntimeService.clearPlayer(serverPlayNetworkHandler.getPlayer());
+    }
+
+    @SuppressWarnings("java:S1172")
     public static void onPlayerJoin(ServerPlayNetworkHandler serverPlayNetworkHandler, PacketSender ignoredPacketSender, MinecraftServer ignoredServer) {
         ServerPlayerEntity player = serverPlayNetworkHandler.getPlayer();
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-        UpgradeTriggerGameplayService.clearPlayer(player);
+        UpgradeTriggerRuntimeService.clearPlayer(player);
 
         if (RoguelikeMCCommonConfig.INSTANCE.enableUpgradeSystem) {
             UpgradeApplier.syncOwnedUpgrades(player, playerData);
@@ -140,13 +145,13 @@ public final class RoguelikeMCModBootstrap {
 
     public static void onServerTick(MinecraftServer minecraftServer) {
         if (minecraftServer.getTicks() % 40 == 0) {
-            UpgradeTickService.tickInfiniteEffects(minecraftServer);
+            UpgradeTickRuntimeService.tickInfiniteEffects(minecraftServer);
         }
         if (minecraftServer.getTicks() % 20 == 0) {
-            UpgradeTickService.tickEvents(minecraftServer, 20);
+            UpgradeTickRuntimeService.tickEvents(minecraftServer, 20);
         }
         if (minecraftServer.getTicks() % 100 == 0) {
-            UpgradeTickService.tickEvents(minecraftServer, 100);
+            UpgradeTickRuntimeService.tickEvents(minecraftServer, 100);
         }
     }
 }

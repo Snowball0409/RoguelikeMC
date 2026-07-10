@@ -1,9 +1,10 @@
-package snowball049.roguelikemc.upgrade.gameplay;
+package snowball049.roguelikemc.upgrade.runtime;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
@@ -14,8 +15,8 @@ import snowball049.roguelikemc.upgrade.enums.UpgradeActionType;
 
 import java.util.Collection;
 
-public final class UpgradeEventGameplayService {
-    private UpgradeEventGameplayService() {
+public final class UpgradeEventRuntimeService {
+    private UpgradeEventRuntimeService() {
     }
 
     public static void tickAtInterval(MinecraftServer server, int interval) {
@@ -30,20 +31,36 @@ public final class UpgradeEventGameplayService {
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
         for (RoguelikeMCUpgradeData upgrade : playerData.getAllUpgrades()) {
             for (RoguelikeMCUpgradeData.ActionData action : upgrade.actions()) {
-                if (action.actionType() != UpgradeActionType.EVENT) {
-                    continue;
-                }
-
-                UpgradeEventHandler handler = UpgradeEventHandlers.get(eventType(action));
-                if (handler == null) {
-                    continue;
-                }
-
-                UpgradeActionContext context = new UpgradeActionContext(player, upgrade, action);
-                if (handler.matchesEntityKill(context, target)) {
-                    handler.onEntityKill(context, target, source);
-                }
+                handleEntityKillAction(player, upgrade, action, target, source);
             }
+        }
+    }
+
+    private static void handleEntityKillAction(
+            ServerPlayerEntity player,
+            RoguelikeMCUpgradeData upgrade,
+            RoguelikeMCUpgradeData.ActionData action,
+            LivingEntity target,
+            DamageSource source
+    ) {
+        if (action.actionType() != UpgradeActionType.EVENT) {
+            return;
+        }
+
+        String eventType = eventType(action);
+        if (eventType.isEmpty()) {
+            RoguelikeMC.LOGGER.warn("EVENT action in upgrade '{}' is missing legacy event type", upgrade.id());
+            return;
+        }
+
+        UpgradeEventHandler handler = UpgradeEventHandlers.get(eventType);
+        if (handler == null) {
+            return;
+        }
+
+        UpgradeActionContext context = new UpgradeActionContext(player, upgrade, action);
+        if (handler.matchesEntityKill(context, target)) {
+            handler.onEntityKill(context, target, source);
         }
     }
 
@@ -75,9 +92,7 @@ public final class UpgradeEventGameplayService {
     }
 
     private static String eventType(RoguelikeMCUpgradeData.ActionData action) {
-        // Legacy normalized runtime payload: gameplay event routing still reads value[0]
-        // until the packet/runtime schema catches up with authored `type + payload`.
-        return action.value().getFirst();
+        return action.legacyEventType();
     }
 
     @FunctionalInterface

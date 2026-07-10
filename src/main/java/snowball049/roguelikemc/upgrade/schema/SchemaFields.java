@@ -1,7 +1,7 @@
-package snowball049.roguelikemc.upgrade.constants;
+package snowball049.roguelikemc.upgrade.schema;
 
-public final class UpgradeSchemaConstants {
-    private UpgradeSchemaConstants() {
+public final class SchemaFields {
+    private SchemaFields() {
     }
 
     public static final class ActionType {

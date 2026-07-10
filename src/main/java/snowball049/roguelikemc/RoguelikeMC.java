@@ -30,7 +30,8 @@ public class RoguelikeMC implements ModInitializer {
 		RoguelikeMCCommonConfig.loadConfig();
 
 		RoguelikeMCModBootstrap.registerNetworkPackets();
-		CommandRegistrationCallback.EVENT.register(RoguelikeMCCommands::register);
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
+				RoguelikeMCCommands.register(dispatcher));
 		RoguelikeMCModBootstrap.registerAttributes();
 		RoguelikeMCModBootstrap.registerItems();
 		RoguelikeMCModBootstrap.registerItemGroups();
@@ -39,6 +40,7 @@ public class RoguelikeMC implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(SelectUpgradeOptionC2SPayload.ID, SelectUpgradeOptionHandler::handle);
 
 		ServerPlayConnectionEvents.JOIN.register(RoguelikeMCModBootstrap::onPlayerJoin);
+		ServerPlayConnectionEvents.DISCONNECT.register(RoguelikeMCModBootstrap::onPlayerDisconnect);
 		ServerPlayerEvents.COPY_FROM.register(RoguelikeMCModBootstrap::onPlayerDeath);
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(RoguelikeMCModBootstrap::onHostileEntityKilled);
 		ServerLifecycleEvents.SERVER_STARTED.register(RoguelikeMCModBootstrap::onServerStarted);

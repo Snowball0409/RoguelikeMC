@@ -1,6 +1,7 @@
 package snowball049.roguelikemc.upgrade.action;
 
 import snowball049.roguelikemc.RoguelikeMC;
+import snowball049.roguelikemc.upgrade.action.trigger.TriggerUpgradeActionHandler;
 import snowball049.roguelikemc.upgrade.enums.UpgradeActionType;
 
 import java.util.EnumMap;

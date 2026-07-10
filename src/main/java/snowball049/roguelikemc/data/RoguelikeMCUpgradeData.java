@@ -18,7 +18,7 @@ import snowball049.roguelikemc.upgrade.enums.UpgradeStacking;
 import java.util.ArrayList;
 import java.util.List;
 
-import static snowball049.roguelikemc.upgrade.constants.UpgradeSchemaConstants.JsonField;
+import static snowball049.roguelikemc.upgrade.schema.SchemaFields.JsonField;
 
 // Nested class to represent upgrade data
 public record RoguelikeMCUpgradeData(
@@ -160,6 +160,14 @@ public record RoguelikeMCUpgradeData(
 
         public boolean hasValue() {
             return !value.isEmpty();
+        }
+
+        /**
+         * Legacy event routing reads the first normalized value entry until packet/runtime schema
+         * convergence replaces this with semantic payload fields.
+         */
+        public String legacyEventType() {
+            return value.isEmpty() ? "" : value.getFirst();
         }
 
         public boolean hasPayload() {

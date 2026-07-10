@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
+import snowball049.roguelikemc.upgrade.schema.UpgradeResourceSchemaReader;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;

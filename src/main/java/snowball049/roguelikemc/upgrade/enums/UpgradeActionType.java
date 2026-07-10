@@ -1,7 +1,7 @@
 package snowball049.roguelikemc.upgrade.enums;
 
 import snowball049.roguelikemc.RoguelikeMC;
-import snowball049.roguelikemc.upgrade.constants.UpgradeSchemaConstants.ActionType;
+import snowball049.roguelikemc.upgrade.schema.SchemaFields.ActionType;
 
 public enum UpgradeActionType {
     ATTRIBUTE(ActionType.ATTRIBUTE),
