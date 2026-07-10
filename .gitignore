@@ -43,5 +43,9 @@ replay_*.log
 
 src/main/generated/.cache/
 
+# cursor
 .cursor
 .cursor-tools
+
+#sonar
+sonar-project.properties
