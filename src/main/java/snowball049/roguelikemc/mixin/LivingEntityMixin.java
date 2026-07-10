@@ -17,6 +17,7 @@ import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.network.packet.RefreshCurrentBossStageS2CPayload;
 import snowball049.roguelikemc.upgrade.gameplay.UpgradeEventGameplayService;
+import snowball049.roguelikemc.upgrade.gameplay.UpgradeTriggerGameplayService;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
@@ -63,10 +64,12 @@ public class LivingEntityMixin {
     }
 
     @Inject(method = "dropLoot", at = @At("TAIL"))
-    private void roguelike$onDropLoot(DamageSource source, boolean causedByPlayer, CallbackInfo ci) {
+    @SuppressWarnings("java:S100")
+    private void roguelike$onDropLoot(DamageSource source, boolean causedByPlayer, CallbackInfo ci) { // NOSONAR mixin accessor naming
         if (!causedByPlayer) return;
         if (!(source.getAttacker() instanceof ServerPlayerEntity player)) return;
 
         UpgradeEventGameplayService.onEntityKilledByPlayer(player, (LivingEntity) (Object) this, source);
+        UpgradeTriggerGameplayService.onEntityKilledByPlayer(player, (LivingEntity) (Object) this, source);
     }
 }

@@ -1,12 +1,14 @@
 package snowball049.roguelikemc.upgrade.enums;
 
 import snowball049.roguelikemc.RoguelikeMC;
+import snowball049.roguelikemc.upgrade.constants.UpgradeSchemaConstants.ActionType;
 
 public enum UpgradeActionType {
-    ATTRIBUTE("attribute"),
-    EFFECT("effect"),
-    COMMAND("command"),
-    EVENT("event");
+    ATTRIBUTE(ActionType.ATTRIBUTE),
+    EFFECT(ActionType.EFFECT),
+    COMMAND(ActionType.COMMAND),
+    EVENT(ActionType.EVENT),
+    TRIGGER(ActionType.TRIGGER);
 
     private final String id;
 

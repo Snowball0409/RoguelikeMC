@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SuppressWarnings("deprecation")
 class UpgradeResourceSchemaReaderTest {
     static Stream<String> resourceSchemaCases() {
         return TestFixtures.cases(TestFixtures.UPGRADES, "resource_schema")
@@ -47,6 +48,9 @@ class UpgradeResourceSchemaReaderTest {
 
         JsonArray expectedActionTypes = expected.getAsJsonArray("actionTypes");
         JsonArray expectedActionValues = expected.getAsJsonArray("actionValues");
+        JsonArray expectedActionPayloads = expected.has("actionPayloads")
+                ? expected.getAsJsonArray("actionPayloads")
+                : null;
         assertEquals(expectedActionTypes.size(), upgrade.actions().size());
         assertEquals(expectedActionValues.size(), upgrade.actions().size());
 
@@ -62,6 +66,10 @@ class UpgradeResourceSchemaReaderTest {
             assertEquals(expectedValues.size(), actualValues.size());
             for (int valueIndex = 0; valueIndex < expectedValues.size(); valueIndex++) {
                 assertEquals(expectedValues.get(valueIndex).getAsString(), actualValues.get(valueIndex));
+            }
+
+            if (expectedActionPayloads != null) {
+                assertEquals(expectedActionPayloads.get(i).getAsJsonObject(), action.payload());
             }
         }
     }

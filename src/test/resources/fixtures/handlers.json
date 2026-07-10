@@ -1,5 +1,5 @@
 {
-  "actionTypes": ["attribute", "effect", "command", "event"],
+  "actionTypes": ["attribute", "effect", "command", "event", "trigger"],
   "eventHandlers": [
     { "eventType": "allow_creative_flying", "tickInterval": 20 },
     { "eventType": "keep_equipment_after_death", "tickInterval": 0 },

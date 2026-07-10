@@ -98,6 +98,56 @@
         "icon": "",
         "actionTypes": []
       }
+    },
+    {
+      "name": "trigger_runtime_payload",
+      "input": {
+        "id": "trigger_kill_hostile_strength",
+        "name": "upgrade.roguelikemc.name.trigger_kill_hostile_strength",
+        "actions": [{
+          "type": "trigger",
+          "payload": {
+            "eventType": "kill",
+            "count": 1,
+            "cooldown": 0,
+            "conditions": [
+              {
+                "type": "target_hostile",
+                "payload": {}
+              }
+            ],
+            "action": {
+              "type": "effect",
+              "value": ["minecraft:strength", "200", "0"]
+            }
+          }
+        }]
+      },
+      "expected": {
+        "id": "trigger_kill_hostile_strength",
+        "name": "upgrade.roguelikemc.name.trigger_kill_hostile_strength",
+        "description": "",
+        "tier": "common",
+        "isPermanent": false,
+        "isUnique": false,
+        "icon": "",
+        "actionTypes": ["trigger"],
+        "actionPayloads": [{
+          "eventType": "kill",
+          "count": 1,
+          "cooldown": 0,
+          "conditions": [
+            {
+              "type": "target_hostile",
+              "payload": {}
+            }
+          ],
+          "action": {
+            "type": "effect",
+            "value": ["minecraft:strength", "200", "0"]
+          }
+        }]
+      }
     }
   ],
   "resource_schema": [
@@ -150,6 +200,34 @@
         "icon": "roguelikemc:textures/upgrades/mighty_force.png",
         "actionTypes": ["attribute"],
         "actionValues": [["minecraft:generic.attack_damage", "0.05", "add_multiplied_base"]]
+      }
+    },
+    {
+      "name": "payload_effect",
+      "input": {
+        "id": "wind_swiftness",
+        "name": "upgrade.roguelikemc.name.wind_swiftness",
+        "tier": "rare",
+        "isUnique": true,
+        "actions": [{
+          "type": "effect",
+          "payload": {
+            "effect": "minecraft:speed",
+            "duration": -1,
+            "amplifier": 0
+          }
+        }]
+      },
+      "expected": {
+        "id": "wind_swiftness",
+        "name": "upgrade.roguelikemc.name.wind_swiftness",
+        "description": "",
+        "tier": "rare",
+        "isPermanent": false,
+        "isUnique": true,
+        "icon": "",
+        "actionTypes": ["effect"],
+        "actionValues": [["minecraft:speed", "-1", "0"]]
       }
     },
     {
@@ -242,6 +320,61 @@
           ["add_loot_table", "minecraft:villager", "roguelikemc:villager_slayer"],
           ["provoked", "minecraft:iron_golem"]
         ]
+      }
+    },
+    {
+      "name": "payload_trigger_kill_hostile",
+      "input": {
+        "id": "trigger_kill_hostile_strength",
+        "name": "upgrade.roguelikemc.name.trigger_kill_hostile_strength",
+        "actions": [{
+          "type": "trigger",
+          "payload": {
+            "eventType": "kill",
+            "count": 1,
+            "cooldown": 0,
+            "conditions": [
+              {
+                "type": "target_hostile",
+                "payload": {}
+              }
+            ],
+            "action": {
+              "type": "effect",
+              "payload": {
+                "effect": "minecraft:strength",
+                "duration": 200,
+                "amplifier": 0
+              }
+            }
+          }
+        }]
+      },
+      "expected": {
+        "id": "trigger_kill_hostile_strength",
+        "name": "upgrade.roguelikemc.name.trigger_kill_hostile_strength",
+        "description": "",
+        "tier": "common",
+        "isPermanent": false,
+        "isUnique": false,
+        "icon": "",
+        "actionTypes": ["trigger"],
+        "actionValues": [[]],
+        "actionPayloads": [{
+          "eventType": "kill",
+          "count": 1,
+          "cooldown": 0,
+          "conditions": [
+            {
+              "type": "target_hostile",
+              "payload": {}
+            }
+          ],
+          "action": {
+            "type": "effect",
+            "value": ["minecraft:strength", "200", "0"]
+          }
+        }]
       }
     },
     {

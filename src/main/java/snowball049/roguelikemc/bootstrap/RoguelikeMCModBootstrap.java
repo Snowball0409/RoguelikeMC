@@ -29,6 +29,7 @@ import snowball049.roguelikemc.item.RoguelikeMCItemGroup;
 import snowball049.roguelikemc.item.RoguelikeMCItems;
 import snowball049.roguelikemc.network.packet.*;
 import snowball049.roguelikemc.upgrade.apply.UpgradeApplier;
+import snowball049.roguelikemc.upgrade.gameplay.UpgradeTriggerGameplayService;
 import snowball049.roguelikemc.upgrade.point.UpgradePointService;
 import snowball049.roguelikemc.upgrade.tick.UpgradeTickService;
 
@@ -65,6 +66,7 @@ public final class RoguelikeMCModBootstrap {
     public static void onPlayerDeath(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive) {
         if (alive) return;
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(oldPlayer);
+        UpgradeTriggerGameplayService.clearPlayer(oldPlayer);
 
         playerData.reset();
         playerData.temporaryUpgradeIds.clear();
@@ -85,9 +87,11 @@ public final class RoguelikeMCModBootstrap {
         }
     }
 
+    @SuppressWarnings("java:S1172")
     public static void onPlayerJoin(ServerPlayNetworkHandler serverPlayNetworkHandler, PacketSender ignoredPacketSender, MinecraftServer ignoredServer) {
         ServerPlayerEntity player = serverPlayNetworkHandler.getPlayer();
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
+        UpgradeTriggerGameplayService.clearPlayer(player);
 
         if (RoguelikeMCCommonConfig.INSTANCE.enableUpgradeSystem) {
             UpgradeApplier.syncOwnedUpgrades(player, playerData);
@@ -101,16 +105,20 @@ public final class RoguelikeMCModBootstrap {
 
         if (RoguelikeMCCommonConfig.INSTANCE.enableLinearGameStage && playerData.currentGameStage < RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.size()) {
             ServerPlayNetworking.send(player, new RefreshCurrentBossStageS2CPayload(RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.get(playerData.currentGameStage)));
-            RoguelikeMC.LOGGER.info(String.valueOf(playerData.currentGameStage));
+            if (RoguelikeMC.LOGGER.isInfoEnabled()) {
+                RoguelikeMC.LOGGER.info("{}", playerData.currentGameStage);
+            }
         } else {
             ServerPlayNetworking.send(player, new RefreshCurrentBossStageS2CPayload("none"));
         }
     }
 
+    @SuppressWarnings("java:S1172")
     public static void onServerStarted(MinecraftServer ignoredServer) {
         RoguelikeMCCompat.load();
     }
 
+    @SuppressWarnings("java:S1172")
     public static void onHostileEntityKilled(ServerWorld ignoredServer, Entity entity, LivingEntity context) {
         if (!RoguelikeMCCommonConfig.INSTANCE.enableUpgradeSystem || !RoguelikeMCCommonConfig.INSTANCE.enableKillHostileEntityUpgrade) {
             return;

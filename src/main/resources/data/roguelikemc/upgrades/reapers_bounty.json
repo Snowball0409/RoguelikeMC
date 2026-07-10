@@ -1,0 +1,31 @@
+{
+  "id": "reapers_bounty",
+  "name": "upgrade.roguelikemc.name.reapers_bounty",
+  "description": "upgrade.roguelikemc.description.reapers_bounty",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/reapers_bounty.png",
+  "actions": [
+    {
+      "type": "trigger",
+      "payload": {
+        "eventType": "kill",
+        "count": 5,
+        "cooldown": 400,
+        "conditions": [
+          {
+            "type": "target_hostile",
+            "payload": {}
+          }
+        ],
+        "action": {
+          "type": "command",
+          "payload": {
+            "command": "give @s minecraft:golden_apple 1"
+          }
+        }
+      }
+    }
+  ]
+}

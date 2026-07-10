@@ -10,6 +10,10 @@ import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import java.util.ArrayList;
 import java.util.List;
 
+import static snowball049.roguelikemc.upgrade.constants.UpgradeSchemaConstants.ActionType;
+import static snowball049.roguelikemc.upgrade.constants.UpgradeSchemaConstants.JsonField;
+import static snowball049.roguelikemc.upgrade.constants.UpgradeSchemaConstants.PayloadField;
+
 public final class UpgradeResourceSchemaReader {
     private UpgradeResourceSchemaReader() {
     }
@@ -25,65 +29,99 @@ public final class UpgradeResourceSchemaReader {
 
     static JsonObject normalizeUpgradeJson(JsonObject resourceJson) {
         JsonObject normalized = resourceJson.deepCopy();
-        if (!normalized.has("actions")) {
+        if (!normalized.has(JsonField.ACTIONS)) {
             return normalized;
         }
 
-        JsonArray actions = normalized.getAsJsonArray("actions");
+        JsonArray actions = normalized.getAsJsonArray(JsonField.ACTIONS);
         JsonArray normalizedActions = new JsonArray();
         for (JsonElement actionElement : actions) {
             normalizedActions.add(normalizeAction(actionElement.getAsJsonObject()));
         }
-        normalized.add("actions", normalizedActions);
+        normalized.add(JsonField.ACTIONS, normalizedActions);
         return normalized;
     }
 
     private static JsonObject normalizeAction(JsonObject actionJson) {
-        if (actionJson.has("value")) {
-            return normalizeLegacyValueAction(actionJson);
+        if (actionJson.has(JsonField.PAYLOAD)) {
+            String type = requiredString(actionJson, JsonField.TYPE);
+            JsonObject payload = requiredObject(actionJson, JsonField.PAYLOAD);
+            return switch (type) {
+                case ActionType.TRIGGER -> normalizeTriggerAction(type, payload);
+                case ActionType.ATTRIBUTE, ActionType.EFFECT, ActionType.COMMAND, ActionType.EVENT ->
+                        normalizePayloadBackedAction(type, payload);
+                default -> throw new IllegalArgumentException("Unsupported authored action type: " + type);
+            };
         }
 
-        if (!actionJson.has("payload")) {
+        if (actionJson.has(JsonField.VALUE)) {
             return actionJson.deepCopy();
         }
 
-        String type = requiredString(actionJson, "type");
-        JsonObject payload = requiredObject(actionJson, "payload");
+        return actionJson.deepCopy();
+    }
 
+    private static JsonObject normalizePayloadBackedAction(String type, JsonObject payload) {
         JsonObject normalized = new JsonObject();
-        normalized.addProperty("type", type);
-        normalized.add("value", switch (type) {
-            case "attribute" -> values(
-                    requiredString(payload, "attribute"),
-                    requiredString(payload, "amount"),
-                    requiredString(payload, "operation")
+        normalized.addProperty(JsonField.TYPE, type);
+        normalized.add(JsonField.VALUE, switch (type) {
+            case ActionType.ATTRIBUTE -> values(
+                    requiredString(payload, PayloadField.ATTRIBUTE),
+                    requiredString(payload, PayloadField.AMOUNT),
+                    requiredString(payload, PayloadField.OPERATION)
             );
-            case "effect" -> values(
-                    requiredString(payload, "effect"),
-                    requiredString(payload, "duration"),
-                    requiredString(payload, "amplifier")
+            case ActionType.EFFECT -> values(
+                    requiredString(payload, PayloadField.EFFECT),
+                    requiredString(payload, PayloadField.DURATION),
+                    requiredString(payload, PayloadField.AMPLIFIER)
             );
-            case "command" -> commandValues(payload);
-            case "event" -> eventValues(payload);
+            case ActionType.COMMAND -> commandValues(payload);
+            case ActionType.EVENT -> eventValues(payload);
             default -> throw new IllegalArgumentException("Unsupported authored action type: " + type);
         });
         return normalized;
     }
 
-    /**
-     * @deprecated Legacy authored resource support retained temporarily for compatibility with
-     * existing datapacks. New authored upgrade JSON should use the semantic {@code type + payload}
-     * schema instead of {@code value[]}.
-     */
-    @Deprecated(forRemoval = false, since = "2.0.0")
-    private static JsonObject normalizeLegacyValueAction(JsonObject actionJson) {
-        return actionJson.deepCopy();
+    private static JsonObject normalizeTriggerAction(String type, JsonObject payload) {
+        JsonObject normalized = new JsonObject();
+        normalized.addProperty(JsonField.TYPE, type);
+
+        JsonObject runtimePayload = new JsonObject();
+        runtimePayload.addProperty(JsonField.EVENT_TYPE, requiredString(payload, JsonField.EVENT_TYPE));
+        runtimePayload.addProperty(JsonField.COUNT, requiredInt(payload, JsonField.COUNT));
+        runtimePayload.addProperty(JsonField.COOLDOWN, optionalInt(payload, JsonField.COOLDOWN, 0));
+
+        JsonArray conditions = optionalArray(payload, JsonField.CONDITIONS);
+        JsonArray normalizedConditions = new JsonArray();
+        for (JsonElement conditionElement : conditions) {
+            normalizedConditions.add(normalizeCondition(conditionElement.getAsJsonObject()));
+        }
+        runtimePayload.add(JsonField.CONDITIONS, normalizedConditions);
+
+        JsonObject nestedAction = normalizeAction(requiredObject(payload, JsonField.ACTION));
+        if (ActionType.TRIGGER.equalsIgnoreCase(requiredString(nestedAction, JsonField.TYPE))) {
+            throw new IllegalArgumentException("Nested trigger actions are not supported");
+        }
+        runtimePayload.add(JsonField.ACTION, nestedAction);
+
+        normalized.add(JsonField.PAYLOAD, runtimePayload);
+        return normalized;
+    }
+
+    private static JsonObject normalizeCondition(JsonObject conditionJson) {
+        JsonObject normalized = new JsonObject();
+        normalized.addProperty(JsonField.TYPE, requiredString(conditionJson, JsonField.TYPE));
+        JsonObject payload = conditionJson.has(JsonField.PAYLOAD)
+                ? requiredObject(conditionJson, JsonField.PAYLOAD).deepCopy()
+                : new JsonObject();
+        normalized.add(JsonField.PAYLOAD, payload);
+        return normalized;
     }
 
     private static JsonArray commandValues(JsonObject payload) {
         List<String> values = new ArrayList<>();
-        values.add(requiredString(payload, "command"));
-        String needsOwner = optionalString(payload, "needsOwner");
+        values.add(requiredString(payload, PayloadField.COMMAND));
+        String needsOwner = optionalString(payload, PayloadField.NEEDS_OWNER);
         if ("true".equalsIgnoreCase(needsOwner)) {
             values.add("true");
         }
@@ -91,32 +129,59 @@ public final class UpgradeResourceSchemaReader {
     }
 
     private static JsonArray eventValues(JsonObject payload) {
-        String eventType = requiredString(payload, "eventType");
+        String eventType = requiredString(payload, JsonField.EVENT_TYPE);
         return switch (eventType) {
             case "allow_creative_flying", "keep_equipment_after_death", "one_last_chance" ->
                     values(eventType);
             case "set_equipment" -> values(
                     eventType,
-                    requiredString(payload, "slot"),
-                    optionalString(payload, "itemNbt", "")
+                    requiredString(payload, PayloadField.SLOT),
+                    optionalString(payload, PayloadField.ITEM_NBT, "")
             );
             case "effect_mobs" -> values(
                     eventType,
-                    requiredString(payload, "effect"),
-                    requiredString(payload, "amplifier"),
-                    requiredString(payload, "radius")
+                    requiredString(payload, PayloadField.EFFECT),
+                    requiredString(payload, PayloadField.AMPLIFIER),
+                    requiredString(payload, PayloadField.RADIUS)
             );
             case "provoked" -> values(
                     eventType,
-                    requiredString(payload, "entityType")
+                    requiredString(payload, PayloadField.ENTITY_TYPE)
             );
             case "add_loot_table" -> values(
                     eventType,
-                    requiredString(payload, "entityType"),
-                    requiredString(payload, "lootTable")
+                    requiredString(payload, PayloadField.ENTITY_TYPE),
+                    requiredString(payload, PayloadField.LOOT_TABLE)
             );
             default -> throw new IllegalArgumentException("Unsupported authored event type: " + eventType);
         };
+    }
+
+    private static JsonArray optionalArray(JsonObject json, String key) {
+        JsonElement element = json.get(key);
+        if (element == null || element.isJsonNull()) {
+            return new JsonArray();
+        }
+        if (!element.isJsonArray()) {
+            throw new IllegalArgumentException("Expected array field: " + key);
+        }
+        return element.getAsJsonArray();
+    }
+
+    private static int requiredInt(JsonObject json, String key) {
+        JsonElement element = json.get(key);
+        if (element == null || element.isJsonNull()) {
+            throw new IllegalArgumentException("Missing field: " + key);
+        }
+        return element.getAsInt();
+    }
+
+    private static int optionalInt(JsonObject json, String key, int defaultValue) {
+        JsonElement element = json.get(key);
+        if (element == null || element.isJsonNull()) {
+            return defaultValue;
+        }
+        return element.getAsInt();
     }
 
     private static JsonArray values(String... values) {

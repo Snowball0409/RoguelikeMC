@@ -49,6 +49,7 @@ public class RoguelikeMCTranslationProvider extends FabricLanguageProvider {
         translationBuilder.add("upgrade.roguelikemc.name.scholars_gift", "Scholar's Gift");
         translationBuilder.add("upgrade.roguelikemc.name.prospectors_luck", "Prospector's Luck");
         translationBuilder.add("upgrade.roguelikemc.name.precision_chain", "Precision Chain");
+        translationBuilder.add("upgrade.roguelikemc.name.predators_momentum", "Predator's Momentum");
         translationBuilder.add("upgrade.roguelikemc.name.pixie_form", "Pixie Form");
         translationBuilder.add("upgrade.roguelikemc.name.one_last_chance", "One Last Chance");
         translationBuilder.add("upgrade.roguelikemc.name.nocturnal_sight", "Nocturnal Sight");
@@ -76,12 +77,14 @@ public class RoguelikeMCTranslationProvider extends FabricLanguageProvider {
         translationBuilder.add("upgrade.roguelikemc.name.enduring_vitality", "Enduring Vitality");
         translationBuilder.add("upgrade.roguelikemc.name.desperate_strike", "Desperate Strike");
         translationBuilder.add("upgrade.roguelikemc.name.deep_lungs", "Deep Lungs");
+        translationBuilder.add("upgrade.roguelikemc.name.crimson_reckoning", "Crimson Reckoning");
         translationBuilder.add("upgrade.roguelikemc.name.cursed_shield", "Cursed Shield");
         translationBuilder.add("upgrade.roguelikemc.name.chilling_aura", "Chilling Aura");
         translationBuilder.add("upgrade.roguelikemc.name.brutes_strength", "Brute's Strength");
         translationBuilder.add("upgrade.roguelikemc.name.blade_dancer", "Blade Dancer");
         translationBuilder.add("upgrade.roguelikemc.name.berserkers_wrath", "Berserker's Wrath");
         translationBuilder.add("upgrade.roguelikemc.name.adamant_guard", "Adamant Guard");
+        translationBuilder.add("upgrade.roguelikemc.name.reapers_bounty", "Reaper's Bounty");
 
         // Upgrade Description
         translationBuilder.add("upgrade.roguelikemc.description.withering_aura", "Hostile mobs around you are inflicted with Wither");
@@ -102,6 +105,7 @@ public class RoguelikeMCTranslationProvider extends FabricLanguageProvider {
         translationBuilder.add("upgrade.roguelikemc.description.sharpened_edge", "Increase Critical Hit Chance by 1%");
         translationBuilder.add("upgrade.roguelikemc.description.scholars_gift", "Receive a Mending book");
         translationBuilder.add("upgrade.roguelikemc.description.prospectors_luck", "Receive some random ores");
+        translationBuilder.add("upgrade.roguelikemc.description.predators_momentum", "Every 2 hostile kills grant Speed II for 5 seconds, at most once every 5 seconds");
         translationBuilder.add("upgrade.roguelikemc.description.precision_chain", "Increase Critical Hit Chance by 3% and Critical Damage by 8%");
         translationBuilder.add("upgrade.roguelikemc.description.pixie_form", "Size halved, movement speed +20%, attack -20%");
         translationBuilder.add("upgrade.roguelikemc.description.one_last_chance", "One-time Totem of Undying");
@@ -130,12 +134,14 @@ public class RoguelikeMCTranslationProvider extends FabricLanguageProvider {
         translationBuilder.add("upgrade.roguelikemc.description.enduring_vitality", "Maximum Health + 2");
         translationBuilder.add("upgrade.roguelikemc.description.desperate_strike", "Decrease Base Attack Damage by 10%, Increase Critical Damage by 60%");
         translationBuilder.add("upgrade.roguelikemc.description.deep_lungs", "Breath underwater time + 50%");
+        translationBuilder.add("upgrade.roguelikemc.description.crimson_reckoning", "Every 3 hostile kills grant Regeneration II for 6 seconds, at most once every 8 seconds");
         translationBuilder.add("upgrade.roguelikemc.description.cursed_shield", "Take 10% less damage, but nearby hostile mobs gain speed");
         translationBuilder.add("upgrade.roguelikemc.description.chilling_aura", "Hostile mobs around you are slowed");
         translationBuilder.add("upgrade.roguelikemc.description.brutes_strength", "Gain Strength");
         translationBuilder.add("upgrade.roguelikemc.description.blade_dancer", "Attack Speed +5%");
         translationBuilder.add("upgrade.roguelikemc.description.berserkers_wrath", "Strength +50%, but takes 50% more damage");
         translationBuilder.add("upgrade.roguelikemc.description.adamant_guard", "Armor +1");
+        translationBuilder.add("upgrade.roguelikemc.description.reapers_bounty", "Every 5 hostile kills grant 1 golden apple, at most once every 20 seconds");
 
         // Message
         translationBuilder.add("message.roguelikemc.pass_game_stage", "§aYou have complete the stage: ");

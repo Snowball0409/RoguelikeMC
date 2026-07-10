@@ -1,0 +1,33 @@
+{
+  "id": "crimson_reckoning",
+  "name": "upgrade.roguelikemc.name.crimson_reckoning",
+  "description": "upgrade.roguelikemc.description.crimson_reckoning",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/crimson_reckoning.png",
+  "actions": [
+    {
+      "type": "trigger",
+      "payload": {
+        "eventType": "kill",
+        "count": 3,
+        "cooldown": 160,
+        "conditions": [
+          {
+            "type": "target_hostile",
+            "payload": {}
+          }
+        ],
+        "action": {
+          "type": "effect",
+          "payload": {
+            "effect": "minecraft:regeneration",
+            "duration": 120,
+            "amplifier": 1
+          }
+        }
+      }
+    }
+  ]
+}

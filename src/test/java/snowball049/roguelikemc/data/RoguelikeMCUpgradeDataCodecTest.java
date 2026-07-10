@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@SuppressWarnings("deprecation")
 class RoguelikeMCUpgradeDataCodecTest {
     static Stream<String> upgradeCodecCases() {
         return TestFixtures.cases(TestFixtures.UPGRADES, "codec")
@@ -49,12 +50,19 @@ class RoguelikeMCUpgradeDataCodecTest {
         assertEquals(expected.get("icon").getAsString(), upgrade.icon());
 
         JsonArray expectedActionTypes = expected.getAsJsonArray("actionTypes");
+        JsonArray expectedActionPayloads = expected.has("actionPayloads")
+                ? expected.getAsJsonArray("actionPayloads")
+                : null;
         assertEquals(expectedActionTypes.size(), upgrade.actions().size());
         for (int i = 0; i < expectedActionTypes.size(); i++) {
             assertEquals(
                     UpgradeActionType.fromString(expectedActionTypes.get(i).getAsString()),
                     upgrade.actions().get(i).actionType()
             );
+
+            if (expectedActionPayloads != null) {
+                assertEquals(expectedActionPayloads.get(i).getAsJsonObject(), upgrade.actions().get(i).payload());
+            }
         }
 
         if (expected.has("firstActionValues")) {

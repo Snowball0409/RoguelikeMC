@@ -1,0 +1,33 @@
+{
+  "id": "predators_momentum",
+  "name": "upgrade.roguelikemc.name.predators_momentum",
+  "description": "upgrade.roguelikemc.description.predators_momentum",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/predators_momentum.png",
+  "actions": [
+    {
+      "type": "trigger",
+      "payload": {
+        "eventType": "kill",
+        "count": 2,
+        "cooldown": 100,
+        "conditions": [
+          {
+            "type": "target_hostile",
+            "payload": {}
+          }
+        ],
+        "action": {
+          "type": "effect",
+          "payload": {
+            "effect": "minecraft:speed",
+            "duration": 100,
+            "amplifier": 1
+          }
+        }
+      }
+    }
+  ]
+}

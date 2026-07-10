@@ -14,6 +14,7 @@ public final class UpgradeActionHandlers {
         register(EffectUpgradeActionHandler.INSTANCE);
         register(CommandUpgradeActionHandler.INSTANCE);
         register(EventUpgradeActionHandler.INSTANCE);
+        register(TriggerUpgradeActionHandler.INSTANCE);
     }
 
     private UpgradeActionHandlers() {
