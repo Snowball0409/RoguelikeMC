@@ -47,5 +47,8 @@ src/main/generated/.cache/
 .cursor
 .cursor-tools
 
+# worktrees
+.worktrees/
+
 #sonar
 sonar-project.properties
