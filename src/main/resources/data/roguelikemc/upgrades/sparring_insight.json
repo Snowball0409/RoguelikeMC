@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "roguelikemc:textures/upgrades/predators_momentum.png",
+  "icon": "roguelikemc:textures/upgrades/sparring_insight.png",
   "actions": [
     {
       "type": "trigger",

@@ -5,7 +5,7 @@
   "tier": "rare",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "roguelikemc:textures/upgrades/golden_fortune.png",
+  "icon": "roguelikemc:textures/upgrades/gilded_spoils.png",
   "actions": [
     {
       "type": "trigger",

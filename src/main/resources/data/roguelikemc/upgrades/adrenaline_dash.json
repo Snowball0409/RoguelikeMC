@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "roguelikemc:textures/upgrades/swift_stride.png",
+  "icon": "roguelikemc:textures/upgrades/adrenaline_dash.png",
   "actions": [
     {
       "type": "trigger",

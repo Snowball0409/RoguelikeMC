@@ -5,7 +5,7 @@
   "tier": "rare",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "roguelikemc:textures/upgrades/brutes_strength.png",
+  "icon": "roguelikemc:textures/upgrades/bloodrush_strike.png",
   "actions": [
     {
       "type": "trigger",

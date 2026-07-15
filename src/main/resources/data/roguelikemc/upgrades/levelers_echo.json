@@ -5,7 +5,7 @@
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "roguelikemc:textures/upgrades/wisdoms_bounty.png",
+  "icon": "roguelikemc:textures/upgrades/levelers_echo.png",
   "actions": [
     {
       "type": "trigger",

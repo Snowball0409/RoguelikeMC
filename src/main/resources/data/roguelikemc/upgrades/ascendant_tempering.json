@@ -5,7 +5,7 @@
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "roguelikemc:textures/upgrades/titans_bulk.png",
+  "icon": "roguelikemc:textures/upgrades/ascendant_tempering.png",
   "actions": [
     {
       "type": "trigger",

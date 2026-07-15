@@ -5,7 +5,7 @@
   "tier": "rare",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "roguelikemc:textures/upgrades/prospectors_luck.png",
+  "icon": "roguelikemc:textures/upgrades/ore_roulette.png",
   "actions": [
     {
       "type": "trigger",

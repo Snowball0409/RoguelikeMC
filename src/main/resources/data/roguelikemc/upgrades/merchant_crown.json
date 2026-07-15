@@ -5,7 +5,7 @@
   "tier": "epic",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "roguelikemc:textures/upgrades/gods_fruit.png",
+  "icon": "roguelikemc:textures/upgrades/merchant_crown.png",
   "actions": [
     {
       "type": "trigger",
