@@ -17,6 +17,15 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+
+	// Prefer Modrinth for Mod Menu: terraformersmc CDN often fails CI with truncated chunked downloads.
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
+		content {
+			includeGroup "maven.modrinth"
+		}
+	}
 	maven {
 		name = "Terraformers"
 		url = "https://maven.terraformersmc.com/"
@@ -65,9 +74,9 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// mod menu
-	modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
-	modRuntimeOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
+	// mod menu (Modrinth Maven; same jar / API as TerraformersMC publish)
+	modCompileOnly("maven.modrinth:modmenu:${project.modmenu_version}")
+	modRuntimeOnly("maven.modrinth:modmenu:${project.modmenu_version}")
 
 	// accessories
 //	modCompileOnly("io.wispforest:accessories-fabric:${project.accessories_version}")
