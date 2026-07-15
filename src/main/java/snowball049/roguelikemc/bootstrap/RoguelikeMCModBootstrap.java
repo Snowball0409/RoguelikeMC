@@ -66,6 +66,13 @@ public final class RoguelikeMCModBootstrap {
     public static void onPlayerDeath(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive) {
         if (alive) return;
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(oldPlayer);
+
+        // COPY_FROM can keep entity attribute modifiers on the new player. Strip temporary
+        // upgrades (including trigger-stacked attributes) before clearing ownership ids.
+        for (RoguelikeMCUpgradeData temporaryUpgrade : playerData.getTemporaryUpgrades()) {
+            UpgradeApplier.removeUpgrade(oldPlayer, temporaryUpgrade);
+            UpgradeApplier.removeUpgrade(newPlayer, temporaryUpgrade);
+        }
         UpgradeTriggerRuntimeService.clearPlayer(oldPlayer);
 
         playerData.reset();

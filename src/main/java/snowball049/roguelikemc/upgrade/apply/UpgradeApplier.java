@@ -63,6 +63,14 @@ public final class UpgradeApplier {
         UpgradeActionHandlers.remove(new UpgradeActionContext(player, upgrade, action));
     }
 
+    /**
+     * Removes every action for an owned upgrade (including nested trigger effects such as
+     * stacked attribute modifiers).
+     */
+    public static void removeUpgrade(ServerPlayerEntity player, RoguelikeMCUpgradeData upgrade) {
+        forEachAction(player, upgrade, UpgradeActionHandlers::remove);
+    }
+
     public static void syncOwnedUpgrades(ServerPlayerEntity player, RoguelikeMCPlayerData playerData) {
         ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(true, playerData.getPermanentUpgrades()));
         ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(false, playerData.getTemporaryUpgrades()));

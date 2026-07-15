@@ -79,7 +79,7 @@ public final class AttributeUpgradeActionHandler implements UpgradeActionHandler
                 .orElseThrow();
 
         EntityAttributeInstance instance = Objects.requireNonNull(player.getAttributeInstance(attributeEntry));
-        String prefix = id.toString();
+        String prefix = id.toString() + "/";
         for (EntityAttributeModifier modifier : List.copyOf(instance.getModifiers())) {
             RoguelikeMC.LOGGER.debug("Removing attribute {} from upgrade effect", modifier.id());
             if (modifier.id().toString().startsWith(prefix)) {

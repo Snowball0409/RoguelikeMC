@@ -116,10 +116,10 @@
                 "payload": {}
               }
             ],
-            "action": {
+            "actions": [{
               "type": "effect",
               "value": ["minecraft:strength", "200", "0"]
-            }
+            }]
           }
         }]
       },

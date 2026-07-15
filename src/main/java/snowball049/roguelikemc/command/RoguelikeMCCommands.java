@@ -125,7 +125,7 @@ public final class RoguelikeMCCommands {
                             ? playerData.permanentUpgradeIds.removeIf(id -> id.equals(upgradeId))
                             : playerData.temporaryUpgradeIds.removeIf(id -> id.equals(upgradeId));
                     if (removed) {
-                        upgrade.actions().forEach(upgradeAction -> UpgradeApplier.removeUpgrade(player, upgrade, upgradeAction));
+                        UpgradeApplier.removeUpgrade(player, upgrade);
                         UpgradeTriggerRuntimeService.clearUpgrade(player, upgradeId);
                         ServerPlayNetworking.send(
                                 player,
@@ -152,10 +152,8 @@ public final class RoguelikeMCCommands {
             List<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, RoguelikeMCCommandConstants.ARG_PLAYER).stream().toList();
             players.forEach(player -> {
                 RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
-                playerData.getPermanentUpgrades().forEach(upgrade -> upgrade.actions().forEach(upgradeAction ->
-                        UpgradeApplier.removeUpgrade(player, upgrade, upgradeAction)));
-                playerData.getTemporaryUpgrades().forEach(upgrade -> upgrade.actions().forEach(upgradeAction ->
-                        UpgradeApplier.removeUpgrade(player, upgrade, upgradeAction)));
+                playerData.getPermanentUpgrades().forEach(upgrade -> UpgradeApplier.removeUpgrade(player, upgrade));
+                playerData.getTemporaryUpgrades().forEach(upgrade -> UpgradeApplier.removeUpgrade(player, upgrade));
                 playerData.permanentUpgradeIds.clear();
                 playerData.temporaryUpgradeIds.clear();
                 UpgradeTriggerRuntimeService.clearPlayer(player);
