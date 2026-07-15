@@ -297,7 +297,7 @@ public class RoguelikeMCScreen extends Screen {
         static final int SECTION_WIDTH = (GUI_WIDTH - 3 * SECTION_SPACING) / 2;
 
         static final int TOP_ICON_SIZE = 20;
-        static final int TOP_ICON_TEXTURE_SIZE = 32;
+        static final int TOP_ICON_TEXTURE_SIZE = 20;
         static final int TOP_ICON_SPACING = 4;
 
         private Assets() {
