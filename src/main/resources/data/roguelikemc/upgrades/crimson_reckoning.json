@@ -19,14 +19,16 @@
             "payload": {}
           }
         ],
-        "action": {
-          "type": "effect",
-          "payload": {
-            "effect": "minecraft:regeneration",
-            "duration": 120,
-            "amplifier": 1
+        "actions": [
+          {
+            "type": "effect",
+            "payload": {
+              "effect": "minecraft:regeneration",
+              "duration": 120,
+              "amplifier": 1
+            }
           }
-        }
+        ]
       }
     }
   ]

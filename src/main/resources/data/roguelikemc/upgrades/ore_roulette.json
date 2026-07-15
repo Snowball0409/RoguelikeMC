@@ -1,0 +1,36 @@
+{
+  "id": "ore_roulette",
+  "name": "upgrade.roguelikemc.name.ore_roulette",
+  "description": "upgrade.roguelikemc.description.ore_roulette",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/prospectors_luck.png",
+  "actions": [
+    {
+      "type": "trigger",
+      "payload": {
+        "eventType": "break",
+        "count": 1,
+        "cooldown": 0,
+        "preventPlaceBreak": true,
+        "conditions": [
+          {
+            "type": "target_block",
+            "payload": {
+              "tag": "roguelikemc:overworld_ores"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "type": "command",
+            "payload": {
+              "command": "loot give @s loot roguelikemc:ore_roulette"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

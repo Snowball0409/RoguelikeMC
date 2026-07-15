@@ -19,12 +19,14 @@
             "payload": {}
           }
         ],
-        "action": {
-          "type": "command",
-          "payload": {
-            "command": "give @s minecraft:golden_apple 1"
+        "actions": [
+          {
+            "type": "command",
+            "payload": {
+              "command": "give @s minecraft:golden_apple 1"
+            }
           }
-        }
+        ]
       }
     }
   ]

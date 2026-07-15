@@ -10,9 +10,10 @@ import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.upgrade.enums.UpgradeActionType;
 
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 public final class AttributeUpgradeActionHandler implements UpgradeActionHandler {
     public static final AttributeUpgradeActionHandler INSTANCE = new AttributeUpgradeActionHandler();
@@ -54,8 +55,15 @@ public final class AttributeUpgradeActionHandler implements UpgradeActionHandler
             default -> EntityAttributeModifier.Operation.ADD_VALUE;
         };
 
+        EntityAttributeInstance instance = Objects.requireNonNull(player.getAttributeInstance(attributeEntry));
+        int stackIndex = nextStackIndex(instance, id, attributeIdentifier);
+        Identifier modifierId = Identifier.of(
+                RoguelikeMC.MOD_ID,
+                id + "/" + attributePath(attributeIdentifier) + "/" + stackIndex
+        );
+
         EntityAttributeModifier attributeModifier = new EntityAttributeModifier(
-                Identifier.of(RoguelikeMC.MOD_ID + ":" + id + "/" + UUID.randomUUID()),
+                modifierId,
                 amount,
                 operation
         );
@@ -70,11 +78,38 @@ public final class AttributeUpgradeActionHandler implements UpgradeActionHandler
         RegistryEntry.Reference<EntityAttribute> attributeEntry = Registries.ATTRIBUTE.getEntry(attributeIdentifier)
                 .orElseThrow();
 
-        for (EntityAttributeModifier modifier : Objects.requireNonNull(player.getAttributeInstance(attributeEntry)).getModifiers()) {
+        EntityAttributeInstance instance = Objects.requireNonNull(player.getAttributeInstance(attributeEntry));
+        String prefix = id.toString();
+        for (EntityAttributeModifier modifier : List.copyOf(instance.getModifiers())) {
             RoguelikeMC.LOGGER.debug("Removing attribute {} from upgrade effect", modifier.id());
-            if (modifier.id().toString().startsWith(id.toString())) {
-                Objects.requireNonNull(player.getAttributeInstance(attributeEntry)).removeModifier(modifier);
+            if (modifier.id().toString().startsWith(prefix)) {
+                instance.removeModifier(modifier);
             }
         }
+    }
+
+    private static int nextStackIndex(
+            EntityAttributeInstance instance,
+            String upgradeId,
+            Identifier attributeIdentifier
+    ) {
+        String prefix = RoguelikeMC.MOD_ID + ":" + upgradeId + "/" + attributePath(attributeIdentifier) + "/";
+        int maxIndex = -1;
+        for (EntityAttributeModifier modifier : instance.getModifiers()) {
+            String modifierId = modifier.id().toString();
+            if (!modifierId.startsWith(prefix)) {
+                continue;
+            }
+            try {
+                maxIndex = Math.max(maxIndex, Integer.parseInt(modifierId.substring(prefix.length())));
+            } catch (NumberFormatException ignored) {
+                // Legacy random-UUID modifiers still remove via upgradeId prefix.
+            }
+        }
+        return maxIndex + 1;
+    }
+
+    private static String attributePath(Identifier attributeIdentifier) {
+        return attributeIdentifier.getNamespace() + "." + attributeIdentifier.getPath();
     }
 }

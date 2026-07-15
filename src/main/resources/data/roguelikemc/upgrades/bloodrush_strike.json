@@ -1,18 +1,18 @@
 {
-  "id": "predators_momentum",
-  "name": "upgrade.roguelikemc.name.predators_momentum",
-  "description": "upgrade.roguelikemc.description.predators_momentum",
-  "tier": "common",
+  "id": "bloodrush_strike",
+  "name": "upgrade.roguelikemc.name.bloodrush_strike",
+  "description": "upgrade.roguelikemc.description.bloodrush_strike",
+  "tier": "rare",
   "isPermanent": false,
   "isUnique": true,
-  "icon": "roguelikemc:textures/upgrades/predators_momentum.png",
+  "icon": "roguelikemc:textures/upgrades/brutes_strength.png",
   "actions": [
     {
       "type": "trigger",
       "payload": {
-        "eventType": "kill",
-        "count": 2,
-        "cooldown": 100,
+        "eventType": "attack",
+        "count": 3,
+        "cooldown": 400,
         "conditions": [
           {
             "type": "target_hostile",
@@ -23,7 +23,7 @@
           {
             "type": "effect",
             "payload": {
-              "effect": "minecraft:speed",
+              "effect": "minecraft:strength",
               "duration": 100,
               "amplifier": 1
             }

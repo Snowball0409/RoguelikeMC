@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -20,6 +21,8 @@ import snowball049.roguelikemc.network.handler.SelectUpgradeOptionHandler;
 import snowball049.roguelikemc.network.packet.*;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradePoolManager;
+import snowball049.roguelikemc.upgrade.runtime.UpgradeTriggerRuntimeService;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 public class RoguelikeMC implements ModInitializer {
 	public static final String MOD_ID = "roguelikemc";
@@ -49,6 +52,20 @@ public class RoguelikeMC implements ModInitializer {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new RoguelikeMCUpgradePoolManager());
 
 		ServerTickEvents.END_SERVER_TICK.register(RoguelikeMCModBootstrap::onServerTick);
+
+		PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, blockEntity) -> {
+			if (world.isClient) {
+				return;
+			}
+			if (player instanceof ServerPlayerEntity serverPlayer) {
+				UpgradeTriggerRuntimeService.onBlockBroken(
+						serverPlayer,
+						world.getRegistryKey(),
+						pos,
+						state
+				);
+			}
+		});
 
 		LOGGER.info("RoguelikeMC Initialized");
 	}

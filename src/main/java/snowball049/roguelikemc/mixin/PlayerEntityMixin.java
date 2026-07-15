@@ -1,5 +1,6 @@
 package snowball049.roguelikemc.mixin;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -24,6 +25,7 @@ import snowball049.roguelikemc.data.RoguelikeMCAttribute;
 import snowball049.roguelikemc.data.RoguelikeMCPlayerData;
 import snowball049.roguelikemc.gameplay.death.DeathInventoryService;
 import snowball049.roguelikemc.upgrade.point.UpgradePointService;
+import snowball049.roguelikemc.upgrade.runtime.UpgradeTriggerRuntimeService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,44 @@ public abstract class PlayerEntityMixin {
                 }
             }
         }
+        if (player instanceof ServerPlayerEntity serverPlayer && level > 0) {
+            UpgradeTriggerRuntimeService.onLevelUp(serverPlayer, level);
+        }
+    }
+
+    /**
+     * Count attack triggers only when the primary target's {@code damage()} call succeeds.
+     * Misses / 0-damage swings (and sweep secondary hits) do not advance progress.
+     */
+    @Redirect(
+            method = "attack",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z",
+                    ordinal = 0
+            )
+    )
+    private boolean roguelike$onPrimaryAttackDamage(Entity target, DamageSource source, float amount) {
+        boolean hit = target.damage(source, amount);
+        if (hit && amount > 0.0F && target instanceof LivingEntity livingTarget) {
+            PlayerEntity self = (PlayerEntity) (Object) this;
+            if (self instanceof ServerPlayerEntity serverPlayer) {
+                UpgradeTriggerRuntimeService.onPlayerAttack(serverPlayer, livingTarget);
+            }
+        }
+        return hit;
+    }
+
+    @Inject(method = "damage", at = @At("RETURN"))
+    private void roguelike$onDamaged(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        PlayerEntity self = (PlayerEntity) (Object) this;
+        if (!(self instanceof ServerPlayerEntity serverPlayer)) {
+            return;
+        }
+        if (!Boolean.TRUE.equals(cir.getReturnValue()) || amount <= 0.0F) {
+            return;
+        }
+        UpgradeTriggerRuntimeService.onPlayerDamaged(serverPlayer);
     }
 
     @Inject(method="dropInventory", at=@At("HEAD"), cancellable=true)

@@ -1,0 +1,36 @@
+{
+  "id": "merchant_crown",
+  "name": "upgrade.roguelikemc.name.merchant_crown",
+  "description": "upgrade.roguelikemc.description.merchant_crown",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/gods_fruit.png",
+  "actions": [
+    {
+      "type": "trigger",
+      "payload": {
+        "eventType": "trade",
+        "count": 20,
+        "cooldown": 0,
+        "conditions": [],
+        "actions": [
+          {
+            "type": "command",
+            "payload": {
+              "command": "give @s minecraft:diamond 1"
+            }
+          },
+          {
+            "type": "attribute",
+            "payload": {
+              "attribute": "minecraft:generic.luck",
+              "amount": 1,
+              "operation": "add_value"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

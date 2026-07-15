@@ -85,6 +85,16 @@ public class RoguelikeMCTranslationProvider extends FabricLanguageProvider {
         translationBuilder.add("upgrade.roguelikemc.name.berserkers_wrath", "Berserker's Wrath");
         translationBuilder.add("upgrade.roguelikemc.name.adamant_guard", "Adamant Guard");
         translationBuilder.add("upgrade.roguelikemc.name.reapers_bounty", "Reaper's Bounty");
+        translationBuilder.add("upgrade.roguelikemc.name.sparring_insight", "Sparring Insight");
+        translationBuilder.add("upgrade.roguelikemc.name.bloodrush_strike", "Bloodrush Strike");
+        translationBuilder.add("upgrade.roguelikemc.name.repercussion_burst", "Repercussion Burst");
+        translationBuilder.add("upgrade.roguelikemc.name.adrenaline_dash", "Adrenaline Dash");
+        translationBuilder.add("upgrade.roguelikemc.name.village_haggle", "Village Haggle");
+        translationBuilder.add("upgrade.roguelikemc.name.merchant_crown", "Merchant Crown");
+        translationBuilder.add("upgrade.roguelikemc.name.ore_roulette", "Ore Roulette");
+        translationBuilder.add("upgrade.roguelikemc.name.gilded_spoils", "Gilded Spoils");
+        translationBuilder.add("upgrade.roguelikemc.name.levelers_echo", "Leveler's Echo");
+        translationBuilder.add("upgrade.roguelikemc.name.ascendant_tempering", "Ascendant Tempering");
 
         // Upgrade Description
         translationBuilder.add("upgrade.roguelikemc.description.withering_aura", "Hostile mobs around you are inflicted with Wither");
@@ -142,6 +152,16 @@ public class RoguelikeMCTranslationProvider extends FabricLanguageProvider {
         translationBuilder.add("upgrade.roguelikemc.description.berserkers_wrath", "Strength +50%, but takes 50% more damage");
         translationBuilder.add("upgrade.roguelikemc.description.adamant_guard", "Armor +1");
         translationBuilder.add("upgrade.roguelikemc.description.reapers_bounty", "Every 5 hostile kills grant 1 golden apple, at most once every 20 seconds");
+        translationBuilder.add("upgrade.roguelikemc.description.sparring_insight", "Each attack on a hostile mob grants 1 experience point");
+        translationBuilder.add("upgrade.roguelikemc.description.bloodrush_strike", "Every 3 attacks on hostile mobs grant Strength II for 5 seconds, at most once every 20 seconds");
+        translationBuilder.add("upgrade.roguelikemc.description.repercussion_burst", "Every 5 times you take damage, deal Instant Damage to nearby hostile mobs");
+        translationBuilder.add("upgrade.roguelikemc.description.adrenaline_dash", "Taking damage grants Speed II for 5 seconds, at most once every 60 seconds");
+        translationBuilder.add("upgrade.roguelikemc.description.village_haggle", "Every 5 villager or wandering trader trades grant 1 to 3 emeralds");
+        translationBuilder.add("upgrade.roguelikemc.description.merchant_crown", "Every 20 trades grant a diamond and permanently +1 Luck");
+        translationBuilder.add("upgrade.roguelikemc.description.ore_roulette", "Breaking overworld ores has a chance to grant a random ore drop; player-placed ores do not count");
+        translationBuilder.add("upgrade.roguelikemc.description.gilded_spoils", "Every 5 gold ores mined grant a random piece of golden armor; player-placed ores do not count");
+        translationBuilder.add("upgrade.roguelikemc.description.levelers_echo", "Each level gained grants 10 bonus experience points");
+        translationBuilder.add("upgrade.roguelikemc.description.ascendant_tempering", "Every 5 levels gained permanently grant +0.5 max health, attack damage, and armor");
 
         // Message
         translationBuilder.add("message.roguelikemc.pass_game_stage", "§aYou have complete the stage: ");

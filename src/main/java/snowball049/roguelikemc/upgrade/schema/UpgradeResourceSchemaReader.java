@@ -90,6 +90,7 @@ public final class UpgradeResourceSchemaReader {
         runtimePayload.addProperty(JsonField.EVENT_TYPE, requiredString(payload, JsonField.EVENT_TYPE));
         runtimePayload.addProperty(JsonField.COUNT, requiredInt(payload, JsonField.COUNT));
         runtimePayload.addProperty(JsonField.COOLDOWN, optionalInt(payload, JsonField.COOLDOWN, 0));
+        runtimePayload.addProperty(JsonField.PREVENT_PLACE_BREAK, optionalBoolean(payload, JsonField.PREVENT_PLACE_BREAK, false));
 
         JsonArray conditions = optionalArray(payload, JsonField.CONDITIONS);
         JsonArray normalizedConditions = new JsonArray();
@@ -98,14 +99,45 @@ public final class UpgradeResourceSchemaReader {
         }
         runtimePayload.add(JsonField.CONDITIONS, normalizedConditions);
 
-        JsonObject nestedAction = normalizeAction(requiredObject(payload, JsonField.ACTION));
-        if (ActionType.TRIGGER.equalsIgnoreCase(requiredString(nestedAction, JsonField.TYPE))) {
-            throw new IllegalArgumentException("Nested trigger actions are not supported");
-        }
-        runtimePayload.add(JsonField.ACTION, nestedAction);
+        JsonArray nestedActions = normalizeNestedTriggerActions(payload);
+        runtimePayload.add(JsonField.ACTIONS, nestedActions);
 
         normalized.add(JsonField.PAYLOAD, runtimePayload);
         return normalized;
+    }
+
+    private static JsonArray normalizeNestedTriggerActions(JsonObject payload) {
+        JsonArray normalizedActions = new JsonArray();
+        if (payload.has(JsonField.ACTIONS) && !payload.get(JsonField.ACTIONS).isJsonNull()) {
+            JsonArray authoredActions = optionalArray(payload, JsonField.ACTIONS);
+            if (authoredActions.isEmpty()) {
+                throw new IllegalArgumentException("Trigger payload 'actions' must be a non-empty array");
+            }
+            for (JsonElement actionElement : authoredActions) {
+                if (!actionElement.isJsonObject()) {
+                    throw new IllegalArgumentException("Trigger nested actions must be objects");
+                }
+                JsonObject nestedAction = normalizeAction(actionElement.getAsJsonObject());
+                rejectNestedTrigger(nestedAction);
+                normalizedActions.add(nestedAction);
+            }
+            return normalizedActions;
+        }
+
+        if (payload.has(JsonField.ACTION) && !payload.get(JsonField.ACTION).isJsonNull()) {
+            JsonObject nestedAction = normalizeAction(requiredObject(payload, JsonField.ACTION));
+            rejectNestedTrigger(nestedAction);
+            normalizedActions.add(nestedAction);
+            return normalizedActions;
+        }
+
+        throw new IllegalArgumentException("Trigger payload requires 'actions' or legacy 'action'");
+    }
+
+    private static void rejectNestedTrigger(JsonObject nestedAction) {
+        if (ActionType.TRIGGER.equalsIgnoreCase(requiredString(nestedAction, JsonField.TYPE))) {
+            throw new IllegalArgumentException("Nested trigger actions are not supported");
+        }
     }
 
     private static JsonObject normalizeCondition(JsonObject conditionJson) {
@@ -182,6 +214,14 @@ public final class UpgradeResourceSchemaReader {
             return defaultValue;
         }
         return element.getAsInt();
+    }
+
+    private static boolean optionalBoolean(JsonObject json, String key, boolean defaultValue) {
+        JsonElement element = json.get(key);
+        if (element == null || element.isJsonNull()) {
+            return defaultValue;
+        }
+        return element.getAsBoolean();
     }
 
     private static JsonArray values(String... values) {

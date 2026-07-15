@@ -25,6 +25,7 @@ public final class SchemaFields {
         public static final String COOLDOWN = "cooldown";
         public static final String CONDITIONS = "conditions";
         public static final String ACTION = "action";
+        public static final String PREVENT_PLACE_BREAK = "preventPlaceBreak";
 
         private JsonField() {
         }
@@ -51,7 +52,18 @@ public final class SchemaFields {
 
     public static final class Trigger {
         public static final String EVENT_KILL = "kill";
+        public static final String EVENT_ATTACK = "attack";
+        public static final String EVENT_DAMAGED = "damaged";
+        public static final String EVENT_TRADE = "trade";
+        public static final String EVENT_BREAK = "break";
+        public static final String EVENT_LEVELUP = "levelup";
+
         public static final String CONDITION_TARGET_HOSTILE = "target_hostile";
+        public static final String CONDITION_TRADE_VILLAGER = "trade_villager";
+        public static final String CONDITION_TARGET_BLOCK = "target_block";
+
+        public static final String PAYLOAD_BLOCK = "block";
+        public static final String PAYLOAD_TAG = "tag";
 
         private Trigger() {
         }

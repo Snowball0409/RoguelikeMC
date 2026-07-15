@@ -3,8 +3,10 @@
   "package": "snowball049.roguelikemc.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "BlockItemMixin",
     "ExperienceOrbEntityMixin",
     "LivingEntityMixin",
+    "MerchantEntityMixin",
     "PlayerAdvancementTrackerMixin",
     "PlayerEntityMixin"
   ],

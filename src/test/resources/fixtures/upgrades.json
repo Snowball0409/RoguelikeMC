@@ -142,10 +142,10 @@
               "payload": {}
             }
           ],
-          "action": {
+          "actions": [{
             "type": "effect",
             "value": ["minecraft:strength", "200", "0"]
-          }
+          }]
         }]
       }
     }
@@ -364,16 +364,78 @@
           "eventType": "kill",
           "count": 1,
           "cooldown": 0,
+          "preventPlaceBreak": false,
           "conditions": [
             {
               "type": "target_hostile",
               "payload": {}
             }
           ],
-          "action": {
+          "actions": [{
             "type": "effect",
             "value": ["minecraft:strength", "200", "0"]
+          }]
+        }]
+      }
+    },
+    {
+      "name": "payload_trigger_break_target_block",
+      "input": {
+        "id": "trigger_break_coal",
+        "name": "upgrade.roguelikemc.name.trigger_break_coal",
+        "actions": [{
+          "type": "trigger",
+          "payload": {
+            "eventType": "break",
+            "count": 8,
+            "cooldown": 120,
+            "preventPlaceBreak": true,
+            "conditions": [
+              {
+                "type": "target_block",
+                "payload": {
+                  "tag": "minecraft:coal_ores"
+                }
+              }
+            ],
+            "action": {
+              "type": "effect",
+              "payload": {
+                "effect": "minecraft:haste",
+                "duration": 100,
+                "amplifier": 0
+              }
+            }
           }
+        }]
+      },
+      "expected": {
+        "id": "trigger_break_coal",
+        "name": "upgrade.roguelikemc.name.trigger_break_coal",
+        "description": "",
+        "tier": "common",
+        "isPermanent": false,
+        "isUnique": false,
+        "icon": "",
+        "actionTypes": ["trigger"],
+        "actionValues": [[]],
+        "actionPayloads": [{
+          "eventType": "break",
+          "count": 8,
+          "cooldown": 120,
+          "preventPlaceBreak": true,
+          "conditions": [
+            {
+              "type": "target_block",
+              "payload": {
+                "tag": "minecraft:coal_ores"
+              }
+            }
+          ],
+          "actions": [{
+            "type": "effect",
+            "value": ["minecraft:haste", "100", "0"]
+          }]
         }]
       }
     },

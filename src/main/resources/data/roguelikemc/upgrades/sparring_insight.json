@@ -1,7 +1,7 @@
 {
-  "id": "predators_momentum",
-  "name": "upgrade.roguelikemc.name.predators_momentum",
-  "description": "upgrade.roguelikemc.description.predators_momentum",
+  "id": "sparring_insight",
+  "name": "upgrade.roguelikemc.name.sparring_insight",
+  "description": "upgrade.roguelikemc.description.sparring_insight",
   "tier": "common",
   "isPermanent": false,
   "isUnique": true,
@@ -10,9 +10,9 @@
     {
       "type": "trigger",
       "payload": {
-        "eventType": "kill",
-        "count": 2,
-        "cooldown": 100,
+        "eventType": "attack",
+        "count": 1,
+        "cooldown": 0,
         "conditions": [
           {
             "type": "target_hostile",
@@ -21,11 +21,9 @@
         ],
         "actions": [
           {
-            "type": "effect",
+            "type": "command",
             "payload": {
-              "effect": "minecraft:speed",
-              "duration": 100,
-              "amplifier": 1
+              "command": "experience add @s 1 points"
             }
           }
         ]

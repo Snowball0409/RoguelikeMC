@@ -1,0 +1,46 @@
+{
+  "id": "ascendant_tempering",
+  "name": "upgrade.roguelikemc.name.ascendant_tempering",
+  "description": "upgrade.roguelikemc.description.ascendant_tempering",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/titans_bulk.png",
+  "actions": [
+    {
+      "type": "trigger",
+      "payload": {
+        "eventType": "levelup",
+        "count": 5,
+        "cooldown": 0,
+        "conditions": [],
+        "actions": [
+          {
+            "type": "attribute",
+            "payload": {
+              "attribute": "minecraft:generic.max_health",
+              "amount": 0.5,
+              "operation": "add_value"
+            }
+          },
+          {
+            "type": "attribute",
+            "payload": {
+              "attribute": "minecraft:generic.attack_damage",
+              "amount": 0.5,
+              "operation": "add_value"
+            }
+          },
+          {
+            "type": "attribute",
+            "payload": {
+              "attribute": "minecraft:generic.armor",
+              "amount": 0.5,
+              "operation": "add_value"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

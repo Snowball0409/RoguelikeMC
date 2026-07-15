@@ -1,0 +1,31 @@
+{
+  "id": "repercussion_burst",
+  "name": "upgrade.roguelikemc.name.repercussion_burst",
+  "description": "upgrade.roguelikemc.description.repercussion_burst",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/crimson_reckoning.png",
+  "actions": [
+    {
+      "type": "trigger",
+      "payload": {
+        "eventType": "damaged",
+        "count": 5,
+        "cooldown": 0,
+        "conditions": [],
+        "actions": [
+          {
+            "type": "event",
+            "payload": {
+              "eventType": "effect_mobs",
+              "effect": "minecraft:instant_damage",
+              "amplifier": 0,
+              "radius": 6.0
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

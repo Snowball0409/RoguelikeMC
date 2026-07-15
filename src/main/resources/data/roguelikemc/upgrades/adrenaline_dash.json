@@ -1,0 +1,30 @@
+{
+  "id": "adrenaline_dash",
+  "name": "upgrade.roguelikemc.name.adrenaline_dash",
+  "description": "upgrade.roguelikemc.description.adrenaline_dash",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/swift_stride.png",
+  "actions": [
+    {
+      "type": "trigger",
+      "payload": {
+        "eventType": "damaged",
+        "count": 1,
+        "cooldown": 1200,
+        "conditions": [],
+        "actions": [
+          {
+            "type": "effect",
+            "payload": {
+              "effect": "minecraft:speed",
+              "duration": 100,
+              "amplifier": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

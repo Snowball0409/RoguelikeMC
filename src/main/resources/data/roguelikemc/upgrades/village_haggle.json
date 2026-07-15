@@ -1,0 +1,33 @@
+{
+  "id": "village_haggle",
+  "name": "upgrade.roguelikemc.name.village_haggle",
+  "description": "upgrade.roguelikemc.description.village_haggle",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/fortunes_favor.png",
+  "actions": [
+    {
+      "type": "trigger",
+      "payload": {
+        "eventType": "trade",
+        "count": 5,
+        "cooldown": 0,
+        "conditions": [
+          {
+            "type": "trade_villager",
+            "payload": {}
+          }
+        ],
+        "actions": [
+          {
+            "type": "command",
+            "payload": {
+              "command": "loot give @s loot roguelikemc:trade_emeralds_1_to_3"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

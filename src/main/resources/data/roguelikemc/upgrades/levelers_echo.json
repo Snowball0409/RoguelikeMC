@@ -1,0 +1,28 @@
+{
+  "id": "levelers_echo",
+  "name": "upgrade.roguelikemc.name.levelers_echo",
+  "description": "upgrade.roguelikemc.description.levelers_echo",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/wisdoms_bounty.png",
+  "actions": [
+    {
+      "type": "trigger",
+      "payload": {
+        "eventType": "levelup",
+        "count": 1,
+        "cooldown": 0,
+        "conditions": [],
+        "actions": [
+          {
+            "type": "command",
+            "payload": {
+              "command": "experience add @s 10 points"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

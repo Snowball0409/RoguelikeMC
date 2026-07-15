@@ -1,0 +1,36 @@
+{
+  "id": "gilded_spoils",
+  "name": "upgrade.roguelikemc.name.gilded_spoils",
+  "description": "upgrade.roguelikemc.description.gilded_spoils",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/golden_fortune.png",
+  "actions": [
+    {
+      "type": "trigger",
+      "payload": {
+        "eventType": "break",
+        "count": 5,
+        "cooldown": 0,
+        "preventPlaceBreak": true,
+        "conditions": [
+          {
+            "type": "target_block",
+            "payload": {
+              "tag": "minecraft:gold_ores"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "type": "command",
+            "payload": {
+              "command": "loot give @s loot roguelikemc:random_gold_armor"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
