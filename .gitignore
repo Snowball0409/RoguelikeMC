@@ -43,9 +43,12 @@ replay_*.log
 
 src/main/generated/.cache/
 
-# cursor
+# ai
 .cursor
 .cursor-tools
+.claude
+CLAUDE.md
+.mcp.json
 
 # worktrees
 .worktrees/
