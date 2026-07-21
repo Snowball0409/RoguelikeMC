@@ -189,7 +189,7 @@ public class RoguelikeMCTranslationProvider extends FabricLanguageProvider {
         translationBuilder.add("upgrade.roguelikemc.description.pioneers_cache", "Receive logs, planks, sticks, torches, apples, and bread");
         translationBuilder.add("upgrade.roguelikemc.description.excalibur", "Receive Excalibur, a stone sword with Netherite-level damage");
         translationBuilder.add("upgrade.roguelikemc.description.marksmans_codex", "Receive an enchanted book: Power V, Unbreaking III, Infinity, Punch II, Flame");
-        translationBuilder.add("upgrade.roguelikemc.description.homestead_flock", "Receive chickens, pigs, cows, and sheep");
+        translationBuilder.add("upgrade.roguelikemc.description.homestead_flock", "Receive 2 each of chickens, pigs, cows, and sheep");
         translationBuilder.add("upgrade.roguelikemc.description.emberheart", "Gain Fire Resistance");
         translationBuilder.add("upgrade.roguelikemc.description.oceans_blessing", "Gain Conduit Power");
 
