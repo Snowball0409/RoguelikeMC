@@ -315,14 +315,34 @@ public class RoguelikeMCDrawScreen extends Screen {
                 tagsY,
                 0xFFFFFF
         );
-        context.drawTextWrapped(
-                textRenderer,
-                Text.translatable(upgrade.description()).formatted(Formatting.GRAY),
-                x + Cards.CARD_PADDING,
-                descriptionY,
-                button.getWidth() - Cards.CARD_PADDING * 2,
-                0xCFCFCF
-        );
+        drawFittedDescription(context, upgrade, button, descriptionY);
+    }
+
+    /**
+     * Draws the description wrapped to the card width, shrinking it just enough to keep the
+     * whole wrapped block inside the card (never past the bottom padding) when it would
+     * otherwise overflow. The full-size text is always available via the hover tooltip
+     * ({@link #drawCardTooltip}), so a shrunk in-card preview is an acceptable trade-off.
+     */
+    private void drawFittedDescription(DrawContext context, RoguelikeMCUpgradeData upgrade, ButtonWidget button, int descriptionY) {
+        Text description = Text.translatable(upgrade.description()).formatted(Formatting.GRAY);
+        int descriptionX = button.getX() + Cards.CARD_PADDING;
+        int wrapWidth = button.getWidth() - Cards.CARD_PADDING * 2;
+        int availableHeight = Math.max(0, button.getY() + button.getHeight() - Cards.CARD_PADDING - descriptionY);
+        int wrappedHeight = textRenderer.getWrappedLinesHeight(description, wrapWidth);
+
+        float scale = 1f;
+        if (wrappedHeight > availableHeight) {
+            scale = Math.max(Cards.DESCRIPTION_MIN_SCALE, (float) availableHeight / wrappedHeight);
+        }
+
+        MatrixStack matrices = context.getMatrices();
+        matrices.push();
+        matrices.translate(descriptionX, descriptionY, 0f);
+        matrices.scale(scale, scale, 1f);
+        matrices.translate(-descriptionX, -descriptionY, 0f);
+        context.drawTextWrapped(textRenderer, description, descriptionX, descriptionY, wrapWidth, 0xCFCFCF);
+        matrices.pop();
     }
 
     private void drawCardTooltip(DrawContext context, RoguelikeMCUpgradeData upgrade, int mouseX, int mouseY) {
@@ -534,6 +554,7 @@ public class RoguelikeMCDrawScreen extends Screen {
         static final int NAME_GAP = 10;
         static final int TAG_GAP = 4;
         static final int DESCRIPTION_GAP = 8;
+        static final float DESCRIPTION_MIN_SCALE = 0.6f;
 
         static final float FLAME_ALPHA_MAX = 255f;
         static final float FLAME_SIZE_SCALE = 2.4f;
