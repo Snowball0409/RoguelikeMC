@@ -1,0 +1,20 @@
+{
+  "id": "gravity_snare",
+  "name": "upgrade.roguelikemc.name.gravity_snare",
+  "description": "upgrade.roguelikemc.description.gravity_snare",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/gravity_snare.png",
+  "actions": [
+    {
+      "type": "event",
+      "payload": {
+        "eventType": "effect_mobs",
+        "effect": "minecraft:levitation",
+        "amplifier": 0,
+        "radius": 6.0
+      }
+    }
+  ]
+}

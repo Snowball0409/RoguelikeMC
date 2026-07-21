@@ -1,0 +1,20 @@
+{
+  "id": "revealing_light",
+  "name": "upgrade.roguelikemc.name.revealing_light",
+  "description": "upgrade.roguelikemc.description.revealing_light",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/revealing_light.png",
+  "actions": [
+    {
+      "type": "event",
+      "payload": {
+        "eventType": "effect_mobs",
+        "effect": "minecraft:glowing",
+        "amplifier": 0,
+        "radius": 12.0
+      }
+    }
+  ]
+}

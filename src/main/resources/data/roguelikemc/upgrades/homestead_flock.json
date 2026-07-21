@@ -1,0 +1,59 @@
+{
+  "id": "homestead_flock",
+  "name": "upgrade.roguelikemc.name.homestead_flock",
+  "description": "upgrade.roguelikemc.description.homestead_flock",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "roguelikemc:textures/upgrades/homestead_flock.png",
+  "actions": [
+    {
+      "type": "command",
+      "payload": {
+        "command": "summon chicken ~1 ~ ~1"
+      }
+    },
+    {
+      "type": "command",
+      "payload": {
+        "command": "summon chicken ~-1 ~ ~1"
+      }
+    },
+    {
+      "type": "command",
+      "payload": {
+        "command": "summon pig ~1 ~ ~-1"
+      }
+    },
+    {
+      "type": "command",
+      "payload": {
+        "command": "summon pig ~-1 ~ ~-1"
+      }
+    },
+    {
+      "type": "command",
+      "payload": {
+        "command": "summon cow ~2 ~ ~"
+      }
+    },
+    {
+      "type": "command",
+      "payload": {
+        "command": "summon cow ~-2 ~ ~"
+      }
+    },
+    {
+      "type": "command",
+      "payload": {
+        "command": "summon sheep ~ ~ ~2"
+      }
+    },
+    {
+      "type": "command",
+      "payload": {
+        "command": "summon sheep ~ ~ ~-2"
+      }
+    }
+  ]
+}

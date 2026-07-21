@@ -1,0 +1,17 @@
+{
+  "id": "excalibur",
+  "name": "upgrade.roguelikemc.name.excalibur",
+  "description": "upgrade.roguelikemc.description.excalibur",
+  "tier": "legendary",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/excalibur.png",
+  "actions": [
+    {
+      "type": "command",
+      "payload": {
+        "command": "give @s minecraft:stone_sword[minecraft:custom_name='{\"color\":\"gold\",\"italic\":false,\"text\":\"Excalibur\"}',minecraft:enchantments={levels:{\"minecraft:fire_aspect\":2,\"minecraft:looting\":1,\"minecraft:sharpness\":5,\"minecraft:smite\":5}},minecraft:max_damage=65,minecraft:attribute_modifiers={modifiers:[{amount:7.0d,id:\"roguelikemc:excalibur_damage\",operation:\"add_value\",slot:\"mainhand\",type:\"minecraft:generic.attack_damage\"},{amount:-2.4d,id:\"roguelikemc:excalibur_speed\",operation:\"add_value\",slot:\"mainhand\",type:\"minecraft:generic.attack_speed\"}]}] 1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "frostsoul_treads",
+  "name": "upgrade.roguelikemc.name.frostsoul_treads",
+  "description": "upgrade.roguelikemc.description.frostsoul_treads",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/frostsoul_treads.png",
+  "actions": [
+    {
+      "type": "event",
+      "payload": {
+        "eventType": "set_equipment",
+        "slot": 0,
+        "itemNbt": "{components: {\"minecraft:enchantments\": {levels: {\"minecraft:frost_walker\": 2, \"minecraft:soul_speed\": 3, \"minecraft:binding_curse\": 1}}}, count: 1, id: \"minecraft:leather_boots\"}"
+      }
+    },
+    {
+      "type": "attribute",
+      "payload": {
+        "attribute": "minecraft:generic.knockback_resistance",
+        "amount": 1,
+        "operation": "add_value"
+      }
+    },
+    {
+      "type": "attribute",
+      "payload": {
+        "attribute": "minecraft:generic.movement_speed",
+        "amount": 0.1,
+        "operation": "add_multiplied_base"
+      }
+    }
+  ]
+}

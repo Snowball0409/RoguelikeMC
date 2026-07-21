@@ -1,0 +1,26 @@
+{
+  "id": "goldfang_hoard",
+  "name": "upgrade.roguelikemc.name.goldfang_hoard",
+  "description": "upgrade.roguelikemc.description.goldfang_hoard",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/goldfang_hoard.png",
+  "actions": [
+    {
+      "type": "event",
+      "payload": {
+        "eventType": "add_loot_table",
+        "entityType": "minecraft:zombified_piglin",
+        "lootTable": "roguelikemc:goldfang_hoard"
+      }
+    },
+    {
+      "type": "event",
+      "payload": {
+        "eventType": "provoked",
+        "entityType": "minecraft:zombified_piglin"
+      }
+    }
+  ]
+}

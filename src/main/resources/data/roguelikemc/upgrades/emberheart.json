@@ -1,0 +1,19 @@
+{
+  "id": "emberheart",
+  "name": "upgrade.roguelikemc.name.emberheart",
+  "description": "upgrade.roguelikemc.description.emberheart",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/emberheart.png",
+  "actions": [
+    {
+      "type": "effect",
+      "payload": {
+        "effect": "minecraft:fire_resistance",
+        "duration": -1,
+        "amplifier": 0
+      }
+    }
+  ]
+}

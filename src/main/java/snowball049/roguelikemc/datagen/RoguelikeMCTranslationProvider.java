@@ -95,6 +95,21 @@ public class RoguelikeMCTranslationProvider extends FabricLanguageProvider {
         translationBuilder.add("upgrade.roguelikemc.name.gilded_spoils", "Gilded Spoils");
         translationBuilder.add("upgrade.roguelikemc.name.levelers_echo", "Leveler's Echo");
         translationBuilder.add("upgrade.roguelikemc.name.ascendant_tempering", "Ascendant Tempering");
+        translationBuilder.add("upgrade.roguelikemc.name.witherforged_scrap", "Witherforged Scrap");
+        translationBuilder.add("upgrade.roguelikemc.name.goldfang_hoard", "Goldfang Hoard");
+        translationBuilder.add("upgrade.roguelikemc.name.voidstone_grudge", "Voidstone Grudge");
+        translationBuilder.add("upgrade.roguelikemc.name.revealing_light", "Revealing Light");
+        translationBuilder.add("upgrade.roguelikemc.name.enfeebling_aura", "Enfeebling Aura");
+        translationBuilder.add("upgrade.roguelikemc.name.gravity_snare", "Gravity Snare");
+        translationBuilder.add("upgrade.roguelikemc.name.piglins_favor", "Piglin's Favor");
+        translationBuilder.add("upgrade.roguelikemc.name.frostsoul_treads", "Frostsoul Treads");
+        translationBuilder.add("upgrade.roguelikemc.name.miasma_ward", "Miasma Ward");
+        translationBuilder.add("upgrade.roguelikemc.name.pioneers_cache", "Pioneer's Cache");
+        translationBuilder.add("upgrade.roguelikemc.name.excalibur", "Excalibur");
+        translationBuilder.add("upgrade.roguelikemc.name.marksmans_codex", "Marksman's Codex");
+        translationBuilder.add("upgrade.roguelikemc.name.homestead_flock", "Homestead Flock");
+        translationBuilder.add("upgrade.roguelikemc.name.emberheart", "Emberheart");
+        translationBuilder.add("upgrade.roguelikemc.name.oceans_blessing", "Ocean's Blessing");
 
         // Upgrade Description
         translationBuilder.add("upgrade.roguelikemc.description.withering_aura", "Hostile mobs around you are inflicted with Wither");
@@ -162,6 +177,21 @@ public class RoguelikeMCTranslationProvider extends FabricLanguageProvider {
         translationBuilder.add("upgrade.roguelikemc.description.gilded_spoils", "Mining 5 gold ores grants random golden armor; placed ores don't count");
         translationBuilder.add("upgrade.roguelikemc.description.levelers_echo", "Each level gained grants 10 bonus experience points");
         translationBuilder.add("upgrade.roguelikemc.description.ascendant_tempering", "Every 5 levels grant permanent +0.5 health, attack, and armor");
+        translationBuilder.add("upgrade.roguelikemc.description.witherforged_scrap", "Wither Skeletons may drop Netherite Scrap");
+        translationBuilder.add("upgrade.roguelikemc.description.goldfang_hoard", "Zombified Piglins may drop gold blocks, but become hostile");
+        translationBuilder.add("upgrade.roguelikemc.description.voidstone_grudge", "Endermen may drop obsidian, but become hostile");
+        translationBuilder.add("upgrade.roguelikemc.description.revealing_light", "Hostile mobs around you are glowing");
+        translationBuilder.add("upgrade.roguelikemc.description.enfeebling_aura", "Hostile mobs around you are weakened");
+        translationBuilder.add("upgrade.roguelikemc.description.gravity_snare", "Hostile mobs around you are levitated");
+        translationBuilder.add("upgrade.roguelikemc.description.piglins_favor", "Your helmet becomes an unbreakable, bound Golden Helmet");
+        translationBuilder.add("upgrade.roguelikemc.description.frostsoul_treads", "Your boots become bound Leather Boots, Knockback Resistance +1, Movement Speed +10%");
+        translationBuilder.add("upgrade.roguelikemc.description.miasma_ward", "Every 4 hits taken release a Weakness cloud and weaken nearby hostile mobs, max once per 10s");
+        translationBuilder.add("upgrade.roguelikemc.description.pioneers_cache", "Receive logs, planks, sticks, torches, apples, and bread");
+        translationBuilder.add("upgrade.roguelikemc.description.excalibur", "Receive Excalibur, a stone sword with Netherite-level damage");
+        translationBuilder.add("upgrade.roguelikemc.description.marksmans_codex", "Receive an enchanted book: Power V, Unbreaking III, Infinity, Punch II, Flame");
+        translationBuilder.add("upgrade.roguelikemc.description.homestead_flock", "Receive chickens, pigs, cows, and sheep");
+        translationBuilder.add("upgrade.roguelikemc.description.emberheart", "Gain Fire Resistance");
+        translationBuilder.add("upgrade.roguelikemc.description.oceans_blessing", "Gain Conduit Power");
 
         // Message
         translationBuilder.add("message.roguelikemc.pass_game_stage", "§aYou have complete the stage: ");

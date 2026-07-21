@@ -1,0 +1,19 @@
+{
+  "id": "witherforged_scrap",
+  "name": "upgrade.roguelikemc.name.witherforged_scrap",
+  "description": "upgrade.roguelikemc.description.witherforged_scrap",
+  "tier": "epic",
+  "isPermanent": true,
+  "isUnique": false,
+  "icon": "roguelikemc:textures/upgrades/witherforged_scrap.png",
+  "actions": [
+    {
+      "type": "event",
+      "payload": {
+        "eventType": "add_loot_table",
+        "entityType": "minecraft:wither_skeleton",
+        "lootTable": "roguelikemc:witherforged_scrap"
+      }
+    }
+  ]
+}

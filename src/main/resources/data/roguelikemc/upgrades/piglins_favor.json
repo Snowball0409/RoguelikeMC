@@ -1,0 +1,19 @@
+{
+  "id": "piglins_favor",
+  "name": "upgrade.roguelikemc.name.piglins_favor",
+  "description": "upgrade.roguelikemc.description.piglins_favor",
+  "tier": "epic",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/piglins_favor.png",
+  "actions": [
+    {
+      "type": "event",
+      "payload": {
+        "eventType": "set_equipment",
+        "slot": 3,
+        "itemNbt": "{components: {\"minecraft:enchantments\": {levels: {\"minecraft:binding_curse\": 1, \"minecraft:protection\": 3, \"minecraft:fire_protection\": 4}}, \"minecraft:unbreakable\": {}}, count: 1, id: \"minecraft:golden_helmet\"}"
+      }
+    }
+  ]
+}

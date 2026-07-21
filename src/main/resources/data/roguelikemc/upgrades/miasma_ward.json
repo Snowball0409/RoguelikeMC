@@ -1,0 +1,37 @@
+{
+  "id": "miasma_ward",
+  "name": "upgrade.roguelikemc.name.miasma_ward",
+  "description": "upgrade.roguelikemc.description.miasma_ward",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/miasma_ward.png",
+  "actions": [
+    {
+      "type": "trigger",
+      "payload": {
+        "eventType": "damaged",
+        "count": 4,
+        "cooldown": 200,
+        "conditions": [],
+        "actions": [
+          {
+            "type": "command",
+            "payload": {
+              "command": "summon minecraft:area_effect_cloud ~ ~ ~ {Radius:4.0f,Duration:100,WaitTime:0,potion_contents:{custom_effects:[{id:\"minecraft:weakness\",duration:100,amplifier:0,show_particles:1b}]}}"
+            }
+          },
+          {
+            "type": "event",
+            "payload": {
+              "eventType": "effect_mobs",
+              "effect": "minecraft:weakness",
+              "amplifier": 0,
+              "radius": 4.0
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

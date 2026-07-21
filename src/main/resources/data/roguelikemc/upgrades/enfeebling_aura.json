@@ -1,0 +1,20 @@
+{
+  "id": "enfeebling_aura",
+  "name": "upgrade.roguelikemc.name.enfeebling_aura",
+  "description": "upgrade.roguelikemc.description.enfeebling_aura",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/enfeebling_aura.png",
+  "actions": [
+    {
+      "type": "event",
+      "payload": {
+        "eventType": "effect_mobs",
+        "effect": "minecraft:weakness",
+        "amplifier": 0,
+        "radius": 8.0
+      }
+    }
+  ]
+}

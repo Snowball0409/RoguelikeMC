@@ -1,0 +1,47 @@
+{
+  "id": "pioneers_cache",
+  "name": "upgrade.roguelikemc.name.pioneers_cache",
+  "description": "upgrade.roguelikemc.description.pioneers_cache",
+  "tier": "common",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "roguelikemc:textures/upgrades/pioneers_cache.png",
+  "actions": [
+    {
+      "type": "command",
+      "payload": {
+        "command": "give @s oak_log 3"
+      }
+    },
+    {
+      "type": "command",
+      "payload": {
+        "command": "give @s oak_planks 4"
+      }
+    },
+    {
+      "type": "command",
+      "payload": {
+        "command": "give @s stick 5"
+      }
+    },
+    {
+      "type": "command",
+      "payload": {
+        "command": "give @s bread 3"
+      }
+    },
+    {
+      "type": "command",
+      "payload": {
+        "command": "give @s apple 3"
+      }
+    },
+    {
+      "type": "command",
+      "payload": {
+        "command": "give @s torch 8"
+      }
+    }
+  ]
+}

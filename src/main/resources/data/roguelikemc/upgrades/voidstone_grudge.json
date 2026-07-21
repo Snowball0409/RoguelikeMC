@@ -1,0 +1,26 @@
+{
+  "id": "voidstone_grudge",
+  "name": "upgrade.roguelikemc.name.voidstone_grudge",
+  "description": "upgrade.roguelikemc.description.voidstone_grudge",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": true,
+  "icon": "roguelikemc:textures/upgrades/voidstone_grudge.png",
+  "actions": [
+    {
+      "type": "event",
+      "payload": {
+        "eventType": "add_loot_table",
+        "entityType": "minecraft:enderman",
+        "lootTable": "roguelikemc:voidstone_grudge"
+      }
+    },
+    {
+      "type": "event",
+      "payload": {
+        "eventType": "provoked",
+        "entityType": "minecraft:enderman"
+      }
+    }
+  ]
+}

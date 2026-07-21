@@ -1,0 +1,17 @@
+{
+  "id": "marksmans_codex",
+  "name": "upgrade.roguelikemc.name.marksmans_codex",
+  "description": "upgrade.roguelikemc.description.marksmans_codex",
+  "tier": "rare",
+  "isPermanent": false,
+  "isUnique": false,
+  "icon": "roguelikemc:textures/upgrades/marksmans_codex.png",
+  "actions": [
+    {
+      "type": "command",
+      "payload": {
+        "command": "give @s enchanted_book[stored_enchantments={\"minecraft:power\":5,\"minecraft:unbreaking\":3,\"minecraft:infinity\":1,\"minecraft:punch\":2,\"minecraft:flame\":1}] 1"
+      }
+    }
+  ]
+}
