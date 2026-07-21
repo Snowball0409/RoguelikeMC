@@ -7,9 +7,11 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import org.lwjgl.glfw.GLFW;
 import snowball049.roguelikemc.RoguelikeMCClient;
 import snowball049.roguelikemc.data.RoguelikeMCClientData;
@@ -17,6 +19,9 @@ import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.network.packet.RefreshUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.upgrade.UpgradePresentation;
+import snowball049.roguelikemc.upgrade.presentation.CardScaleAnimator;
+import snowball049.roguelikemc.upgrade.presentation.FlameParticle;
+import snowball049.roguelikemc.upgrade.presentation.FlameParticleField;
 
 import java.util.List;
 
@@ -29,6 +34,11 @@ public class RoguelikeMCDrawScreen extends Screen {
     private Layout layout;
     private int errorMessageTicks;
     private Text errorMessage;
+    private final FlameParticleField[] cardFlames = new FlameParticleField[Assets.OPTION_COUNT];
+    private final CardScaleAnimator[] cardAnimators = new CardScaleAnimator[Assets.OPTION_COUNT];
+    private final boolean[] cardHovered = new boolean[Assets.OPTION_COUNT];
+    private long lastFrameTimeMs;
+    private boolean hadOptions;
 
     public RoguelikeMCDrawScreen(Screen previousScreen) {
         super(Text.literal("RoguelikeMC Draw"));
@@ -42,6 +52,13 @@ public class RoguelikeMCDrawScreen extends Screen {
         initOptionButtons(ensureLayout());
         initRefreshButton(ensureLayout());
         updateButtonState();
+
+        for (int i = 0; i < Assets.OPTION_COUNT; i++) {
+            cardFlames[i] = new FlameParticleField();
+            cardAnimators[i] = new CardScaleAnimator();
+        }
+        lastFrameTimeMs = Util.getMeasuringTimeMs();
+        hadOptions = !RoguelikeMCClientData.INSTANCE.currentOptions.isEmpty();
     }
 
     @Override
@@ -57,9 +74,39 @@ public class RoguelikeMCDrawScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         Layout currentLayout = ensureLayout();
+        long now = Util.getMeasuringTimeMs();
+        float dtMs = Math.min(100f, (now - lastFrameTimeMs));
+        lastFrameTimeMs = now;
+        updateEffects(mouseX, mouseY, dtMs);
         drawOverlay(context);
         super.render(context, mouseX, mouseY, delta);
         renderScreen(context, currentLayout, mouseX, mouseY);
+    }
+
+    private void updateEffects(int mouseX, int mouseY, float dtMs) {
+        List<RoguelikeMCUpgradeData> options = RoguelikeMCClientData.INSTANCE.currentOptions;
+        boolean hasOptions = !options.isEmpty();
+        if (hasOptions && !hadOptions) {
+            for (CardScaleAnimator animator : cardAnimators) {
+                animator.start();
+            }
+        }
+        hadOptions = hasOptions;
+
+        for (int i = 0; i < Assets.OPTION_COUNT; i++) {
+            cardAnimators[i].update(dtMs);
+            ButtonWidget button = optionButtons[i];
+            boolean filled = i < options.size();
+            boolean hovered = filled && button.isMouseOver(mouseX, mouseY);
+            cardHovered[i] = hovered;
+            FlameParticleField field = cardFlames[i];
+            if (filled) {
+                field.setColor(UpgradePresentation.rarityArgb(options.get(i)));
+            }
+            float centerX = button.getX() + button.getWidth() / 2f;
+            float baseY = (button.getY() + button.getHeight());
+            field.update(dtMs, hovered, centerX, button.getWidth(), baseY);
+        }
     }
 
     @Override
@@ -123,6 +170,9 @@ public class RoguelikeMCDrawScreen extends Screen {
         drawPointHeader(context, currentLayout.pointY());
 
         for (int i = 0; i < Assets.OPTION_COUNT; i++) {
+            drawCardEffects(context, optionButtons[i], i);
+        }
+        for (int i = 0; i < Assets.OPTION_COUNT; i++) {
             drawUpgradeCard(context, optionButtons[i], i, currentLayout.cardWidth(), mouseX, mouseY);
         }
 
@@ -170,18 +220,32 @@ public class RoguelikeMCDrawScreen extends Screen {
             int mouseX,
             int mouseY
     ) {
-        int x = button.getX();
-        int y = button.getY();
-        boolean hovered = button.isMouseOver(mouseX, mouseY);
+        boolean hovered = cardHovered[index];
+        boolean filled = index < RoguelikeMCClientData.INSTANCE.currentOptions.size();
+        float scale = cardAnimators[index].scale();
+
+        // Only the drawn frame/content is scaled here; the button's own clickable bounds are
+        // intentionally left at full size during the ~220ms pop-in, so the hitbox is briefly
+        // slightly larger than what's visually drawn. Accepted trade-off for a sub-second window.
+        MatrixStack matrices = context.getMatrices();
+        matrices.push();
+        float cx = button.getX() + button.getWidth() / 2f;
+        float cy = button.getY() + button.getHeight() / 2f;
+        matrices.translate(cx, cy, 0f);
+        matrices.scale(scale, scale, 1f);
+        matrices.translate(-cx, -cy, 0f);
 
         drawCardFrame(context, button, hovered);
-
-        if (index >= RoguelikeMCClientData.INSTANCE.currentOptions.size()) {
+        if (filled) {
+            drawFilledCard(context, button, RoguelikeMCClientData.INSTANCE.currentOptions.get(index), cardWidth);
+        } else {
             drawEmptyCard(context, button);
-            return;
         }
+        matrices.pop();
 
-        drawFilledCard(context, button, RoguelikeMCClientData.INSTANCE.currentOptions.get(index), cardWidth, hovered, mouseX, mouseY);
+        if (filled && hovered) {
+            drawCardTooltip(context, RoguelikeMCClientData.INSTANCE.currentOptions.get(index), mouseX, mouseY);
+        }
     }
 
     private void drawCardFrame(DrawContext context, ButtonWidget button, boolean hovered) {
@@ -208,17 +272,15 @@ public class RoguelikeMCDrawScreen extends Screen {
             DrawContext context,
             ButtonWidget button,
             RoguelikeMCUpgradeData upgrade,
-            int cardWidth,
-            boolean hovered,
-            int mouseX,
-            int mouseY
+            int cardWidth
     ) {
         int x = button.getX();
         int y = button.getY();
         Formatting rarityColor = UpgradePresentation.rarityColor(upgrade);
         int textColor = rarityColor.getColorValue() != null ? rarityColor.getColorValue() : 0xFFFFFF;
 
-        int iconSize = Math.max(Cards.MIN_ICON_SIZE, Math.min(Cards.MAX_ICON_SIZE, cardWidth / 2 - 12));
+        @SuppressWarnings("java:S2184") // avoid long cast
+        int iconSize = Math.clamp(cardWidth / 2 - 12, Cards.MIN_ICON_SIZE, Cards.MAX_ICON_SIZE);
         int iconY = y + Cards.CARD_PADDING;
         int nameY = iconY + iconSize + Cards.NAME_GAP;
         int tagsY = nameY + textRenderer.fontHeight + Cards.TAG_GAP;
@@ -261,17 +323,74 @@ public class RoguelikeMCDrawScreen extends Screen {
                 button.getWidth() - Cards.CARD_PADDING * 2,
                 0xCFCFCF
         );
+    }
+
+    private void drawCardTooltip(DrawContext context, RoguelikeMCUpgradeData upgrade, int mouseX, int mouseY) {
+        Formatting rarityColor = UpgradePresentation.rarityColor(upgrade);
+        context.drawTooltip(
+                textRenderer,
+                List.of(
+                        Text.translatable(upgrade.name()).formatted(rarityColor),
+                        Text.translatable(upgrade.description()).formatted(Formatting.GRAY)
+                ),
+                mouseX,
+                mouseY
+        );
+    }
+
+    private void drawCardEffects(DrawContext context, ButtonWidget button, int index) {
+        boolean hovered = cardHovered[index];
+        FlameParticleField field = cardFlames[index];
 
         if (hovered) {
-            context.drawTooltip(
-                    textRenderer,
-                    List.of(
-                            Text.translatable(upgrade.name()).formatted(rarityColor),
-                            Text.translatable(upgrade.description()).formatted(Formatting.GRAY)
-                    ),
-                    mouseX,
-                    mouseY
-            );
+            drawCardGlow(context, button, field.color());
+        }
+        drawCardFlames(context, field);
+    }
+
+    private void drawCardGlow(DrawContext context, ButtonWidget button, int colorArgb) {
+        int rgb = colorArgb & 0x00FFFFFF;
+        int x = button.getX();
+        int y = button.getY();
+        int w = button.getWidth();
+        int h = button.getHeight();
+
+        for (int ring = 1; ring <= Cards.GLOW_RINGS; ring++) {
+            int alpha = Cards.GLOW_BASE_ALPHA - (ring - 1) * Cards.GLOW_ALPHA_STEP;
+            if (alpha <= 0) {
+                continue;
+            }
+            context.drawBorder(x - ring, y - ring, w + ring * 2, h + ring * 2, (alpha << 24) | rgb);
+        }
+    }
+
+    private void drawCardFlames(DrawContext context, FlameParticleField field) {
+        if (field.isEmpty()) {
+            return;
+        }
+        int rgb = field.color() & 0x00FFFFFF;
+        for (FlameParticle particle : field.particles()) {
+            float lifeAlpha = particle.alpha();
+            if (lifeAlpha <= 0f) {
+                continue;
+            }
+            int px = Math.round(particle.x());
+            int py = Math.round(particle.y());
+
+            int coreSize = Math.max(2, Math.round(particle.size() * Cards.FLAME_SIZE_SCALE));
+            int haloSize = Math.round(coreSize * Cards.FLAME_HALO_SCALE);
+
+            int haloAlpha = Math.min(255, Math.round(lifeAlpha * Cards.FLAME_HALO_ALPHA_MAX));
+            if (haloAlpha > 0) {
+                int haloHalf = haloSize / 2;
+                context.fill(px - haloHalf, py - haloHalf, px - haloHalf + haloSize, py - haloHalf + haloSize, (haloAlpha << 24) | rgb);
+            }
+
+            int coreAlpha = Math.min(255, Math.round(lifeAlpha * Cards.FLAME_ALPHA_MAX));
+            if (coreAlpha > 0) {
+                int coreHalf = coreSize / 2;
+                context.fill(px - coreHalf, py - coreHalf, px - coreHalf + coreSize, py - coreHalf + coreSize, (coreAlpha << 24) | rgb);
+            }
         }
     }
 
@@ -363,17 +482,17 @@ public class RoguelikeMCDrawScreen extends Screen {
             int titleY = Assets.HEADER_TOP;
             int pointY = titleY + fontHeight + Assets.HEADER_GAP;
 
-            int cardSpacing = Math.max(8, Math.min(Assets.BASE_CARD_SPACING, screenWidth / 40));
+            int cardSpacing = Math.clamp(screenWidth / 40, 8, Assets.BASE_CARD_SPACING);
             int availableWidth = Math.max(
                     Assets.MIN_CARD_WIDTH * Assets.OPTION_COUNT,
                     screenWidth - Assets.HORIZONTAL_MARGIN * 2 - cardSpacing * (Assets.OPTION_COUNT - 1)
             );
-            int cardWidth = Math.max(Assets.MIN_CARD_WIDTH, Math.min(Assets.BASE_CARD_WIDTH, availableWidth / Assets.OPTION_COUNT));
+            int cardWidth = Math.clamp(availableWidth / Assets.OPTION_COUNT, Assets.MIN_CARD_WIDTH, Assets.BASE_CARD_WIDTH);
 
             int headerBottom = pointY + fontHeight;
             int footerHeight = 20 + Assets.FOOTER_GAP + fontHeight;
             int availableHeight = screenHeight - headerBottom - footerHeight - Assets.CONTENT_GAP * 2;
-            int cardHeight = Math.max(Assets.MIN_CARD_HEIGHT, Math.min(Assets.BASE_CARD_HEIGHT, availableHeight));
+            int cardHeight = Math.clamp(availableHeight, Assets.MIN_CARD_HEIGHT, Assets.BASE_CARD_HEIGHT);
 
             int totalWidth = Assets.OPTION_COUNT * cardWidth + (Assets.OPTION_COUNT - 1) * cardSpacing;
             int cardStartX = (screenWidth - totalWidth) / 2;
@@ -415,6 +534,15 @@ public class RoguelikeMCDrawScreen extends Screen {
         static final int NAME_GAP = 10;
         static final int TAG_GAP = 4;
         static final int DESCRIPTION_GAP = 8;
+
+        static final float FLAME_ALPHA_MAX = 255f;
+        static final float FLAME_SIZE_SCALE = 2.4f;
+        static final float FLAME_HALO_SCALE = 1.8f;
+        static final float FLAME_HALO_ALPHA_MAX = 110f;
+
+        static final int GLOW_RINGS = 4;
+        static final int GLOW_BASE_ALPHA = 180;
+        static final int GLOW_ALPHA_STEP = 40;
 
         private Cards() {
         }

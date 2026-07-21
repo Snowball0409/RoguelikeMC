@@ -39,4 +39,13 @@ public final class UpgradePresentation {
 
         return Text.empty();
     }
+
+    public static int rarityArgb(RoguelikeMCUpgradeData upgrade) {
+        return rarityArgb(upgrade.rarity());
+    }
+
+    public static int rarityArgb(UpgradeRarity rarity) {
+        Integer rgb = rarity.color().getColorValue();
+        return rgb != null ? (0xFF000000 | rgb) : 0xFFFFFFFF;
+    }
 }
