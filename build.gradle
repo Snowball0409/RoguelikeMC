@@ -83,8 +83,8 @@ dependencies {
 //	modRuntimeOnly("io.wispforest:accessories-fabric:${project.accessories_version}")
 
 	// trinkets
-	modCompileOnly("dev.emi:trinkets:${project.trinkets_version}")
-	modRuntimeOnly("dev.emi:trinkets:${project.trinkets_version}")
+	modCompileOnly("maven.modrinth:trinkets:${project.trinkets_version}")
+	modRuntimeOnly("maven.modrinth:trinkets:${project.trinkets_version}")
 
 	testImplementation "net.fabricmc:fabric-loader-junit:${project.loader_version}"
 	testImplementation "org.junit.jupiter:junit-jupiter:5.11.4"
