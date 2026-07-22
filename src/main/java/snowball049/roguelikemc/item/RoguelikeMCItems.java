@@ -13,7 +13,7 @@ public final class RoguelikeMCItems {
     }
 
     public static Item register(Item item, String id) {
-        Identifier itemID = Identifier.tryParse(RoguelikeMC.MOD_ID, id);
+        Identifier itemID = Identifier.of(RoguelikeMC.MOD_ID, id);
         return Registry.register(Registries.ITEM, itemID, item);
     }
 

@@ -1,6 +1,8 @@
 package snowball049.roguelikemc.upgrade.point;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -72,7 +74,9 @@ public final class UpgradePointService {
     }
 
     private static void syncPoints(ServerPlayerEntity player, int points) {
-        ServerPlayNetworking.send(player, new SendUpgradePointsS2CPayload(points));
+        PacketByteBuf buf = PacketByteBufs.create();
+        new SendUpgradePointsS2CPayload(points).write(buf);
+        ServerPlayNetworking.send(player, SendUpgradePointsS2CPayload.ID, buf);
     }
 
     public record KillProgressResult(int remainingKills, int pointsEarned) {

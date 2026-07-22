@@ -10,7 +10,7 @@
     {
       "type": "command",
       "payload": {
-        "command": "give @s enchanted_book[stored_enchantments={\"minecraft:power\":5,\"minecraft:unbreaking\":3,\"minecraft:infinity\":1,\"minecraft:punch\":2,\"minecraft:flame\":1}] 1"
+        "command": "give @s minecraft:enchanted_book{StoredEnchantments:[{id:\"minecraft:power\",lvl:5s},{id:\"minecraft:unbreaking\",lvl:3s},{id:\"minecraft:infinity\",lvl:1s},{id:\"minecraft:punch\",lvl:2s},{id:\"minecraft:flame\",lvl:1s}]} 1"
       }
     }
   ]

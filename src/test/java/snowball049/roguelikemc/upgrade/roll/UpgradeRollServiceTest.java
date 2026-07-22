@@ -100,9 +100,9 @@ class UpgradeRollServiceTest {
 
         List<String> expectedPoolIds = TestFixtures.readStringList(scenario.getAsJsonArray("expectedUpgradeIds"));
         List<String> poolUpgradeIds = RoguelikeMCUpgradePoolManager
-                .getUpgradesFromPool(playerData.activeUpgradePools.getFirst())
+                .getUpgradesFromPool(playerData.activeUpgradePools.get(0))
                 .stream()
-                .map(id -> id.toString())
+                .map(Object::toString)
                 .toList();
         assertEquals(expectedPoolIds, poolUpgradeIds);
 

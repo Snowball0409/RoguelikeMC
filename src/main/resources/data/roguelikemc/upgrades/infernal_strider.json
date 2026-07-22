@@ -12,7 +12,7 @@
       "payload": {
         "eventType": "set_equipment",
         "slot": 0,
-        "itemNbt": "{components: {\"minecraft:enchantments\": {levels: {\"minecraft:frost_walker\": 2, \"minecraft:binding_curse\": 1, \"minecraft:protection\": 5}}, \"minecraft:unbreakable\": {}}, count: 1, id: \"minecraft:netherite_boots\"}"
+        "itemNbt": "{id:\"minecraft:netherite_boots\",Count:1b,tag:{Enchantments:[{id:\"minecraft:frost_walker\",lvl:2s},{id:\"minecraft:binding_curse\",lvl:1s},{id:\"minecraft:protection\",lvl:5s}],Unbreakable:1b}}"
       }
     }
   ]

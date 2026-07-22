@@ -25,9 +25,9 @@ class RoguelikeMCStateSaverAndLoaderTest {
                         NbtOps.INSTANCE,
                         RoguelikeMCUpgradeData.CODEC.listOf()
                                 .parse(JsonOps.INSTANCE, TestFixtures.array(TestFixtures.PERSISTENCE, "legacySnapshot"))
-                                .getOrThrow()
+                                .getOrThrow(false, error -> { throw new IllegalStateException(error); })
                 )
-                .getOrThrow();
+                .getOrThrow(false, error -> { throw new IllegalStateException(error); });
 
         List<Identifier> decoded = RoguelikeMCStateSaverAndLoader.decodeUpgradeIdList(legacyNbt);
         List<Identifier> expected = readIdentifierList(TestFixtures.array(TestFixtures.PERSISTENCE, "legacyIds"));
@@ -55,7 +55,7 @@ class RoguelikeMCStateSaverAndLoaderTest {
     private static List<Identifier> readIdentifierList(com.google.gson.JsonArray array) {
         List<Identifier> identifiers = new ArrayList<>();
         for (var element : array) {
-            identifiers.add(Identifier.of(element.getAsString()));
+            identifiers.add(new Identifier(element.getAsString()));
         }
         return identifiers;
     }

@@ -1,6 +1,8 @@
 package snowball049.roguelikemc.upgrade.apply;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
@@ -72,8 +74,13 @@ public final class UpgradeApplier {
     }
 
     public static void syncOwnedUpgrades(ServerPlayerEntity player, RoguelikeMCPlayerData playerData) {
-        ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(true, playerData.getPermanentUpgrades()));
-        ServerPlayNetworking.send(player, new RefreshCurrentUpgradeS2CPayload(false, playerData.getTemporaryUpgrades()));
+        PacketByteBuf permanentBuf = PacketByteBufs.create();
+        new RefreshCurrentUpgradeS2CPayload(true, playerData.getPermanentUpgrades()).write(permanentBuf);
+        ServerPlayNetworking.send(player, RefreshCurrentUpgradeS2CPayload.ID, permanentBuf);
+
+        PacketByteBuf temporaryBuf = PacketByteBufs.create();
+        new RefreshCurrentUpgradeS2CPayload(false, playerData.getTemporaryUpgrades()).write(temporaryBuf);
+        ServerPlayNetworking.send(player, RefreshCurrentUpgradeS2CPayload.ID, temporaryBuf);
     }
 
     private static void forEachAction(

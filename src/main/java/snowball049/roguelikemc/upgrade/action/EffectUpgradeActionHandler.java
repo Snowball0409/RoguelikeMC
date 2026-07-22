@@ -3,11 +3,11 @@ package snowball049.roguelikemc.upgrade.action;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.data.RoguelikeMCUpgradeData;
 import snowball049.roguelikemc.upgrade.enums.UpgradeActionType;
 
+import java.util.Objects;
 import java.util.List;
 
 public final class EffectUpgradeActionHandler implements UpgradeActionHandler {
@@ -41,13 +41,12 @@ public final class EffectUpgradeActionHandler implements UpgradeActionHandler {
 
     private static void applyEffect(net.minecraft.server.network.ServerPlayerEntity player, List<String> value) {
         // Legacy normalized runtime payload consumed by the current handler contract.
-        Identifier effectIdentifier = Identifier.tryParse(value.getFirst());
-        RegistryEntry.Reference<StatusEffect> effectEntry = Registries.STATUS_EFFECT.getEntry(effectIdentifier)
-                .orElseThrow();
+        Identifier effectIdentifier = Identifier.tryParse(value.get(0));
+        StatusEffect effect = Objects.requireNonNull(Registries.STATUS_EFFECT.get(effectIdentifier));
 
         if (!player.getWorld().isClient()) {
             player.addStatusEffect(new StatusEffectInstance(
-                    effectEntry,
+                    effect,
                     Integer.parseInt(value.get(1)),
                     Integer.parseInt(value.get(2)),
                     false,
@@ -58,6 +57,6 @@ public final class EffectUpgradeActionHandler implements UpgradeActionHandler {
     }
 
     private static void removeEffect(net.minecraft.server.network.ServerPlayerEntity player, List<String> value) {
-        player.removeStatusEffect(Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(value.getFirst())).orElseThrow());
+        player.removeStatusEffect(Objects.requireNonNull(Registries.STATUS_EFFECT.get(Identifier.tryParse(value.get(0)))));
     }
 }

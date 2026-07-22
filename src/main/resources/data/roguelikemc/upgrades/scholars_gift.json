@@ -10,7 +10,7 @@
     {
       "type": "command",
       "payload": {
-        "command": "give @p enchanted_book[stored_enchantments\u003d{\"minecraft:mending\":1}] 1"
+        "command": "give @p minecraft:enchanted_book{StoredEnchantments:[{id:\"minecraft:mending\",lvl:1s}]} 1"
       }
     }
   ]

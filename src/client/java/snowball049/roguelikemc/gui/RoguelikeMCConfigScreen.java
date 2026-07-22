@@ -10,8 +10,8 @@ import snowball049.roguelikemc.config.RoguelikeMCCommonConfig;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 @Environment(net.fabricmc.api.EnvType.CLIENT)
 public class RoguelikeMCConfigScreen extends Screen {
@@ -112,14 +112,14 @@ public class RoguelikeMCConfigScreen extends Screen {
         );
     }
 
-    private void addConfigOption(String label, Supplier<Boolean> getter, Consumer<Boolean> setter) {
+    private void addConfigOption(String label, BooleanSupplier getter, Consumer<Boolean> setter) {
         int labelX = width / 2 - 200; // Label on left
         int buttonX = width - 120; // Button on right
         int buttonWidth = 80;
 
         // Create the button but don't position it yet
-        ButtonWidget button = ButtonWidget.builder(getToggleMessage(getter.get()), b -> {
-            boolean newValue = !getter.get();
+        ButtonWidget button = ButtonWidget.builder(getToggleMessage(getter.getAsBoolean()), b -> {
+            boolean newValue = !getter.getAsBoolean();
             setter.accept(newValue);
             b.setMessage(getToggleMessage(newValue));
         }).size(buttonWidth, 20).build();
@@ -165,7 +165,7 @@ public class RoguelikeMCConfigScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta){
-        renderBackground(context, mouseX, mouseY, delta);
+        renderBackground(context);
 
         super.render(context, mouseX, mouseY, delta);
 
@@ -205,29 +205,27 @@ public class RoguelikeMCConfigScreen extends Screen {
         // Redraw the Save & Exit button on top of everything
         // Get the last child which should be the Save button
         if (!children().isEmpty()) {
-            ButtonWidget saveButton = (ButtonWidget) children().getLast();
+            ButtonWidget saveButton = (ButtonWidget) children().get(children().size() - 1);
             saveButton.render(context, mouseX, mouseY, delta);
         }
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         // Scroll up or down
-        scrollPosition = MathHelper.clamp(scrollPosition - (int)(verticalAmount * SCROLL_SPEED), 0, maxScrollPosition);
+        scrollPosition = MathHelper.clamp(scrollPosition - (int)(amount * SCROLL_SPEED), 0, maxScrollPosition);
         updateButtonPositions();
         return true;
     }
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        if (button == 0 && isDragging) {
-            // Handle dragging the scrollbar
-            if (mouseX > width - 20) {
-                float scrollRatio = (float) deltaY / (scrollableAreaHeight - ((float) (scrollableAreaHeight * scrollableAreaHeight) / contentHeight));
-                scrollPosition = MathHelper.clamp(scrollPosition + (int)(scrollRatio * maxScrollPosition), 0, maxScrollPosition);
-                updateButtonPositions();
-                return true;
-            }
+        // Handle dragging the scrollbar
+        if (button == 0 && isDragging && mouseX > width - 20) {
+            float scrollRatio = (float) deltaY / (scrollableAreaHeight - ((float) (scrollableAreaHeight * scrollableAreaHeight) / contentHeight));
+            scrollPosition = MathHelper.clamp(scrollPosition + (int)(scrollRatio * maxScrollPosition), 0, maxScrollPosition);
+            updateButtonPositions();
+            return true;
         }
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
@@ -259,7 +257,8 @@ public class RoguelikeMCConfigScreen extends Screen {
 
     private static class ConfigOption {
         String label;
-        int x, y;
+        int x;
+        int y;
         ButtonWidget button;
 
         ConfigOption(String label, int x, int y, ButtonWidget button) {

@@ -2,17 +2,15 @@ package snowball049.roguelikemc.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import net.minecraft.registry.RegistryWrapper;
-import java.util.concurrent.CompletableFuture;
 
 public class RoguelikeMCTranslationProvider extends FabricLanguageProvider {
-    public RoguelikeMCTranslationProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+    public RoguelikeMCTranslationProvider(FabricDataOutput dataOutput) {
         // Specifying en_us is optional, as it's the default language code
-        super(dataOutput, "en_us", registryLookup);
+        super(dataOutput, "en_us");
     }
 
     @Override
-    public void generateTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder translationBuilder) {
+    public void generateTranslations(TranslationBuilder translationBuilder) {
         // Config Screen
         translationBuilder.add("category.roguelikemc.gui", "RoguelikeMC");
         translationBuilder.add("key.roguelikemc.open_gui", "Open Upgrade Screen");

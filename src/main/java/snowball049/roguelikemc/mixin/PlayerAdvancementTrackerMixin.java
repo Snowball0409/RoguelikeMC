@@ -1,6 +1,6 @@
 package snowball049.roguelikemc.mixin;
 
-import net.minecraft.advancement.AdvancementEntry;
+import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementProgress;
 import net.minecraft.advancement.PlayerAdvancementTracker;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -20,7 +20,7 @@ public class PlayerAdvancementTrackerMixin {
     @Shadow private ServerPlayerEntity owner;
 
     @Inject(method = "grantCriterion", at = @At("TAIL"))
-    private void onAdvancementGrant(AdvancementEntry advancement, String criterionName, CallbackInfoReturnable<Boolean> cir) {
+    private void onAdvancementGrant(Advancement advancement, String criterionName, CallbackInfoReturnable<Boolean> cir) {
         ServerPlayerEntity player = this.owner;
         AdvancementProgress progress = ((PlayerAdvancementTracker) (Object) this).getProgress(advancement);
 
@@ -28,8 +28,8 @@ public class PlayerAdvancementTrackerMixin {
                 && RoguelikeMCCommonConfig.INSTANCE.enableUpgradeSystem
                 && RoguelikeMCCommonConfig.INSTANCE.enableAdvancementUpgrade
                 && !player.getWorld().isClient()
-                && advancement.value().display().isPresent()
-                && !advancement.value().isRoot()
+                && advancement.getDisplay() != null
+                && advancement.getParent() != null
                 && progress.isDone()
                 ) {
             RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);

@@ -1,21 +1,18 @@
 package snowball049.roguelikemc.network.packet;
 
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.network.RoguelikeMCNetworkConstants;
 
-public record SelectUpgradeOptionC2SPayload(int optionIndex) implements CustomPayload {
-    public static final CustomPayload.Id<SelectUpgradeOptionC2SPayload> ID = new CustomPayload.Id<>(RoguelikeMCNetworkConstants.SEND_SELECTED_UPGRADE_PACKET_ID);
-    public static final PacketCodec<RegistryByteBuf, SelectUpgradeOptionC2SPayload> CODEC = PacketCodec.tuple(
-            PacketCodecs.VAR_INT,
-            SelectUpgradeOptionC2SPayload::optionIndex,
-            SelectUpgradeOptionC2SPayload::new
-    );
+public record SelectUpgradeOptionC2SPayload(int optionIndex) {
+    public static final Identifier ID = RoguelikeMCNetworkConstants.SEND_SELECTED_UPGRADE_PACKET_ID;
 
-    @Override
-    public Id<? extends CustomPayload> getId() {
-        return ID;
+
+    public void write(PacketByteBuf buf) {
+        buf.writeVarInt(optionIndex);
+    }
+
+    public static SelectUpgradeOptionC2SPayload read(PacketByteBuf buf) {
+        return new SelectUpgradeOptionC2SPayload(buf.readVarInt());
     }
 }

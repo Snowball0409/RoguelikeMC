@@ -50,7 +50,7 @@ public final class UpgradeTestRegistry {
         Map<Identifier, List<Identifier>> poolMap = new HashMap<>();
         for (String key : pools.keySet()) {
             JsonObject pool = pools.getAsJsonObject(key);
-            Identifier poolId = Identifier.of(pool.get("id").getAsString());
+            Identifier poolId = new Identifier(pool.get("id").getAsString());
             List<Identifier> upgradeIds = readIdentifierList(pool.getAsJsonArray("upgradeIds"));
             poolMap.put(poolId, upgradeIds);
         }
@@ -67,13 +67,14 @@ public final class UpgradeTestRegistry {
     }
 
     public static RoguelikeMCUpgradeData parseUpgrade(JsonObject json) {
-        return RoguelikeMCUpgradeData.CODEC.parse(JsonOps.INSTANCE, json).getOrThrow();
+        return RoguelikeMCUpgradeData.CODEC.parse(JsonOps.INSTANCE, json)
+                .getOrThrow(false, error -> { throw new IllegalStateException(error); });
     }
 
     public static List<Identifier> readIdentifierList(JsonArray array) {
         List<Identifier> identifiers = new ArrayList<>();
         for (JsonElement element : array) {
-            identifiers.add(Identifier.of(element.getAsString()));
+            identifiers.add(new Identifier(element.getAsString()));
         }
         return identifiers;
     }

@@ -66,7 +66,7 @@ public final class DeathInventoryService {
         }
 
         if (RoguelikeMCCompat.isTrinketsLoaded) {
-            TrinketsApi.getTrinketComponent(serverPlayer).ifPresent(trinketComponent -> trinketComponent.getAllEquipped().forEach((slot) -> {
+            TrinketsApi.getTrinketComponent(serverPlayer).ifPresent(trinketComponent -> trinketComponent.getAllEquipped().forEach(slot -> {
                 if (DecayItemStacks.shouldDecay(decayChance, randomSupplier.getAsDouble())) {
                     slot.getLeft().inventory().setStack(slot.getLeft().index(), decayedItemSupplier.get().copy());
                 }
@@ -99,13 +99,13 @@ public final class DeathInventoryService {
             }
         }
 
-        if (InventoryItemClassifier.isArmorOrWeapon(inventory.offHand.getFirst())) {
+        if (InventoryItemClassifier.isArmorOrWeapon(inventory.offHand.get(0))) {
             inventory.offHand.set(0, ItemStack.EMPTY);
         }
 
         if (RoguelikeMCCompat.isTrinketsLoaded) {
             TrinketsApi.getTrinketComponent(player).ifPresent(trinketComponent ->
-                    trinketComponent.getAllEquipped().forEach((slot) ->
+                    trinketComponent.getAllEquipped().forEach(slot ->
                             slot.getLeft().inventory().setStack(slot.getLeft().index(), ItemStack.EMPTY)));
         }
     }

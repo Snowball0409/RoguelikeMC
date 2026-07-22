@@ -30,7 +30,8 @@ class UpgradeResourceSchemaReaderTest {
         JsonObject input = testCase.getAsJsonObject("input");
         JsonObject expected = testCase.getAsJsonObject("expected");
 
-        RoguelikeMCUpgradeData upgrade = UpgradeResourceSchemaReader.parse(input).getOrThrow();
+        RoguelikeMCUpgradeData upgrade = UpgradeResourceSchemaReader.parse(input)
+                .getOrThrow(false, error -> { throw new IllegalStateException(error); });
 
         assertEquals(expected.get("id").getAsString(), upgrade.id());
         assertEquals(expected.get("name").getAsString(), upgrade.name());

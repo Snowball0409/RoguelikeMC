@@ -1,6 +1,9 @@
 package snowball049.roguelikemc.network.handler;
 
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.RoguelikeMCStateSaverAndLoader;
@@ -10,13 +13,22 @@ import snowball049.roguelikemc.network.packet.SelectUpgradeOptionC2SPayload;
 import snowball049.roguelikemc.upgrade.RoguelikeMCUpgradeManager;
 import snowball049.roguelikemc.upgrade.apply.UpgradeApplier;
 
-public class SelectUpgradeOptionHandler {
-    public static void handle(SelectUpgradeOptionC2SPayload packet, ServerPlayNetworking.Context context) {
-        if (context.player().getWorld().isClient()) {
+public final class SelectUpgradeOptionHandler {
+    private SelectUpgradeOptionHandler() {
+    }
+
+    @SuppressWarnings("java:S1172")
+    public static void handle(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler,
+                               PacketByteBuf buf, PacketSender responseSender) {
+        SelectUpgradeOptionC2SPayload packet = SelectUpgradeOptionC2SPayload.read(buf);
+        server.execute(() -> handleOnServerThread(player, packet));
+    }
+
+    private static void handleOnServerThread(ServerPlayerEntity player, SelectUpgradeOptionC2SPayload packet) {
+        if (player.getWorld().isClient()) {
             return;
         }
 
-        ServerPlayerEntity player = context.player();
         RoguelikeMCPlayerData playerData = RoguelikeMCStateSaverAndLoader.getPlayerState(player);
         int optionIndex = packet.optionIndex();
         if (optionIndex < 0 || optionIndex >= playerData.currentOptionIds.size()) {

@@ -34,7 +34,7 @@ class InventoryItemClassifierTest {
                 .orElseThrow();
 
         ItemStack stack = new ItemStack(
-                net.minecraft.registry.Registries.ITEM.get(net.minecraft.util.Identifier.of(testCase.get("itemId").getAsString()))
+                net.minecraft.registry.Registries.ITEM.get(new net.minecraft.util.Identifier(testCase.get("itemId").getAsString()))
         );
         assertEquals(testCase.get("isArmorOrWeapon").getAsBoolean(), InventoryItemClassifier.isArmorOrWeapon(stack), caseName);
     }

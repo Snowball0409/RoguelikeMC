@@ -1,8 +1,10 @@
 package snowball049.roguelikemc.mixin;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -33,10 +35,14 @@ public class LivingEntityMixin {
         if (stageIndex >= 0 && playerData.currentGameStage < stageIndex + 1) {
             playerData.currentGameStage = stageIndex + 1;
             if (playerData.currentGameStage >= RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.size()) {
-                ServerPlayNetworking.send(player, new RefreshCurrentBossStageS2CPayload("none"));
+                PacketByteBuf buf = PacketByteBufs.create();
+                new RefreshCurrentBossStageS2CPayload("none").write(buf);
+                ServerPlayNetworking.send(player, RefreshCurrentBossStageS2CPayload.ID, buf);
             }else{
                 player.sendMessage(Text.translatable("message.roguelikemc.pass_game_stage").append(entity.getType().getName()), false);
-                ServerPlayNetworking.send(player, new RefreshCurrentBossStageS2CPayload(RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.get(playerData.currentGameStage)));
+                PacketByteBuf buf = PacketByteBufs.create();
+                new RefreshCurrentBossStageS2CPayload(RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.get(playerData.currentGameStage)).write(buf);
+                ServerPlayNetworking.send(player, RefreshCurrentBossStageS2CPayload.ID, buf);
             }
         }
     }

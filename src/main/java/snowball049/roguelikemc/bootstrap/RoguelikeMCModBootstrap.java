@@ -1,7 +1,7 @@
 package snowball049.roguelikemc.bootstrap;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;
@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.server.MinecraftServer;
@@ -37,13 +38,10 @@ public final class RoguelikeMCModBootstrap {
     private RoguelikeMCModBootstrap() {
     }
 
-    public static void registerNetworkPackets() {
-        PayloadTypeRegistry.playC2S().register(RefreshUpgradeOptionC2SPayload.ID, RefreshUpgradeOptionC2SPayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(UpgradeOptionS2CPayload.ID, UpgradeOptionS2CPayload.CODEC);
-        PayloadTypeRegistry.playC2S().register(SelectUpgradeOptionC2SPayload.ID, SelectUpgradeOptionC2SPayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(RefreshCurrentUpgradeS2CPayload.PACKET_ID, RefreshCurrentUpgradeS2CPayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(SendUpgradePointsS2CPayload.ID, SendUpgradePointsS2CPayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(RefreshCurrentBossStageS2CPayload.ID, RefreshCurrentBossStageS2CPayload.CODEC);
+    private static void sendPacket(ServerPlayerEntity player, Identifier id, java.util.function.Consumer<PacketByteBuf> writer) {
+        PacketByteBuf buf = PacketByteBufs.create();
+        writer.accept(buf);
+        ServerPlayNetworking.send(player, id, buf);
     }
 
     public static void registerItems() {
@@ -51,7 +49,7 @@ public final class RoguelikeMCModBootstrap {
     }
 
     public static void registerItemGroups() {
-        Registry.register(Registries.ITEM_GROUP, Identifier.tryParse(RoguelikeMC.MOD_ID, "item_group"), RoguelikeMCItemGroup.INSTANCE);
+        Registry.register(Registries.ITEM_GROUP, Identifier.of(RoguelikeMC.MOD_ID, "item_group"), RoguelikeMCItemGroup.INSTANCE);
     }
 
     public static void registerAttributes() {
@@ -89,7 +87,8 @@ public final class RoguelikeMCModBootstrap {
 
         UpgradeApplier.syncOwnedUpgrades(newPlayer, playerData);
         if (RoguelikeMCCommonConfig.INSTANCE.enableLinearGameStage) {
-            ServerPlayNetworking.send(newPlayer, new RefreshCurrentBossStageS2CPayload(RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.get(playerData.currentGameStage)));
+            String nextBoss = RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.get(playerData.currentGameStage);
+            sendPacket(newPlayer, RefreshCurrentBossStageS2CPayload.ID, buf -> new RefreshCurrentBossStageS2CPayload(nextBoss).write(buf));
             newPlayer.sendMessage(Text.translatable("message.roguelikemc.game_stage_reset").formatted(Formatting.RED));
         }
     }
@@ -108,20 +107,21 @@ public final class RoguelikeMCModBootstrap {
         if (RoguelikeMCCommonConfig.INSTANCE.enableUpgradeSystem) {
             UpgradeApplier.syncOwnedUpgrades(player, playerData);
             for (RoguelikeMCUpgradeData upgrade : playerData.getCurrentOptions()) {
-                ServerPlayNetworking.send(player, new UpgradeOptionS2CPayload(upgrade));
+                sendPacket(player, UpgradeOptionS2CPayload.ID, buf -> new UpgradeOptionS2CPayload(upgrade).write(buf));
             }
             playerData.getPermanentUpgrades().forEach(upgrade -> UpgradeApplier.applyJoinUpgrade(player, upgrade));
             playerData.getTemporaryUpgrades().forEach(upgrade -> UpgradeApplier.applyJoinUpgrade(player, upgrade));
-            ServerPlayNetworking.send(player, new SendUpgradePointsS2CPayload(playerData.upgradePoints));
+            sendPacket(player, SendUpgradePointsS2CPayload.ID, buf -> new SendUpgradePointsS2CPayload(playerData.upgradePoints).write(buf));
         }
 
         if (RoguelikeMCCommonConfig.INSTANCE.enableLinearGameStage && playerData.currentGameStage < RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.size()) {
-            ServerPlayNetworking.send(player, new RefreshCurrentBossStageS2CPayload(RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.get(playerData.currentGameStage)));
+            String nextBoss = RoguelikeMCCommonConfig.INSTANCE.gameStageEntities.get(playerData.currentGameStage);
+            sendPacket(player, RefreshCurrentBossStageS2CPayload.ID, buf -> new RefreshCurrentBossStageS2CPayload(nextBoss).write(buf));
             if (RoguelikeMC.LOGGER.isInfoEnabled()) {
                 RoguelikeMC.LOGGER.info("{}", playerData.currentGameStage);
             }
         } else {
-            ServerPlayNetworking.send(player, new RefreshCurrentBossStageS2CPayload("none"));
+            sendPacket(player, RefreshCurrentBossStageS2CPayload.ID, buf -> new RefreshCurrentBossStageS2CPayload("none").write(buf));
         }
     }
 

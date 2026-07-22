@@ -32,7 +32,7 @@ public final class CommandUpgradeActionHandler implements UpgradeActionHandler {
     }
 
     private static void executeCommand(ServerPlayerEntity player, List<String> value) {
-        String command = value.getFirst();
+        String command = value.get(0);
         MinecraftServer server = player.getServer();
 
         if (server == null) {
@@ -40,7 +40,7 @@ public final class CommandUpgradeActionHandler implements UpgradeActionHandler {
             return;
         }
 
-        if (Boolean.parseBoolean(value.getLast()) && command.startsWith("summon")) {
+        if (Boolean.parseBoolean(value.get(value.size() - 1)) && command.startsWith("summon")) {
             int[] uuidInts = uuidToIntArray(player.getUuid());
             int nbtStart = command.indexOf('{');
             if (nbtStart != -1) {

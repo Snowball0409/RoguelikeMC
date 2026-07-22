@@ -27,13 +27,13 @@ public final class SetEquipmentEventHandler implements UpgradeEventHandler {
             NbtCompound nbt = !nbtString.isEmpty() ? StringNbtReader.parse(nbtString) : new NbtCompound();
             if (!context.player().getInventory().armor.get(slotIndex).isEmpty()
                     && !context.player().getInventory().armor.get(slotIndex).getItem().equals(
-                    ItemStack.fromNbtOrEmpty(context.player().getWorld().getRegistryManager(), nbt).getItem())) {
+                    ItemStack.fromNbt(nbt).getItem())) {
                 context.player().dropItem(context.player().getInventory().armor.get(slotIndex), false);
                 context.player().sendMessage(Text.translatable("message.roguelikemc.drop_equipment"), false);
             }
             context.player().getInventory().armor.set(
                     slotIndex,
-                    ItemStack.fromNbtOrEmpty(context.player().getWorld().getRegistryManager(), nbt)
+                    ItemStack.fromNbt(nbt)
             );
         } catch (CommandSyntaxException e) {
             RoguelikeMC.LOGGER.warn("{}:{}", e.getClass(), e.getMessage());

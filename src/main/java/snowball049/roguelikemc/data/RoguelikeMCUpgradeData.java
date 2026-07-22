@@ -2,14 +2,13 @@ package snowball049.roguelikemc.data;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.network.PacketByteBuf;
 import snowball049.roguelikemc.upgrade.enums.UpgradeActionType;
 import snowball049.roguelikemc.upgrade.enums.UpgradePersistence;
 import snowball049.roguelikemc.upgrade.enums.UpgradeRarity;
@@ -54,7 +53,17 @@ public record RoguelikeMCUpgradeData(
                             ActionData.CODEC.listOf().optionalFieldOf(JsonField.ACTIONS, new ArrayList<>()).forGetter(RoguelikeMCUpgradeData::actions)
                     ).apply(instance, RoguelikeMCUpgradeData::new)
             );
-    public static final PacketCodec<RegistryByteBuf, RoguelikeMCUpgradeData> PACKET_CODEC = PacketCodecs.registryCodec(RoguelikeMCUpgradeData.CODEC);
+    public void write(PacketByteBuf buf) {
+        JsonElement json = CODEC.encodeStart(JsonOps.INSTANCE, this)
+                .getOrThrow(false, error -> { throw new IllegalStateException(error); });
+        buf.writeString(json.toString());
+    }
+
+    public static RoguelikeMCUpgradeData read(PacketByteBuf buf) {
+        JsonElement json = JsonParser.parseString(buf.readString());
+        return CODEC.parse(JsonOps.INSTANCE, json)
+                .getOrThrow(false, error -> { throw new IllegalStateException(error); });
+    }
 
     public UpgradeRarity rarity() {
         return UpgradeRarity.fromString(tier);
@@ -138,7 +147,8 @@ public record RoguelikeMCUpgradeData(
             JsonObject json = new JsonObject();
             json.addProperty(JsonField.TYPE, type);
             if (hasValue()) {
-                json.add(JsonField.VALUE, Codec.list(Codec.STRING).encodeStart(JsonOps.INSTANCE, value).getOrThrow());
+                json.add(JsonField.VALUE, Codec.list(Codec.STRING).encodeStart(JsonOps.INSTANCE, value)
+                        .getOrThrow(false, error -> { throw new IllegalStateException(error); }));
             }
             if (hasPayload()) {
                 json.add(JsonField.PAYLOAD, payload.deepCopy());
@@ -167,7 +177,7 @@ public record RoguelikeMCUpgradeData(
          * convergence replaces this with semantic payload fields.
          */
         public String legacyEventType() {
-            return value.isEmpty() ? "" : value.getFirst();
+            return value.isEmpty() ? "" : value.get(0);
         }
 
         public boolean hasPayload() {

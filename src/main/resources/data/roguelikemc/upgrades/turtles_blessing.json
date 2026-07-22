@@ -12,7 +12,7 @@
       "payload": {
         "eventType": "set_equipment",
         "slot": 3,
-        "itemNbt": "{components: {\"minecraft:enchantments\": {levels: {\"minecraft:binding_curse\": 1}}, \"minecraft:unbreakable\": {}}, count: 1, id: \"minecraft:turtle_helmet\"}"
+        "itemNbt": "{id:\"minecraft:turtle_helmet\",Count:1b,tag:{Enchantments:[{id:\"minecraft:binding_curse\",lvl:1s}],Unbreakable:1b}}"
       }
     }
   ]

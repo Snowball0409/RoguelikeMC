@@ -27,7 +27,7 @@ class RoguelikeMCUpgradePoolManagerTest {
         var pool = TestFixtures.object(TestFixtures.GAMEPLAY, "pools", "test_pool");
         List<String> expected = TestFixtures.readStringList(pool.getAsJsonArray("upgradeIds"));
         List<String> actual = RoguelikeMCUpgradePoolManager
-                .getUpgradesFromPool(net.minecraft.util.Identifier.of(pool.get("id").getAsString()))
+                .getUpgradesFromPool(new net.minecraft.util.Identifier(pool.get("id").getAsString()))
                 .stream()
                 .map(net.minecraft.util.Identifier::toString)
                 .toList();

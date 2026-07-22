@@ -3,17 +3,17 @@ package snowball049.roguelikemc.upgrade.action;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.upgrade.enums.UpgradeActionType;
 
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public final class AttributeUpgradeActionHandler implements UpgradeActionHandler {
     public static final AttributeUpgradeActionHandler INSTANCE = new AttributeUpgradeActionHandler();
@@ -44,45 +44,41 @@ public final class AttributeUpgradeActionHandler implements UpgradeActionHandler
     }
 
     private static void addAttribute(net.minecraft.server.network.ServerPlayerEntity player, String id, List<String> value) {
-        Identifier attributeIdentifier = Identifier.tryParse(value.getFirst());
-        RegistryEntry.Reference<EntityAttribute> attributeEntry = Registries.ATTRIBUTE.getEntry(attributeIdentifier)
-                .orElseThrow();
+        Identifier attributeIdentifier = Identifier.tryParse(value.get(0));
+        EntityAttribute attribute = Objects.requireNonNull(Registries.ATTRIBUTE.get(attributeIdentifier));
         double amount = Double.parseDouble(value.get(1));
         EntityAttributeModifier.Operation operation = switch (value.get(2)) {
-            case "add_value" -> EntityAttributeModifier.Operation.ADD_VALUE;
-            case "add_multiplied_base" -> EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE;
-            case "add_multiplied_total" -> EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
-            default -> EntityAttributeModifier.Operation.ADD_VALUE;
+            case "add_value" -> EntityAttributeModifier.Operation.ADDITION;
+            case "add_multiplied_base" -> EntityAttributeModifier.Operation.MULTIPLY_BASE;
+            case "add_multiplied_total" -> EntityAttributeModifier.Operation.MULTIPLY_TOTAL;
+            default -> EntityAttributeModifier.Operation.ADDITION;
         };
 
-        EntityAttributeInstance instance = Objects.requireNonNull(player.getAttributeInstance(attributeEntry));
+        EntityAttributeInstance instance = Objects.requireNonNull(player.getAttributeInstance(attribute));
         int stackIndex = nextStackIndex(instance, id, attributeIdentifier);
-        Identifier modifierId = Identifier.of(
-                RoguelikeMC.MOD_ID,
-                id + "/" + attributePath(attributeIdentifier) + "/" + stackIndex
-        );
+        String modifierName = RoguelikeMC.MOD_ID + ":" + id + "/" + attributePath(attributeIdentifier) + "/" + stackIndex;
 
         EntityAttributeModifier attributeModifier = new EntityAttributeModifier(
-                modifierId,
+                UUID.nameUUIDFromBytes(modifierName.getBytes(StandardCharsets.UTF_8)),
+                modifierName,
                 amount,
                 operation
         );
 
-        Multimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier> modifiers = HashMultimap.create();
-        modifiers.put(attributeEntry, attributeModifier);
+        Multimap<EntityAttribute, EntityAttributeModifier> modifiers = HashMultimap.create();
+        modifiers.put(attribute, attributeModifier);
         player.getAttributes().addTemporaryModifiers(modifiers);
     }
 
     private static void removeAttribute(net.minecraft.server.network.ServerPlayerEntity player, Identifier id, List<String> value) {
-        Identifier attributeIdentifier = Identifier.tryParse(value.getFirst());
-        RegistryEntry.Reference<EntityAttribute> attributeEntry = Registries.ATTRIBUTE.getEntry(attributeIdentifier)
-                .orElseThrow();
+        Identifier attributeIdentifier = Identifier.tryParse(value.get(0));
+        EntityAttribute attribute = Objects.requireNonNull(Registries.ATTRIBUTE.get(attributeIdentifier));
 
-        EntityAttributeInstance instance = Objects.requireNonNull(player.getAttributeInstance(attributeEntry));
+        EntityAttributeInstance instance = Objects.requireNonNull(player.getAttributeInstance(attribute));
         String prefix = id.toString() + "/";
         for (EntityAttributeModifier modifier : List.copyOf(instance.getModifiers())) {
-            RoguelikeMC.LOGGER.debug("Removing attribute {} from upgrade effect", modifier.id());
-            if (modifier.id().toString().startsWith(prefix)) {
+            RoguelikeMC.LOGGER.debug("Removing attribute {} from upgrade effect", modifier.getName());
+            if (modifier.getName().startsWith(prefix)) {
                 instance.removeModifier(modifier);
             }
         }
@@ -96,12 +92,12 @@ public final class AttributeUpgradeActionHandler implements UpgradeActionHandler
         String prefix = RoguelikeMC.MOD_ID + ":" + upgradeId + "/" + attributePath(attributeIdentifier) + "/";
         int maxIndex = -1;
         for (EntityAttributeModifier modifier : instance.getModifiers()) {
-            String modifierId = modifier.id().toString();
-            if (!modifierId.startsWith(prefix)) {
+            String modifierName = modifier.getName();
+            if (!modifierName.startsWith(prefix)) {
                 continue;
             }
             try {
-                maxIndex = Math.max(maxIndex, Integer.parseInt(modifierId.substring(prefix.length())));
+                maxIndex = Math.max(maxIndex, Integer.parseInt(modifierName.substring(prefix.length())));
             } catch (NumberFormatException ignored) {
                 // Legacy random-UUID modifiers still remove via upgradeId prefix.
             }

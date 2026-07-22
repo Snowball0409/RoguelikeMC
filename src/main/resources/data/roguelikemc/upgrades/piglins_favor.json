@@ -12,7 +12,7 @@
       "payload": {
         "eventType": "set_equipment",
         "slot": 3,
-        "itemNbt": "{components: {\"minecraft:enchantments\": {levels: {\"minecraft:binding_curse\": 1, \"minecraft:protection\": 3, \"minecraft:fire_protection\": 4}}, \"minecraft:unbreakable\": {}}, count: 1, id: \"minecraft:golden_helmet\"}"
+        "itemNbt": "{id:\"minecraft:golden_helmet\",Count:1b,tag:{Enchantments:[{id:\"minecraft:binding_curse\",lvl:1s},{id:\"minecraft:protection\",lvl:3s},{id:\"minecraft:fire_protection\",lvl:4s}],Unbreakable:1b}}"
       }
     }
   ]

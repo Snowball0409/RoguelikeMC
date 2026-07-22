@@ -36,27 +36,37 @@ public class RoguelikeMCClient implements ClientModInitializer {
 
 		// Netowrk Packet
 		// Refresh Upgrade Options
-		ClientPlayNetworking.registerGlobalReceiver(UpgradeOptionS2CPayload.ID, (payload, context) -> {
-			RoguelikeMCUpgradeData upgrade = payload.upgrade();
-			if (upgrade != null)
-				RoguelikeMCClientData.INSTANCE.currentOptions.add(upgrade);
+		ClientPlayNetworking.registerGlobalReceiver(UpgradeOptionS2CPayload.ID, (client, handler, buf, responseSender) -> {
+			UpgradeOptionS2CPayload payload = UpgradeOptionS2CPayload.read(buf);
+			client.execute(() -> {
+				RoguelikeMCUpgradeData upgrade = payload.upgrade();
+				if (upgrade != null)
+					RoguelikeMCClientData.INSTANCE.currentOptions.add(upgrade);
+			});
 		});
 		// Refresh Current Upgrades
-		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentUpgradeS2CPayload.PACKET_ID, (payload, context) -> {
-			if (payload.isPermanent()) {
-				RoguelikeMCClientData.INSTANCE.permanentUpgrades.clear();
-				RoguelikeMCClientData.INSTANCE.permanentUpgrades.addAll(payload.upgrades());
-			} else {
-				RoguelikeMCClientData.INSTANCE.temporaryUpgrades.clear();
-				RoguelikeMCClientData.INSTANCE.temporaryUpgrades.addAll(payload.upgrades());
-			}
+		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentUpgradeS2CPayload.ID, (client, handler, buf, responseSender) -> {
+			RefreshCurrentUpgradeS2CPayload payload = RefreshCurrentUpgradeS2CPayload.read(buf);
+			client.execute(() -> {
+				if (payload.isPermanent()) {
+					RoguelikeMCClientData.INSTANCE.permanentUpgrades.clear();
+					RoguelikeMCClientData.INSTANCE.permanentUpgrades.addAll(payload.upgrades());
+				} else {
+					RoguelikeMCClientData.INSTANCE.temporaryUpgrades.clear();
+					RoguelikeMCClientData.INSTANCE.temporaryUpgrades.addAll(payload.upgrades());
+				}
+			});
 		});
 		// Refresh Upgrade Points
-		ClientPlayNetworking.registerGlobalReceiver(SendUpgradePointsS2CPayload.ID, (payload, context) ->
-				RoguelikeMCClientData.INSTANCE.currentPoints = payload.point());
+		ClientPlayNetworking.registerGlobalReceiver(SendUpgradePointsS2CPayload.ID, (client, handler, buf, responseSender) -> {
+			SendUpgradePointsS2CPayload payload = SendUpgradePointsS2CPayload.read(buf);
+			client.execute(() -> RoguelikeMCClientData.INSTANCE.currentPoints = payload.point());
+		});
 		// Refresh Next Boss
-		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentBossStageS2CPayload.ID, (payload, context) ->
-				RoguelikeMCClientData.INSTANCE.nextBoss = Identifier.tryParse(payload.nextBoss()));
+		ClientPlayNetworking.registerGlobalReceiver(RefreshCurrentBossStageS2CPayload.ID, (client, handler, buf, responseSender) -> {
+			RefreshCurrentBossStageS2CPayload payload = RefreshCurrentBossStageS2CPayload.read(buf);
+			client.execute(() -> RoguelikeMCClientData.INSTANCE.nextBoss = Identifier.tryParse(payload.nextBoss()));
+		});
 	}
 
 	private static void registerKeyBindings() {

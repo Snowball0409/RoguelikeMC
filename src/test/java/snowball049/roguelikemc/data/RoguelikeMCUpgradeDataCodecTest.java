@@ -33,7 +33,7 @@ class RoguelikeMCUpgradeDataCodecTest {
 
         RoguelikeMCUpgradeData upgrade = RoguelikeMCUpgradeData.CODEC
                 .parse(JsonOps.INSTANCE, input)
-                .getOrThrow();
+                .getOrThrow(false, error -> { throw new IllegalStateException(error); });
 
         assertEquals(expected.get("id").getAsString(), upgrade.id());
         assertEquals(expected.get("name").getAsString(), upgrade.name());
@@ -67,7 +67,7 @@ class RoguelikeMCUpgradeDataCodecTest {
 
         if (expected.has("firstActionValues")) {
             JsonArray expectedValues = expected.getAsJsonArray("firstActionValues");
-            List<String> actualValues = upgrade.actions().getFirst().value();
+            List<String> actualValues = upgrade.actions().get(0).value();
             assertEquals(expectedValues.size(), actualValues.size());
             for (int i = 0; i < expectedValues.size(); i++) {
                 assertEquals(expectedValues.get(i).getAsString(), actualValues.get(i));
@@ -82,14 +82,14 @@ class RoguelikeMCUpgradeDataCodecTest {
 
         RoguelikeMCUpgradeData upgrade = RoguelikeMCUpgradeData.CODEC
                 .parse(JsonOps.INSTANCE, input)
-                .getOrThrow();
+                .getOrThrow(false, error -> { throw new IllegalStateException(error); });
         JsonObject encoded = RoguelikeMCUpgradeData.CODEC
                 .encodeStart(JsonOps.INSTANCE, upgrade)
-                .getOrThrow()
+                .getOrThrow(false, error -> { throw new IllegalStateException(error); })
                 .getAsJsonObject();
         RoguelikeMCUpgradeData roundTripped = RoguelikeMCUpgradeData.CODEC
                 .parse(JsonOps.INSTANCE, encoded)
-                .getOrThrow();
+                .getOrThrow(false, error -> { throw new IllegalStateException(error); });
 
         assertNotNull(roundTripped);
         assertEquals(upgrade, roundTripped);

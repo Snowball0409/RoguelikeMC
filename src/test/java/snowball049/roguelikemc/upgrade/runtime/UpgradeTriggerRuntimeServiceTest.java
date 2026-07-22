@@ -34,6 +34,8 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("deprecation")
 class UpgradeTriggerRuntimeServiceTest {
@@ -52,13 +54,13 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @BeforeEach
     void setUp() {
-        player = Mockito.mock(ServerPlayerEntity.class);
-        hostileTarget = Mockito.mock(HostileEntity.class);
-        passiveTarget = Mockito.mock(VillagerEntity.class);
-        serverWorld = Mockito.mock(ServerWorld.class);
+        player = mock(ServerPlayerEntity.class);
+        hostileTarget = mock(HostileEntity.class);
+        passiveTarget = mock(VillagerEntity.class);
+        serverWorld = mock(ServerWorld.class);
 
-        Mockito.when(player.getUuid()).thenReturn(UUID.fromString("00000000-0000-0000-0000-000000000123"));
-        Mockito.when(player.getServerWorld()).thenReturn(serverWorld);
+        when(player.getUuid()).thenReturn(UUID.fromString("00000000-0000-0000-0000-000000000123"));
+        when(player.getServerWorld()).thenReturn(serverWorld);
 
         originalCommandHandler = UpgradeActionHandlers.get(UpgradeActionType.COMMAND);
         recordingCommandHandler = new RecordingCommandHandler();
@@ -74,7 +76,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void dispatchesNestedActionAfterCountThreshold() {
-        Mockito.when(serverWorld.getTime()).thenReturn(20L, 21L);
+        when(serverWorld.getTime()).thenReturn(20L, 21L);
 
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "threshold_trigger",
@@ -89,7 +91,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void respectsCooldownBeforeTriggerCanFireAgain() {
-        Mockito.when(serverWorld.getTime()).thenReturn(100L, 102L, 105L);
+        when(serverWorld.getTime()).thenReturn(100L, 102L, 105L);
 
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "cooldown_trigger",
@@ -105,7 +107,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void isolatesStatePerTriggerActionIndex() {
-        Mockito.when(serverWorld.getTime()).thenReturn(300L);
+        when(serverWorld.getTime()).thenReturn(300L);
 
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "isolated_trigger_actions",
@@ -120,7 +122,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void ignoresNonHostileTargetsForTargetHostileCondition() {
-        Mockito.when(serverWorld.getTime()).thenReturn(400L);
+        when(serverWorld.getTime()).thenReturn(400L);
 
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "hostile_only_trigger",
@@ -134,7 +136,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void clearUpgradeOnlyClearsMatchingUpgradeProgress() {
-        Mockito.when(serverWorld.getTime()).thenReturn(20L, 21L, 22L);
+        when(serverWorld.getTime()).thenReturn(20L, 21L, 22L);
 
         RoguelikeMCUpgradeData firstUpgrade = upgradeWithActions("first_upgrade", triggerAction(1, 0, "first"));
         RoguelikeMCUpgradeData secondUpgrade = upgradeWithActions("second_upgrade", triggerAction(2, 0, "second"));
@@ -149,7 +151,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void clearPlayerRemovesAllTriggerProgress() {
-        Mockito.when(serverWorld.getTime()).thenReturn(600L, 601L);
+        when(serverWorld.getTime()).thenReturn(600L, 601L);
 
         RoguelikeMCUpgradeData upgrade = upgradeWithActions("reset_trigger", triggerAction(1, 0, "before_clear"));
 
@@ -162,7 +164,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void attackEventDispatchesWhenHostileTargetMatches() {
-        Mockito.when(serverWorld.getTime()).thenReturn(25L);
+        when(serverWorld.getTime()).thenReturn(25L);
 
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "attack_trigger",
@@ -181,7 +183,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void breakEventMatchesBlockIdCondition() {
-        Mockito.when(serverWorld.getTime()).thenReturn(20L);
+        when(serverWorld.getTime()).thenReturn(20L);
         BlockState ore = Blocks.DIAMOND_ORE.getDefaultState();
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "break_diamond",
@@ -214,8 +216,8 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void tradeEventDispatchesForVillagerMerchant() {
-        Mockito.when(serverWorld.getTime()).thenReturn(30L);
-        VillagerEntity villager = Mockito.mock(VillagerEntity.class);
+        when(serverWorld.getTime()).thenReturn(30L);
+        VillagerEntity villager = mock(VillagerEntity.class);
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "trade_villager",
                 triggerAction("trade", 1, 0, false, "traded", condition("trade_villager"))
@@ -231,8 +233,8 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void tradeEventDispatchesForWanderingTraderMerchant() {
-        Mockito.when(serverWorld.getTime()).thenReturn(31L);
-        WanderingTraderEntity trader = Mockito.mock(WanderingTraderEntity.class);
+        when(serverWorld.getTime()).thenReturn(31L);
+        WanderingTraderEntity trader = mock(WanderingTraderEntity.class);
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "trade_wandering",
                 triggerAction("trade", 1, 0, false, "traded")
@@ -248,7 +250,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void levelupAddsMultipleLevelsToProgress() {
-        Mockito.when(serverWorld.getTime()).thenReturn(40L, 41L);
+        when(serverWorld.getTime()).thenReturn(40L, 41L);
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "levelup",
                 triggerAction("levelup", 5, 0, false, "leveled")
@@ -264,7 +266,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void levelupPartialProgressDoesNotFire() {
-        Mockito.when(serverWorld.getTime()).thenReturn(42L);
+        when(serverWorld.getTime()).thenReturn(42L);
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "levelup",
                 triggerAction("levelup", 5, 0, false, "leveled")
@@ -280,7 +282,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void levelupPartialProgressAccumulatesAcrossCalls() {
-        Mockito.when(serverWorld.getTime()).thenReturn(43L, 44L);
+        when(serverWorld.getTime()).thenReturn(43L, 44L);
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "levelup",
                 triggerAction("levelup", 5, 0, false, "leveled")
@@ -302,7 +304,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void levelupFiresOncePerThresholdWhenGainingManyLevels() {
-        Mockito.when(serverWorld.getTime()).thenReturn(45L);
+        when(serverWorld.getTime()).thenReturn(45L);
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "levelup_multi",
                 triggerAction("levelup", 1, 0, false, "echo")
@@ -318,7 +320,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void levelupCanFireMultipleTimesFromSingleGainWhenThresholdAllows() {
-        Mockito.when(serverWorld.getTime()).thenReturn(46L);
+        when(serverWorld.getTime()).thenReturn(46L);
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "levelup_bundle",
                 triggerAction("levelup", 5, 0, false, "temper")
@@ -334,7 +336,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void damagedEventDispatchesNestedAction() {
-        Mockito.when(serverWorld.getTime()).thenReturn(50L);
+        when(serverWorld.getTime()).thenReturn(50L);
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "damaged_trigger",
                 triggerAction("damaged", 1, 0, false, "hurt")
@@ -350,10 +352,10 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void breakEventMatchesBlockTagCondition() {
-        Mockito.when(serverWorld.getTime()).thenReturn(51L);
+        when(serverWorld.getTime()).thenReturn(51L);
         // Bootstrap tests do not load datapack tags; stub isIn for tag matching.
-        BlockState ore = Mockito.mock(BlockState.class);
-        Mockito.when(ore.isIn(Mockito.<TagKey<Block>>any())).thenReturn(true);
+        BlockState ore = mock(BlockState.class);
+        when(ore.isIn(Mockito.<TagKey<Block>>any())).thenReturn(true);
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "break_coal_tag",
                 triggerAction("break", 1, 0, false, "mined", targetBlockTag("minecraft:coal_ores"))
@@ -369,7 +371,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void targetBlockFailsClosedWhenBothBlockAndTagArePresent() {
-        Mockito.when(serverWorld.getTime()).thenReturn(52L);
+        when(serverWorld.getTime()).thenReturn(52L);
         BlockState ore = Blocks.COAL_ORE.getDefaultState();
         JsonObject condition = new JsonObject();
         condition.addProperty("type", "target_block");
@@ -392,7 +394,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void clearPlayerAlsoClearsPlayerPlacedTracking() {
-        Mockito.when(serverWorld.getTime()).thenReturn(53L, 54L);
+        when(serverWorld.getTime()).thenReturn(53L, 54L);
         BlockPos pos = new BlockPos(8, 64, 8);
         BlockState ore = Blocks.DIAMOND_ORE.getDefaultState();
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
@@ -409,7 +411,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void breakingPlayerPlacedBlockIsIgnoredWhenPreventPlaceBreakEnabled() {
-        Mockito.when(serverWorld.getTime()).thenReturn(100L);
+        when(serverWorld.getTime()).thenReturn(100L);
         BlockPos pos = new BlockPos(3, 64, 3);
         BlockState ore = Blocks.DIAMOND_ORE.getDefaultState();
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
@@ -425,7 +427,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void breakingPlayerPlacedBlockStillCountsWhenPreventPlaceBreakDisabled() {
-        Mockito.when(serverWorld.getTime()).thenReturn(101L);
+        when(serverWorld.getTime()).thenReturn(101L);
         BlockPos pos = new BlockPos(5, 64, 5);
         BlockState ore = Blocks.DIAMOND_ORE.getDefaultState();
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
@@ -441,7 +443,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
     @Test
     void placingMatchingBlockDecrementsOnlyPreventPlaceBreakTriggers() {
-        Mockito.when(serverWorld.getTime()).thenReturn(110L, 111L, 112L);
+        when(serverWorld.getTime()).thenReturn(110L, 111L, 112L);
         BlockState ore = Blocks.DIAMOND_ORE.getDefaultState();
         RoguelikeMCUpgradeData upgrade = upgradeWithActions(
                 "break_diamond",
@@ -470,7 +472,7 @@ class UpgradeTriggerRuntimeServiceTest {
         }
         UpgradeTriggerRuntimeService.onBlockPlacedByPlayer(
                 player, World.OVERWORLD, newest, ore, List.of(upgrade));
-        Mockito.when(serverWorld.getTime()).thenReturn(200L);
+        when(serverWorld.getTime()).thenReturn(200L);
         UpgradeTriggerRuntimeService.onBlockBroken(player, World.OVERWORLD, oldest, ore, List.of(upgrade));
         assertEquals(List.of("mined"), recordingCommandHandler.commands);
     }
@@ -559,7 +561,7 @@ class UpgradeTriggerRuntimeServiceTest {
 
         @Override
         public void apply(UpgradeActionContext context) {
-            commands.add(context.action().value().getFirst());
+            commands.add(context.action().value().get(0));
         }
     }
 }

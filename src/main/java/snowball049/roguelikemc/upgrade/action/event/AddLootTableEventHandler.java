@@ -7,8 +7,6 @@ import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import snowball049.roguelikemc.upgrade.action.UpgradeActionContext;
@@ -23,6 +21,7 @@ public final class AddLootTableEventHandler implements UpgradeEventHandler {
 
     @Override
     public void apply(UpgradeActionContext context) {
+        // add_loot_table has no on-pick effect; it only reacts to onEntityKill below.
     }
 
     @Override
@@ -48,14 +47,14 @@ public final class AddLootTableEventHandler implements UpgradeEventHandler {
 
         ServerWorld world = (ServerWorld) target.getWorld();
         LootTable table = world.getServer()
-                .getReloadableRegistries()
-                .getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, lootId));
+                .getLootManager()
+                .getLootTable(lootId);
 
         LootContextParameterSet.Builder paramSetBuilder = new LootContextParameterSet.Builder(world)
                 .add(LootContextParameters.THIS_ENTITY, target)
                 .add(LootContextParameters.ORIGIN, target.getPos())
                 .add(LootContextParameters.DAMAGE_SOURCE, source)
-                .addOptional(LootContextParameters.ATTACKING_ENTITY, source.getAttacker());
+                .addOptional(LootContextParameters.KILLER_ENTITY, source.getAttacker());
 
         table.generateLoot(paramSetBuilder.build(LootContextTypes.ENTITY)).forEach(target::dropStack);
     }

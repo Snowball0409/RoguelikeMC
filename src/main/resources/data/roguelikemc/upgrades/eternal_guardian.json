@@ -10,7 +10,7 @@
     {
       "type": "command",
       "payload": {
-        "command": "give @s shield[unbreakable\u003d{}] 1"
+        "command": "give @s minecraft:shield{Unbreakable:1b} 1"
       }
     }
   ]

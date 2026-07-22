@@ -28,9 +28,9 @@ class UpgradeIdsTest {
 
         RoguelikeMCUpgradeData upgrade = RoguelikeMCUpgradeData.CODEC
                 .parse(JsonOps.INSTANCE, testCase.getAsJsonObject("input"))
-                .getOrThrow();
+                .getOrThrow(false, error -> { throw new IllegalStateException(error); });
 
         Identifier identifier = UpgradeIds.fromUpgradeData(upgrade);
-        assertEquals(Identifier.of(testCase.get("identifier").getAsString()), identifier);
+        assertEquals(new Identifier(testCase.get("identifier").getAsString()), identifier);
     }
 }

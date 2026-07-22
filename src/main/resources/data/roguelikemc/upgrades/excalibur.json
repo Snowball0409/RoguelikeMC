@@ -10,7 +10,7 @@
     {
       "type": "command",
       "payload": {
-        "command": "give @s minecraft:stone_sword[minecraft:custom_name='{\"color\":\"gold\",\"italic\":false,\"text\":\"Excalibur\"}',minecraft:enchantments={levels:{\"minecraft:fire_aspect\":2,\"minecraft:looting\":1,\"minecraft:sharpness\":5,\"minecraft:smite\":5}},minecraft:max_damage=65,minecraft:attribute_modifiers={modifiers:[{amount:7.0d,id:\"roguelikemc:excalibur_damage\",operation:\"add_value\",slot:\"mainhand\",type:\"minecraft:generic.attack_damage\"},{amount:-2.4d,id:\"roguelikemc:excalibur_speed\",operation:\"add_value\",slot:\"mainhand\",type:\"minecraft:generic.attack_speed\"}]}] 1"
+        "command": "give @s minecraft:stone_sword{display:{Name:'{\"color\":\"gold\",\"italic\":false,\"text\":\"Excalibur\"}'},Enchantments:[{id:\"minecraft:fire_aspect\",lvl:2s},{id:\"minecraft:looting\",lvl:1s},{id:\"minecraft:sharpness\",lvl:5s},{id:\"minecraft:smite\",lvl:5s}],AttributeModifiers:[{AttributeName:\"generic.attack_damage\",Name:\"roguelikemc:excalibur_damage\",Amount:7.0d,Operation:0,Slot:\"mainhand\",UUID:[I;-643277486,1347375816,-1587320115,343831806]},{AttributeName:\"generic.attack_speed\",Name:\"roguelikemc:excalibur_speed\",Amount:-2.4d,Operation:0,Slot:\"mainhand\",UUID:[I;764970860,-442409142,-1301609280,1948878828]}]} 1"
       }
     }
   ]

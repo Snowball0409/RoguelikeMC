@@ -8,7 +8,6 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.NbtString;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.PersistentState;
@@ -22,18 +21,12 @@ import java.util.*;
 
 public class RoguelikeMCStateSaverAndLoader extends PersistentState {
 
-    public HashMap<UUID, RoguelikeMCPlayerData> players = new HashMap<>();
+    public Map<UUID, RoguelikeMCPlayerData> players = new HashMap<>();
 
     private static final Codec<List<Identifier>> UPGRADE_ID_LIST_CODEC = Identifier.CODEC.listOf();
 
-    private static final Type<RoguelikeMCStateSaverAndLoader> type = new Type<>(
-      RoguelikeMCStateSaverAndLoader::new,
-      RoguelikeMCStateSaverAndLoader::createFromNbt,
-            null
-    );
-
     @Override
-    public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+    public NbtCompound writeNbt(NbtCompound nbt) {
         NbtCompound playersNbt = new NbtCompound();
         players.forEach((uuid, playerData) -> {
             NbtCompound playerNbt = new NbtCompound();
@@ -54,7 +47,7 @@ public class RoguelikeMCStateSaverAndLoader extends PersistentState {
         return nbt;
     }
 
-    private static RoguelikeMCStateSaverAndLoader createFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup wrapperLookup) {
+    private static RoguelikeMCStateSaverAndLoader createFromNbt(NbtCompound tag) {
         RoguelikeMCStateSaverAndLoader state = new RoguelikeMCStateSaverAndLoader();
         NbtCompound playersNbt = tag.getCompound("players");
         playersNbt.getKeys().forEach(key -> {
@@ -77,7 +70,8 @@ public class RoguelikeMCStateSaverAndLoader extends PersistentState {
     }
 
     static NbtElement encodeUpgradeIdList(List<Identifier> upgradeIds) {
-        return UPGRADE_ID_LIST_CODEC.encodeStart(NbtOps.INSTANCE, upgradeIds).getOrThrow();
+        return UPGRADE_ID_LIST_CODEC.encodeStart(NbtOps.INSTANCE, upgradeIds)
+                .getOrThrow(false, error -> { throw new IllegalStateException(error); });
     }
 
     static List<Identifier> decodeUpgradeIdList(NbtElement element) {
@@ -111,7 +105,11 @@ public class RoguelikeMCStateSaverAndLoader extends PersistentState {
     public static RoguelikeMCStateSaverAndLoader getServerState(MinecraftServer server) {
         PersistentStateManager manager = Objects.requireNonNull(server.getWorld(World.OVERWORLD)).getPersistentStateManager();
 
-        RoguelikeMCStateSaverAndLoader state = manager.getOrCreate(type, RoguelikeMC.MOD_ID);
+        RoguelikeMCStateSaverAndLoader state = manager.getOrCreate(
+                RoguelikeMCStateSaverAndLoader::createFromNbt,
+                RoguelikeMCStateSaverAndLoader::new,
+                RoguelikeMC.MOD_ID
+        );
 
         state.markDirty();
         return state;

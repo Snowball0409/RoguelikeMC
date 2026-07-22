@@ -8,9 +8,11 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.IdentifierArgumentType;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -127,13 +129,12 @@ public final class RoguelikeMCCommands {
                     if (removed) {
                         UpgradeApplier.removeUpgrade(player, upgrade);
                         UpgradeTriggerRuntimeService.clearUpgrade(player, upgradeId);
-                        ServerPlayNetworking.send(
-                                player,
-                                new RefreshCurrentUpgradeS2CPayload(
-                                        permanent,
-                                        permanent ? playerData.getPermanentUpgrades() : playerData.getTemporaryUpgrades()
-                                )
-                        );
+                        PacketByteBuf buf = PacketByteBufs.create();
+                        new RefreshCurrentUpgradeS2CPayload(
+                                permanent,
+                                permanent ? playerData.getPermanentUpgrades() : playerData.getTemporaryUpgrades()
+                        ).write(buf);
+                        ServerPlayNetworking.send(player, RefreshCurrentUpgradeS2CPayload.ID, buf);
                         player.sendMessage(Text.of(RoguelikeMCCommandConstants.MESSAGE_UPGRADE_REMOVED + upgrade.name()));
                     } else {
                         player.sendMessage(Text.of(RoguelikeMCCommandConstants.MESSAGE_UPGRADE_NOT_OWNED + upgrade.name()));

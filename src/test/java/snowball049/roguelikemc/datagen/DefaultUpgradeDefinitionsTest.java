@@ -34,7 +34,7 @@ class DefaultUpgradeDefinitionsTest {
         assertEquals("common", mightyForce.tier());
         assertTrue(mightyForce.isPermanent());
         assertFalse(mightyForce.isUnique());
-        assertEquals("attribute", mightyForce.actions().getFirst().type());
-        assertEquals("minecraft:generic.attack_damage", mightyForce.actions().getFirst().value().getFirst());
+        assertEquals("attribute", mightyForce.actions().get(0).type());
+        assertEquals("minecraft:generic.attack_damage", mightyForce.actions().get(0).value().get(0));
     }
 }

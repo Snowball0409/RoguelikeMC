@@ -24,7 +24,7 @@ class RoguelikeMCCommonConfigTest {
         assertEquals("minecraft:bone", actual.decayItem);
         assertEquals(2, actual.decayItemAmountMinMax.get(0));
         assertEquals(5, actual.decayItemAmountMinMax.get(1));
-        assertEquals("roguelikemc:test_ban", actual.bannedUpgrades.getFirst());
+        assertEquals("roguelikemc:test_ban", actual.bannedUpgrades.get(0));
     }
 
     @Test

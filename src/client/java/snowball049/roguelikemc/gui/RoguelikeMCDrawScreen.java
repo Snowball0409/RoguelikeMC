@@ -3,7 +3,9 @@ package snowball049.roguelikemc.gui;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -12,6 +14,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 import snowball049.roguelikemc.RoguelikeMCClient;
 import snowball049.roguelikemc.data.RoguelikeMCClientData;
@@ -280,7 +283,7 @@ public class RoguelikeMCDrawScreen extends Screen {
         int textColor = rarityColor.getColorValue() != null ? rarityColor.getColorValue() : 0xFFFFFF;
 
         @SuppressWarnings("java:S2184") // avoid long cast
-        int iconSize = Math.clamp(cardWidth / 2 - 12, Cards.MIN_ICON_SIZE, Cards.MAX_ICON_SIZE);
+        int iconSize = MathHelper.clamp(cardWidth / 2 - 12, Cards.MIN_ICON_SIZE, Cards.MAX_ICON_SIZE);
         int iconY = y + Cards.CARD_PADDING;
         int nameY = iconY + iconSize + Cards.NAME_GAP;
         int tagsY = nameY + textRenderer.fontHeight + Cards.TAG_GAP;
@@ -436,7 +439,9 @@ public class RoguelikeMCDrawScreen extends Screen {
         }
 
         clearErrorMessage();
-        ClientPlayNetworking.send(new RefreshUpgradeOptionC2SPayload());
+        PacketByteBuf refreshBuf = PacketByteBufs.create();
+        new RefreshUpgradeOptionC2SPayload().write(refreshBuf);
+        ClientPlayNetworking.send(RefreshUpgradeOptionC2SPayload.ID, refreshBuf);
     }
 
     private void selectUpgrade(int index) {
@@ -444,7 +449,9 @@ public class RoguelikeMCDrawScreen extends Screen {
             return;
         }
 
-        ClientPlayNetworking.send(new SelectUpgradeOptionC2SPayload(index));
+        PacketByteBuf selectBuf = PacketByteBufs.create();
+        new SelectUpgradeOptionC2SPayload(index).write(selectBuf);
+        ClientPlayNetworking.send(SelectUpgradeOptionC2SPayload.ID, selectBuf);
         RoguelikeMCClientData.INSTANCE.currentOptions.clear();
         returnToPreviousScreen();
     }
@@ -502,17 +509,17 @@ public class RoguelikeMCDrawScreen extends Screen {
             int titleY = Assets.HEADER_TOP;
             int pointY = titleY + fontHeight + Assets.HEADER_GAP;
 
-            int cardSpacing = Math.clamp(screenWidth / 40, 8, Assets.BASE_CARD_SPACING);
+            int cardSpacing = MathHelper.clamp(screenWidth / 40, 8, Assets.BASE_CARD_SPACING);
             int availableWidth = Math.max(
                     Assets.MIN_CARD_WIDTH * Assets.OPTION_COUNT,
                     screenWidth - Assets.HORIZONTAL_MARGIN * 2 - cardSpacing * (Assets.OPTION_COUNT - 1)
             );
-            int cardWidth = Math.clamp(availableWidth / Assets.OPTION_COUNT, Assets.MIN_CARD_WIDTH, Assets.BASE_CARD_WIDTH);
+            int cardWidth = MathHelper.clamp(availableWidth / Assets.OPTION_COUNT, Assets.MIN_CARD_WIDTH, Assets.BASE_CARD_WIDTH);
 
             int headerBottom = pointY + fontHeight;
             int footerHeight = 20 + Assets.FOOTER_GAP + fontHeight;
             int availableHeight = screenHeight - headerBottom - footerHeight - Assets.CONTENT_GAP * 2;
-            int cardHeight = Math.clamp(availableHeight, Assets.MIN_CARD_HEIGHT, Assets.BASE_CARD_HEIGHT);
+            int cardHeight = MathHelper.clamp(availableHeight, Assets.MIN_CARD_HEIGHT, Assets.BASE_CARD_HEIGHT);
 
             int totalWidth = Assets.OPTION_COUNT * cardWidth + (Assets.OPTION_COUNT - 1) * cardSpacing;
             int cardStartX = (screenWidth - totalWidth) / 2;

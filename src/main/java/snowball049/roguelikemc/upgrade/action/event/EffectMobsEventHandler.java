@@ -5,7 +5,6 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -13,6 +12,7 @@ import snowball049.roguelikemc.RoguelikeMC;
 import snowball049.roguelikemc.upgrade.action.UpgradeActionContext;
 
 import java.util.List;
+import java.util.Objects;
 
 public final class EffectMobsEventHandler implements UpgradeEventHandler {
     @Override
@@ -27,8 +27,7 @@ public final class EffectMobsEventHandler implements UpgradeEventHandler {
         List<String> value = context.action().value();
         try {
             Identifier effectIdentifier = Identifier.tryParse(value.get(1));
-            RegistryEntry.Reference<StatusEffect> effectEntry = Registries.STATUS_EFFECT.getEntry(effectIdentifier)
-                    .orElseThrow();
+            StatusEffect effect = Objects.requireNonNull(Registries.STATUS_EFFECT.get(effectIdentifier));
             World world = context.player().getWorld();
             if (world.isClient()) {
                 return;
@@ -40,7 +39,7 @@ public final class EffectMobsEventHandler implements UpgradeEventHandler {
                     candidate -> !candidate.isPlayer() && candidate instanceof HostileEntity
             )) {
                 entity.addStatusEffect(new StatusEffectInstance(
-                        effectEntry,
+                        effect,
                         40,
                         Integer.parseInt(value.get(2)),
                         false,

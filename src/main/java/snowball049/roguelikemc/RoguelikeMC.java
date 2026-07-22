@@ -32,7 +32,6 @@ public class RoguelikeMC implements ModInitializer {
 	public void onInitialize() {
 		RoguelikeMCCommonConfig.loadConfig();
 
-		RoguelikeMCModBootstrap.registerNetworkPackets();
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
 				RoguelikeMCCommands.register(dispatcher));
 		RoguelikeMCModBootstrap.registerAttributes();
